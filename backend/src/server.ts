@@ -1,20 +1,42 @@
-import express from "express";
+import dotenv from 'dotenv';
+import express from 'express';
 import cors from 'cors';
+import authRoutes from './routes/auth.routes';
 
-const EXPRESS_PORT = 3000;
+import { PORT } from '../config.json';
+
 const app = express();
+const port = process.env.PORT || PORT;
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('spotz backend says hello');
-});
+dotenv.config();
 
-// TODO 
-// ROUTES TO BE IMPLEMENTED
+async function startServer() {
+  try {
+    // await connectToDatabase();
+    // await loadData();
 
-app.listen(EXPRESS_PORT, () => {
-    console.log(
-      `🤝📆 spotz backend listening on port ${EXPRESS_PORT} 📆🤝`
-    );
+    app.listen(port, () => {
+      console.log(`Spotz server is running at http://localhost:${port}`);
+    });
+
+    // Routes & middleware
+    app.use(express.json());
+    app.use(cors());
+    app.use('', authRoutes);
+    // app.use(errorMiddleware);
+  } catch (error) {
+    console.error('Error starting the server:', error);
+    process.exit(1);
+  }
+}
+
+startServer();
+
+// closing the server
+process.on('SIGINT', async () => {
+  console.log('Shutting down server.');
+  // dbDisconnect();
+  process.exit();
 });
