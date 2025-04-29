@@ -4,15 +4,15 @@
 export type SessionId = string;
 export type Name = string;
 export type UserId = number;
-export type Email = string; //ends with "@devsoc.mail"
-export type Password = string; //greater than 6 characters & (?=.*\d)(?=.*[a-z])(?=.*[A-Z])
+export type Email = string; // has "@[some letters > 0].[some letters > 1]"
+export type Password = string; // greater than 6 characters & (?=.*\d)(?=.*[a-z])(?=.*[A-Z])
 
 // Mail
 export type MailId = number; // should be unique for EVERY user
 export type Sender = Email;
 export type Receivers = Email[];
 export type Title = string; // max 50 characters
-export type TimeSent = Date; //js date
+export type TimeSent = Date; // js date
 export type Message = string;
 
 export type Read = boolean;
@@ -29,24 +29,15 @@ export type Session = {
   userId: UserId;
 };
 
-export type Spot = {
-  name: Name;
-};
+export type Spot = String;
 
 export type User = {
   // _id: ObjectId,
   name: Name;
   email: Email;
   password: Password;
-  inbox: UserMail | {};
-  userId: UserId;
-};
-
-export type UserProfile = {
-  name: Name;
-  email: Email;
-  password: Password;
-  bookmark: Array<Spot>;
+  bookmarks: Array<Spot>;
+  likes: Array<Spot>;
   userId: UserId;
 };
 

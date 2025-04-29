@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import * as authService from '../services/auth.services';
+import * as profileService from '../services/profile.services';
 
 // retrieve - get HTTP method
 async function retrieve(req: Request, res: Response) {
   try {
-    // const { name, email, password } = req.body;
-    // const auth = profileService.profileRetrieve(name, email, password);
-    // res.json(auth);
+    const { email } = req.body;
+    const profile = profileService.profileRetrieve(email);
+    res.json(profile);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
   }
@@ -15,9 +15,15 @@ async function retrieve(req: Request, res: Response) {
 // edit - put HTTP method
 async function edit(req: Request, res: Response) {
   try {
-    // const { email, password } = req.body;
-    // const auth = profileService.profileEdit(email, password);
-    // res.json(auth);
+    const { email, name, password, bookmarks, likes } = req.body;
+    const profile = profileService.profileEdit(
+      email,
+      name,
+      password,
+      bookmarks,
+      likes
+    );
+    res.json(profile);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
   }

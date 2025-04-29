@@ -10,9 +10,11 @@ import {
   Receivers,
   SessionId,
   SessionStore,
+  Spot,
   Title,
 } from '../constants/types';
 import { setData, setSessions } from '../dataStore';
+import { Session } from 'inspector/promises';
 
 interface RequestOptions {
   method: HttpVerb;
@@ -86,28 +88,62 @@ export function requestAuthLogin(email: Email, password: Password) {
   });
 }
 
-export function requestMailSend(
-  receivers: Receivers,
-  title: Title,
-  message: Message,
-  session: SessionId
-) {
+export function requestAuthLogout(session: string) {
   return requestHelper({
-    method: 'POST',
-    path: '/mail/send',
-    payload: { receivers, title, message },
-    session: session,
+    method: 'DELETE',
+    path: '/auth/logout',
+    session,
+    payload: {},
   });
 }
 
-export function requestMailDelete(mailIds: MailIds, session: SessionId) {
+export function requestProfileRetrieve(email: Email, session: string) {
   return requestHelper({
-    method: 'DELETE',
-    path: '/mail/delete',
-    payload: { mailIds: mailIds },
-    session: session,
+    method: 'GET',
+    path: '/profile',
+    session,
+    payload: { email },
   });
 }
+
+export function requestProfileEdit(
+  name: Name,
+  email: Email,
+  password: Password,
+  bookmarks: Array<Spot>,
+  likes: Array<Spot>,
+  session: string
+) {
+  return requestHelper({
+    method: 'PUT',
+    path: '/profile/edit',
+    session,
+    payload: { name, email, password, bookmarks, likes },
+  });
+}
+
+// export function requestMailSend(
+//   receivers: Receivers,
+//   title: Title,
+//   message: Message,
+//   session: SessionId
+// ) {
+//   return requestHelper({
+//     method: 'POST',
+//     path: '/mail/send',
+//     payload: { receivers, title, message },
+//     session: session,
+//   });
+// }
+
+// export function requestMailDelete(mailIds: MailIds, session: SessionId) {
+//   return requestHelper({
+//     method: 'DELETE',
+//     path: '/mail/delete',
+//     payload: { mailIds: mailIds },
+//     session: session,
+//   });
+// }
 
 export function requestClear() {
   console.log('Clearing now!');
