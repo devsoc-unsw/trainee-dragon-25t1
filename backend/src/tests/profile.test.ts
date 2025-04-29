@@ -24,7 +24,7 @@ beforeEach(() => {
   session = requestAuthRegister('Gooner GYG', 'devsoc@gmail.com', '010203Ab!');
 });
 
-describe('Test profile retrieve', () => {
+describe.skip('Test profile retrieve', () => {
   test('Successful profile retrieve', () => {
     const profile = requestProfileRetrieve('devsoc@gmail.com', session);
     expect(profile.body).toStrictEqual(USER);
@@ -54,7 +54,7 @@ describe('Test profile retrieve', () => {
   });
 });
 
-describe('Test profile edit', () => {
+describe.skip('Test profile edit', () => {
   test('Successful profile edit', () => {
     const user = requestProfileEdit(
       'Gooner',

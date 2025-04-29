@@ -2,6 +2,9 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes';
+import otherRoutes from './routes/other.routes';
+import { errorMiddleware } from './middleware';
+import { loadData, connectToDatabase } from './dataStore';
 
 import { PORT } from '../config.json';
 
@@ -14,8 +17,8 @@ dotenv.config();
 
 async function startServer() {
   try {
-    // await connectToDatabase();
-    // await loadData();
+    await connectToDatabase();
+    await loadData();
 
     app.listen(port, () => {
       console.log(`Spotz server is running at http://localhost:${port}`);
@@ -25,7 +28,8 @@ async function startServer() {
     app.use(express.json());
     app.use(cors());
     app.use('', authRoutes);
-    // app.use(errorMiddleware);
+    app.use('', otherRoutes);
+    app.use(errorMiddleware);
   } catch (error) {
     console.error('Error starting the server:', error);
     process.exit(1);

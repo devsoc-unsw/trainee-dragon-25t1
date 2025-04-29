@@ -1,18 +1,6 @@
 import request, { HttpVerb } from 'sync-request-curl';
 import { PORT } from '../../config.json';
-import {
-  DataStore,
-  Email,
-  MailIds,
-  Message,
-  Name,
-  Password,
-  Receivers,
-  SessionId,
-  SessionStore,
-  Spot,
-  Title,
-} from '../constants/types';
+import { Email, Name, Password, Spot } from '../constants/types';
 import { setData, setSessions } from '../dataStore';
 import { Session } from 'inspector/promises';
 
@@ -92,8 +80,8 @@ export function requestAuthLogout(session: string) {
   return requestHelper({
     method: 'DELETE',
     path: '/auth/logout',
-    session,
     payload: {},
+    session,
   });
 }
 
@@ -101,8 +89,8 @@ export function requestProfileRetrieve(email: Email, session: string) {
   return requestHelper({
     method: 'GET',
     path: '/profile',
-    session,
     payload: { email },
+    session,
   });
 }
 
@@ -117,8 +105,8 @@ export function requestProfileEdit(
   return requestHelper({
     method: 'PUT',
     path: '/profile/edit',
-    session,
     payload: { name, email, password, bookmarks, likes },
+    session: session,
   });
 }
 

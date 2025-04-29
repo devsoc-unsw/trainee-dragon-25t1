@@ -59,5 +59,4 @@ export type SessionStore = {
 
 export type DataStore = {
   users: User[];
-  mails: Mail[];
 };

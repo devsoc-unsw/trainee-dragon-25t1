@@ -5,7 +5,7 @@ import { MongoClient } from 'mongodb';
 import * as dotenv from 'dotenv';
 
 let sessionStore: SessionStore = { sessions: [] };
-let database: DataStore = { users: [], mails: [] };
+let database: DataStore = { users: [] };
 
 //const SESSION_PATH = "./src/sessions.json";
 //const DATA_PATH = "./src/database.json";
