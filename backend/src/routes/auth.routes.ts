@@ -1,6 +1,6 @@
 import express from 'express';
 import * as authController from '../controllers/auth.controllers';
-// import { sessionMiddleware } from '../middleware';
+import { sessionMiddleware } from '../middleware';
 
 const router = express.Router();
 
@@ -11,6 +11,6 @@ router.post('/auth/register', authController.register);
 router.post('/auth/login', authController.login);
 
 // Logs out a logged in user
-// router.delete('/auth/logout', sessionMiddleware, authController.logout);
+router.delete('/auth/logout', sessionMiddleware, authController.logout);
 
 export default router;

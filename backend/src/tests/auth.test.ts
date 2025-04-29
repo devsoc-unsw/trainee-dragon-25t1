@@ -1,4 +1,9 @@
-import { requestAuthLogin, requestAuthRegister, requestClear } from './wrapper';
+import {
+  requestAuthLogin,
+  requestAuthLogout,
+  requestAuthRegister,
+  requestClear,
+} from './wrapper';
 
 const SESSION = {
   sessionId: expect.any(String),
@@ -16,8 +21,8 @@ beforeEach(() => {
 describe('Test register', () => {
   test('Successful register', () => {
     const session = requestAuthRegister(
-      'Ramona Flowers',
-      'ramona@devsoc.mail',
+      'Gooner GYG',
+      'devsoc@gmail.com',
       '010203Ab!'
     );
     expect(session.body).toStrictEqual(SESSION);
@@ -25,7 +30,7 @@ describe('Test register', () => {
   });
 
   test('Bad name (too short)', () => {
-    const session = requestAuthRegister('', 'ramona@devsoc.mail', '010203Ab!');
+    const session = requestAuthRegister('', 'devsoc@gmail.com', '010203Ab!');
     expect(session.body).toStrictEqual(ERROR);
     expect(session.status).toStrictEqual(400);
   });
@@ -33,7 +38,7 @@ describe('Test register', () => {
   test('Bad name (too long)', () => {
     const session = requestAuthRegister(
       LONG_NAME,
-      'ramona@devsoc.mail',
+      'devsoc@gmail.com',
       '010203Ab!'
     );
     expect(session.body).toStrictEqual(ERROR);
@@ -42,8 +47,8 @@ describe('Test register', () => {
 
   test('Bad email (suffix)', () => {
     const session = requestAuthRegister(
-      'Ramona Flowers',
-      'ramona@gmail.com',
+      'Gooner GYG',
+      'devsoc@gmailcom',
       '010203Ab!'
     );
     expect(session.body).toStrictEqual(ERROR);
@@ -51,10 +56,10 @@ describe('Test register', () => {
   });
 
   test('Bad email (already exists)', () => {
-    requestAuthRegister('Ramona Flowers', 'ramona@devsoc.mail', '010203Ab!');
+    requestAuthRegister('Gooner GYG', 'devsoc@gmail.com', '010203Ab!');
     const session = requestAuthRegister(
-      'Ramona Flowers',
-      'ramona@devsoc.mail',
+      'Gooner GYG',
+      'devsoc@gmail.com',
       '010203Ab!'
     );
     expect(session.body).toStrictEqual(ERROR);
@@ -63,8 +68,8 @@ describe('Test register', () => {
 
   test('Bad password', () => {
     const session = requestAuthRegister(
-      'Ramona Flowers',
-      'ramona@devsoc.mail',
+      'Gooner GYG',
+      'devsoc@gmail.com',
       'abcabcabc'
     );
     expect(session.body).toStrictEqual(ERROR);
@@ -72,38 +77,66 @@ describe('Test register', () => {
   });
 });
 
-// function expect(body: any) {
-//   throw new Error('Function not implemented.');
-// }
-/**
- * Implement /auth/login and uncomment the test below
- */
-// describe('Test login', () => {
-//   beforeEach(() => {
-//     requestAuthRegister("", "ramona@devsoc.mail", "010203Ab!");
-//   });
+describe('Test login', () => {
+  beforeEach(() => {
+    requestAuthRegister('', 'devsoc@gmail.com', '010203Ab!');
+  });
 
-//   test('Successful login', () => {
-//     const session = requestAuthLogin("ramona@devsoc.mail", "010203Ab!");
-//     expect(session.body).toStrictEqual(SESSION);
-//     expect(session.status).toStrictEqual(200);
-//   });
+  test('Successful login', () => {
+    const session = requestAuthLogin('devsoc@gmail.com', '010203Ab!');
+    expect(session.body).toStrictEqual(SESSION);
+    expect(session.status).toStrictEqual(200);
+  });
 
-//   test('Bad email (wrong suffix)', () => {
-//     const session = requestAuthLogin("ramona@gmail.com", "010203Ab!");
-//     expect(session.body).toStrictEqual(ERROR);
-//     expect(session.status).toStrictEqual(400);
-//   });
+  test('Bad email (wrong suffix)', () => {
+    const session = requestAuthLogin('devsoc@gmailcom', '010203Ab!');
+    expect(session.body).toStrictEqual(ERROR);
+    expect(session.status).toStrictEqual(400);
+  });
 
-//   test('Bad email (not found)', () => {
-//     const session = requestAuthLogin("ramona@gmail.com", "010203Ab!");
-//     expect(session.body).toStrictEqual(ERROR);
-//     expect(session.status).toStrictEqual(400);
-//   });
+  test('Bad email (not found)', () => {
+    const session = requestAuthLogin(
+      'devsoc1231231312312312312312@gmail.com',
+      '010203Ab!'
+    );
+    expect(session.body).toStrictEqual(ERROR);
+    expect(session.status).toStrictEqual(400);
+  });
 
-//   test('Bad password', () => {
-//     const session = requestAuthLogin("ramona@gmail.com", "abcabcabc");
-//     expect(session.body).toStrictEqual(ERROR);
-//     expect(session.status).toStrictEqual(400);
-//   });
-// });
+  test('Bad password', () => {
+    const session = requestAuthLogin('devsoc@gmail.com', 'abcabcabc');
+    expect(session.body).toStrictEqual(ERROR);
+    expect(session.status).toStrictEqual(400);
+  });
+});
+
+describe('Test logout', () => {
+  let session: string;
+  beforeEach(() => {
+    session = requestAuthRegister('', 'devsoc@gmail.com', '010203Ab!');
+  });
+
+  test('Successful logout', () => {
+    const logout = requestAuthLogout(session);
+    expect(logout.body).toStrictEqual(SESSION);
+    expect(logout.status).toStrictEqual(200);
+  });
+
+  test('Not the same user', () => {
+    const session2 = requestAuthRegister(
+      'Gooner GYG1',
+      'devsoc1@gmail.com',
+      '010203Ab!'
+    );
+    const logout = requestAuthLogout(session2);
+    expect(logout.body).toStrictEqual(ERROR);
+    expect(logout.status).toStrictEqual(401);
+  });
+
+  test('Logout twice', () => {
+    requestAuthLogout(session);
+    const logout = requestAuthLogout(session);
+    expect(logout.body).toStrictEqual(ERROR);
+    expect(logout.status).toStrictEqual(400);
+  });
+});

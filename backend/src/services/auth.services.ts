@@ -15,62 +15,14 @@ import {
   setData,
   setSessions,
 } from '../dataStore';
+import {
+  isValidEmail,
+  isValidName,
+  isValidPassword,
+} from '../helpers/users.helpers';
 
 function generateUserId(): UserId {
   return Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
-}
-
-function isValidName(name: Name): string | boolean {
-  if (name.length > 100) {
-    return ErrorMap['NAME_TOO_LONG'];
-  }
-
-  if (name.length < 1) {
-    return ErrorMap['NAME_TOO_SHORT'];
-  }
-
-  return true;
-}
-
-function isValidEmail(email: Email, isRegister?: boolean): string | boolean {
-  if (email.length > 50) {
-    return ErrorMap['EMAIL_TOO_LONG'];
-  }
-
-  if (email.length < 1) {
-    return ErrorMap['EMAIL_TOO_SHORT'];
-  }
-
-  const users = getData().users;
-  if (users.find((u) => u.email === email) && isRegister) {
-    return ErrorMap['EMAIL_ALREADY_EXISTS'];
-  }
-
-  const pattern = /[a-zA-Z0-9_\-]*@devsoc.mail/;
-  if (!pattern.test(email)) {
-    return ErrorMap['EMAIL_SUFFIX'];
-  }
-
-  return true;
-}
-
-function isValidPassword(password: Password): string | boolean {
-  if (password.length < 6) {
-    return ErrorMap['PASSWORD_LENGTH'];
-  }
-
-  const numPattern = /\d/;
-  const upperPattern = /[A-Z]/;
-  const lowerPattern = /[a-z]/;
-  if (
-    !numPattern.test(password) ||
-    !upperPattern.test(password) ||
-    !lowerPattern.test(password)
-  ) {
-    return ErrorMap['PASSWORD_SYMBOLS'];
-  }
-
-  return true;
 }
 
 /**
@@ -103,23 +55,25 @@ export function authRegister(
 
   const sessions: Session[] = getSessions();
   const session: Session = {
-    sessionId: generateSessionId(),
+    sessionId: generateSessionId(), // check this out further
     userId: userId,
   };
   sessions.push(session);
   setSessions(sessions);
 
   const database = getData();
+
   const user: User = {
     name: name,
     email: email,
     password: password,
-    inbox: {},
+    bookmarks: [],
+    likes: [],
     userId: userId,
   };
   database.users.push(user);
-  setData(database);
 
+  setData(database);
   return session;
 }
 
