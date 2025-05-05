@@ -1,14 +1,10 @@
-//import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { DataStore, Session, SessionStore } from './constants/types';
 import { MongoClient } from 'mongodb';
 import * as dotenv from 'dotenv';
 
 let sessionStore: SessionStore = { sessions: [] };
-let database: DataStore = { users: [] };
-
-//const SESSION_PATH = "./src/sessions.json";
-//const DATA_PATH = "./src/database.json";
+let database: DataStore = { users: [] } as any;
 
 let sessionCollection: any;
 let dataCollection: any;
@@ -37,24 +33,23 @@ export async function connectToDatabase() {
 ////////////////////////////// SESSION UTILS  ////////////////////////////////
 
 export async function saveSessions() {
-  // const data = JSON.stringify(sessionStore, null, 2);
-  // fs.writeFileSync(SESSION_PATH, data, { flag: 'w' });
   try {
-    await sessionCollection.deleteMany({});
-    await sessionCollection.insertMany(sessionStore.sessions);
+    if (sessionStore.sessions.length === 0) {
+      await sessionCollection.deleteMany({});
+      return;
+    }
+
+    for (const session of sessionStore.sessions) {
+      await sessionCollection.replaceOne({ _id: session._id }, session, {
+        upsert: true,
+      });
+    }
   } catch (error) {
     console.error('Error saving sessions:', error);
   }
 }
 
 export async function loadSessions() {
-  // if (fs.existsSync(SESSION_PATH)) {
-  //   const data = fs.readFileSync(SESSION_PATH, { flag: 'r' });
-  //   sessionStore = JSON.parse(data.toString());
-  // } else {
-  //   // if file doesn't exist
-  //   saveSessions();
-  // }
   try {
     const sessions = await sessionCollection.find({}).toArray();
     sessionStore.sessions = sessions;
@@ -79,24 +74,21 @@ export async function setSessions(sessions: Session[]) {
 ////////////////////////////// DATA UTILS  ///////////////////////////////////
 
 export async function saveData() {
-  // const data = JSON.stringify(database, null, 2);
-  // fs.writeFileSync(DATA_PATH, data, { flag: 'w' });
   try {
-    await dataCollection.deleteOne({});
-    await dataCollection.insertOne(database);
+    if (database.users.length === 0) {
+      await dataCollection.deleteMany({});
+      return;
+    }
+
+    await dataCollection.replaceOne({ _id: database._id }, database, {
+      upsert: true,
+    });
   } catch (error) {
     console.error('Error saving data:', error);
   }
 }
 
 export async function loadData() {
-  // if (fs.existsSync(DATA_PATH)) {
-  //   const data = fs.readFileSync(DATA_PATH, { flag: 'r' });
-  //   database = JSON.parse(data.toString());
-  // } else {
-  //   // if file doesn't exist
-  //   saveData();
-  // }
   try {
     const data = await dataCollection.findOne({});
     if (data) {

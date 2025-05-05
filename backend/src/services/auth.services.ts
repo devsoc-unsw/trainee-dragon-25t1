@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { ErrorMap } from '../constants/errors';
 import {
   Name,
@@ -55,6 +56,7 @@ export function authRegister(
 
   const sessions: Session[] = getSessions();
   const session: Session = {
+    _id: new ObjectId(),
     sessionId: generateSessionId(), // check this out further
     userId: userId,
   };
@@ -106,6 +108,7 @@ export function authLogin(email: Email, password: Password) {
   const sessions: Session[] = getSessions();
   const sessionId = generateSessionId();
   const session: Session = {
+    _id: new ObjectId(),
     sessionId: sessionId,
     userId: user.userId,
   };

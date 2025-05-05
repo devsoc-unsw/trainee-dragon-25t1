@@ -4,8 +4,8 @@ import * as profileService from '../services/profile.services';
 // retrieve - get HTTP method
 async function retrieve(req: Request, res: Response) {
   try {
-    const { email } = req.body;
-    const profile = profileService.profileRetrieve(email);
+    const session = req.header('session');
+    const profile = profileService.profileRetrieve(session as string);
     res.json(profile);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
@@ -15,13 +15,27 @@ async function retrieve(req: Request, res: Response) {
 // edit - put HTTP method
 async function edit(req: Request, res: Response) {
   try {
-    const { email, name, password, bookmarks, likes } = req.body;
-    const profile = profileService.profileEdit(
-      email,
+    const session = req.header('session');
+
+    const {
+      newBookmarks,
+      removedBookmarks,
+      likes,
+      dislikes,
       name,
+      email,
       password,
-      bookmarks,
-      likes
+    } = req.body;
+
+    const profile = profileService.profileEdit(
+      session as string,
+      newBookmarks,
+      removedBookmarks,
+      likes,
+      dislikes,
+      name,
+      email,
+      password
     );
     res.json(profile);
   } catch (err: any) {

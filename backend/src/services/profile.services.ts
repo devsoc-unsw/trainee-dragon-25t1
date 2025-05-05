@@ -1,6 +1,13 @@
 import { ErrorMap } from '../constants/errors';
-import { Name, Email, Password, User, Spot } from '../constants/types';
-import { getData, setData } from '../dataStore';
+import {
+  Name,
+  Email,
+  Password,
+  User,
+  Spot,
+  SessionId,
+} from '../constants/types';
+import { getData, getSessions, setData } from '../dataStore';
 import {
   isValidEmail,
   isValidName,
@@ -12,10 +19,15 @@ import {
 //  * @param sessionId
  * @param email
  */
-export function profileRetrieve(email: Email): User {
-  const data = getData();
+export function profileRetrieve(session: SessionId): User {
+  const sessions = getSessions();
 
-  const user = data.users.find((user) => user.email === email);
+  const userId = sessions.find((s) => s.sessionId == session)?.userId as number;
+  if (!userId || userId === undefined) {
+    throw new Error(ErrorMap['INVALID_SESSION']);
+  }
+
+  const user = getData().users.find((u) => u.userId == userId);
   if (!user || user === undefined) {
     throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
   }
@@ -33,13 +45,14 @@ export function profileRetrieve(email: Email): User {
  * @param likes
  */
 export function profileEdit(
-  // sessionId: String,
-  // userId: number,
-  email: Email,
+  session: SessionId,
+  newBookmarks: Array<Spot>,
+  removedBookmarks: Array<Spot>,
+  likes: Array<Spot>,
+  dislikes: Array<Spot>,
   name?: Name,
-  password?: Password,
-  bookmarks?: Array<Spot>,
-  likes?: Array<Spot>
+  email?: Email,
+  password?: Password
 ) {
   // name is greater than 100 or less than 1 characters
   if (name !== undefined && isValidName(name) !== true) {
@@ -47,7 +60,7 @@ export function profileEdit(
   }
 
   // name is greater than 100 or less than 1 characters
-  if (isValidEmail(email, true) !== true) {
+  if (email !== undefined && isValidEmail(email, true) !== true) {
     throw new Error(isValidEmail(email) as string);
   }
 
@@ -56,33 +69,42 @@ export function profileEdit(
     throw new Error(isValidPassword(password) as string);
   }
 
-  const data = getData();
+  const sessions = getSessions();
+  const userId = sessions.find((s) => s.sessionId == session)?.userId as number;
 
-  const user = data.users.find((user) => user.email === email);
+  const data = getData();
+  const user = data.users.find((u) => u.userId == userId);
   if (!user || user === undefined) {
     throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
   }
 
-  const newBookmarks = user.bookmarks.filter(
-    (bookmark) => !bookmarks?.includes(bookmark)
-  );
+  removedBookmarks.forEach((removedBookmark) => {
+    const index = user.bookmarks.findIndex(
+      (bookmark) => bookmark === removedBookmark
+    );
+    user.bookmarks.splice(index, 1);
+  });
 
-  const newLikes = user.likes.filter((like) => !likes?.includes(like));
+  dislikes.forEach((dislike) => {
+    const index = user.likes.findIndex((like) => like === dislike);
+    user.likes.splice(index, 1);
+  });
 
   const newProfile: User = {
     ...user,
     ...(name !== undefined && { name }),
+    ...(email !== undefined && { email }),
     ...(password !== undefined && { password }),
-    bookmarks: newBookmarks,
-    likes: newLikes,
+    bookmarks: [...user.bookmarks, ...newBookmarks],
+    likes: [...user.likes, ...likes],
   };
 
   const index = data.users.indexOf(user);
-
   if (index !== -1) {
     data.users[index] = newProfile;
   }
 
   setData(data);
+
   return {};
 }

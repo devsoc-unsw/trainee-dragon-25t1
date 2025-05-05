@@ -5,7 +5,7 @@ import { sessionMiddleware } from '../middleware';
 const router = express.Router();
 
 // Retrieve user profile and returns a user profile
-router.get('/profile', profileController.retrieve);
+router.get('/profile', sessionMiddleware, profileController.retrieve);
 
 // Edit user profile and returns nth
 router.put('/profile/edit', sessionMiddleware, profileController.edit);

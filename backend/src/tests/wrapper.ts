@@ -1,8 +1,6 @@
 import request, { HttpVerb } from 'sync-request-curl';
 import { PORT } from '../../config.json';
 import { Email, Name, Password, Spot } from '../constants/types';
-import { setData, setSessions } from '../dataStore';
-import { Session } from 'inspector/promises';
 
 interface RequestOptions {
   method: HttpVerb;
@@ -85,28 +83,41 @@ export function requestAuthLogout(session: string) {
   });
 }
 
-export function requestProfileRetrieve(email: Email, session: string) {
+export function requestProfileRetrieve(session: string) {
   return requestHelper({
     method: 'GET',
     path: '/profile',
-    payload: { email },
+    payload: {},
     session,
   });
 }
 
 export function requestProfileEdit(
-  name: Name,
-  email: Email,
-  password: Password,
-  bookmarks: Array<Spot>,
+  newBookmarks: Array<Spot>,
+  removedBookmarks: Array<Spot>,
   likes: Array<Spot>,
-  session: string
+  dislikes: Array<Spot>,
+  session: string,
+  name?: Name,
+  email?: Email,
+  password?: Password
 ) {
+  const payload: Record<string, any> = {
+    newBookmarks,
+    removedBookmarks,
+    likes,
+    dislikes,
+  };
+
+  if (name !== undefined) payload.name = name;
+  if (email !== undefined) payload.email = email;
+  if (password !== undefined) payload.password = password;
+
   return requestHelper({
     method: 'PUT',
     path: '/profile/edit',
-    payload: { name, email, password, bookmarks, likes },
-    session: session,
+    payload,
+    session,
   });
 }
 

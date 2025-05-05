@@ -6,6 +6,7 @@ import {
 } from './wrapper';
 
 const SESSION = {
+  _id: expect.any(String),
   sessionId: expect.any(String),
   userId: expect.any(Number),
 };
@@ -23,7 +24,7 @@ beforeEach(() => {
 });
 
 describe('Test register', () => {
-  test.only('Successful register', () => {
+  test('Successful register', () => {
     const session = requestAuthRegister(
       'Gooner',
       'devsoc@gmail.com',
@@ -120,34 +121,27 @@ describe('Test login', () => {
 });
 
 describe('Test logout', () => {
-  let session: string;
+  let session: any;
   beforeEach(() => {
     session = requestAuthRegister('Gooner', 'devsoc@gmail.com', '010203Ab!');
   });
 
   test('Successful logout', () => {
-    console.log(session);
-    const logout = requestAuthLogout(session);
+    const logout = requestAuthLogout(session.body.sessionId);
     expect(logout.body).toStrictEqual({});
     expect(logout.status).toStrictEqual(200);
   });
 
-  // test('Not the same user', () => {
-  //   const session2 = requestAuthRegister(
-  //     'Gooner GYG1',
-  //     'devsoc1@gmail.com',
-  //     '010203Ab!'
-  //   );
-  //   const logout = requestAuthLogout(session2);
-  //   expect(logout.body).toStrictEqual(ERROR);
-  //   expect(logout.status).toStrictEqual(401);
-  // });
+  test('Not valid session', () => {
+    const logout = requestAuthLogout('Not A Session');
+    expect(logout.body).toStrictEqual(ERROR);
+    expect(logout.status).toStrictEqual(401);
+  });
 
-  // test('Logout twice', () => {
-  //   requestAuthLogout(session);
-  //   const logout = requestAuthLogout(session);
-  //   console.log(logout.status);
-  //   expect(logout.body).toStrictEqual(ERROR);
-  //   expect(logout.status).toStrictEqual(400);
-  // });
+  test('Logout twice', () => {
+    requestAuthLogout(session);
+    const logout = requestAuthLogout(session);
+    expect(logout.body).toStrictEqual(ERROR);
+    expect(logout.status).toStrictEqual(401);
+  });
 });

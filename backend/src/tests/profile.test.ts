@@ -18,15 +18,15 @@ const ERROR = { error: expect.any(String) };
 const LONG_NAME =
   'Ramonaaaaaaaaaaaaaaaaaaaaaaaaa Flowersssssssssssssss Ramonaaaaaaaaaaaaaaaaaaaaaaaaa Flowersssssssssssssss';
 
-let session: string;
+let session: any;
 beforeEach(() => {
   requestClear();
   session = requestAuthRegister('Gooner GYG', 'devsoc@gmail.com', '010203Ab!');
 });
 
-describe.skip('Test profile retrieve', () => {
+describe('Test profile retrieve', () => {
   test('Successful profile retrieve', () => {
-    const profile = requestProfileRetrieve('devsoc@gmail.com', session);
+    const profile = requestProfileRetrieve(session.body.sessionId);
     expect(profile.body).toStrictEqual(USER);
     expect(profile.status).toStrictEqual(200);
   });
@@ -42,53 +42,41 @@ describe.skip('Test profile retrieve', () => {
     expect(session.status).toStrictEqual(400);
   });
 
-  test('Not the same user', () => {
-    const session2 = requestAuthRegister(
-      'Gooner GYG1',
-      'devsoc1@gmail.com',
-      '010203Ab!'
-    );
-    const profile = requestProfileRetrieve('devsoc@gmail.com', session2);
+  test('Not valid session', () => {
+    const profile = requestProfileRetrieve('Not a session');
     expect(profile.body).toStrictEqual(ERROR);
     expect(profile.status).toStrictEqual(401);
   });
 });
 
-describe.skip('Test profile edit', () => {
+describe('Test profile edit', () => {
   test('Successful profile edit', () => {
     const user = requestProfileEdit(
-      'Gooner',
-      'devsoc@gmail.com',
-      '010203Ab!',
       [],
       [],
-      session
+      [],
+      [],
+      session.body.sessionId,
+      'Gooner'
     );
     expect(user.body).toStrictEqual({});
     expect(user.status).toStrictEqual(200);
   });
 
   test('Bad name (too short)', () => {
-    const user = requestProfileEdit(
-      '',
-      'devsoc@gmail.com',
-      '010203Ab!',
-      [],
-      [],
-      session
-    );
+    const user = requestProfileEdit([], [], [], [], session.body.sessionId, '');
     expect(user.body).toStrictEqual(ERROR);
     expect(user.status).toStrictEqual(400);
   });
 
   test('Bad name (too long)', () => {
     const user = requestProfileEdit(
-      LONG_NAME,
-      'devsoc@gmail.com',
-      '010203Ab!',
       [],
       [],
-      session
+      [],
+      [],
+      session.body.sessionId,
+      LONG_NAME
     );
     expect(user.body).toStrictEqual(ERROR);
     expect(user.status).toStrictEqual(400);
@@ -96,14 +84,29 @@ describe.skip('Test profile edit', () => {
 
   test('Bad password', () => {
     const user = requestProfileEdit(
+      [],
+      [],
+      [],
+      [],
+      session.body.sessionId,
       'Gooner',
-      'devsoc@gmail.com',
-      'ababababab',
-      [],
-      [],
-      session
+      undefined,
+      'ababababab'
     );
     expect(user.body).toStrictEqual(ERROR);
     expect(user.status).toStrictEqual(400);
+  });
+
+  test('Not valid session', () => {
+    const profile = requestProfileEdit(
+      [],
+      [],
+      [],
+      [],
+      'Not A Session',
+      'Gooner'
+    );
+    expect(profile.body).toStrictEqual(ERROR);
+    expect(profile.status).toStrictEqual(401);
   });
 });
