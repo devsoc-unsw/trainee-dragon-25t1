@@ -6,8 +6,13 @@ import {
 } from './wrapper';
 
 const SESSION = {
+  _id: expect.any(String),
   sessionId: expect.any(String),
   userId: expect.any(Number),
+};
+
+const LOGIN = {
+  sessionId: expect.any(String),
 };
 
 const ERROR = { error: expect.any(String) };
@@ -21,11 +26,16 @@ beforeEach(() => {
 describe('Test register', () => {
   test('Successful register', () => {
     const session = requestAuthRegister(
-      'Gooner GYG',
+      'Gooner',
       'devsoc@gmail.com',
       '010203Ab!'
     );
+
+    requestAuthRegister('Gooner', 'devsoc2@gmail.com', '010203Ab!');
+
+    requestAuthRegister('Gooner', 'devsoc3@gmail.com', '010203Ab!');
     expect(session.body).toStrictEqual(SESSION);
+
     expect(session.status).toStrictEqual(200);
   });
 
@@ -79,12 +89,12 @@ describe('Test register', () => {
 
 describe('Test login', () => {
   beforeEach(() => {
-    requestAuthRegister('', 'devsoc@gmail.com', '010203Ab!');
+    requestAuthRegister('Gooner GYG', 'devsoc@gmail.com', '010203Ab!');
   });
 
   test('Successful login', () => {
     const session = requestAuthLogin('devsoc@gmail.com', '010203Ab!');
-    expect(session.body).toStrictEqual(SESSION);
+    expect(session.body).toStrictEqual(LOGIN);
     expect(session.status).toStrictEqual(200);
   });
 
@@ -111,24 +121,19 @@ describe('Test login', () => {
 });
 
 describe('Test logout', () => {
-  let session: string;
+  let session: any;
   beforeEach(() => {
-    session = requestAuthRegister('', 'devsoc@gmail.com', '010203Ab!');
+    session = requestAuthRegister('Gooner', 'devsoc@gmail.com', '010203Ab!');
   });
 
   test('Successful logout', () => {
-    const logout = requestAuthLogout(session);
-    expect(logout.body).toStrictEqual(SESSION);
+    const logout = requestAuthLogout(session.body.sessionId);
+    expect(logout.body).toStrictEqual({});
     expect(logout.status).toStrictEqual(200);
   });
 
-  test('Not the same user', () => {
-    const session2 = requestAuthRegister(
-      'Gooner GYG1',
-      'devsoc1@gmail.com',
-      '010203Ab!'
-    );
-    const logout = requestAuthLogout(session2);
+  test('Not valid session', () => {
+    const logout = requestAuthLogout('Not A Session');
     expect(logout.body).toStrictEqual(ERROR);
     expect(logout.status).toStrictEqual(401);
   });
@@ -137,6 +142,6 @@ describe('Test logout', () => {
     requestAuthLogout(session);
     const logout = requestAuthLogout(session);
     expect(logout.body).toStrictEqual(ERROR);
-    expect(logout.status).toStrictEqual(400);
+    expect(logout.status).toStrictEqual(401);
   });
 });

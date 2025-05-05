@@ -1,20 +1,6 @@
 import request, { HttpVerb } from 'sync-request-curl';
 import { PORT } from '../../config.json';
-import {
-  DataStore,
-  Email,
-  MailIds,
-  Message,
-  Name,
-  Password,
-  Receivers,
-  SessionId,
-  SessionStore,
-  Spot,
-  Title,
-} from '../constants/types';
-import { setData, setSessions } from '../dataStore';
-import { Session } from 'inspector/promises';
+import { Email, Name, Password, Spot } from '../constants/types';
 
 interface RequestOptions {
   method: HttpVerb;
@@ -92,33 +78,46 @@ export function requestAuthLogout(session: string) {
   return requestHelper({
     method: 'DELETE',
     path: '/auth/logout',
-    session,
     payload: {},
+    session,
   });
 }
 
-export function requestProfileRetrieve(email: Email, session: string) {
+export function requestProfileRetrieve(session: string) {
   return requestHelper({
     method: 'GET',
     path: '/profile',
+    payload: {},
     session,
-    payload: { email },
   });
 }
 
 export function requestProfileEdit(
-  name: Name,
-  email: Email,
-  password: Password,
-  bookmarks: Array<Spot>,
+  newBookmarks: Array<Spot>,
+  removedBookmarks: Array<Spot>,
   likes: Array<Spot>,
-  session: string
+  dislikes: Array<Spot>,
+  session: string,
+  name?: Name,
+  email?: Email,
+  password?: Password
 ) {
+  const payload: Record<string, any> = {
+    newBookmarks,
+    removedBookmarks,
+    likes,
+    dislikes,
+  };
+
+  if (name !== undefined) payload.name = name;
+  if (email !== undefined) payload.email = email;
+  if (password !== undefined) payload.password = password;
+
   return requestHelper({
     method: 'PUT',
     path: '/profile/edit',
+    payload,
     session,
-    payload: { name, email, password, bookmarks, likes },
   });
 }
 

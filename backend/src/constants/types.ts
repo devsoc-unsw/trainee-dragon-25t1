@@ -1,4 +1,4 @@
-// import { ObjectId } from "mongodb"
+import { ObjectId } from 'mongodb';
 
 // Auth
 export type SessionId = string;
@@ -24,7 +24,7 @@ export type MailIds = MailId[];
 export type UserMail = { MailId: Read };
 
 export type Session = {
-  // _id: ObjectId,
+  _id: ObjectId;
   sessionId: SessionId;
   userId: UserId;
 };
@@ -58,6 +58,6 @@ export type SessionStore = {
 };
 
 export type DataStore = {
+  _id: ObjectId;
   users: User[];
-  mails: Mail[];
 };
