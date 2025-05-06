@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec tsx src/server.ts",
+    "tsc": "tsc --project tsconfig.json",
     "test": "jest"
   },
   "keywords": [],
