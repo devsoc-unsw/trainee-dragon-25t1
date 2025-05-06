@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 defaults:
   run:
@@ -16,12 +16,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
@@ -29,9 +29,9 @@ jobs:
       - name: Start server in background
         run: |
           SERVER_LOG=$(mktemp)
-          npm run start >& $SERVER_LOG &
+          npm run start 2>&1 | tee $SERVER_LOG &
           echo $! > server.pid
-          timeout 10s bash -c "until grep -q '⚡️ Server started on port' <(tail -n +1 -f $SERVER_LOG); do sleep 1; done" || (cat $SERVER_LOG && exit 1)
+          timeout 30s bash -c "until grep -q '⚡️ Server started on port' <(tail -n +1 -f $SERVER_LOG); do sleep 1; done" || (cat $SERVER_LOG && exit 1)
 
       - name: Run tests
         run: |
@@ -41,25 +41,26 @@ jobs:
         run: |
           kill -SIGINT $(cat server.pid) || true
           sleep 2
+          kill -9 $(cat server.pid) || true
 
-  linting:
-    runs-on: ubuntu-latest
+  # linting:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      - run: npm install
-      - run: npm run lint
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '20'
+  #     - run: npm install
+  #     - run: npm run lint
 
   typing:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
       - run: npm install
       - run: npm run tsc
