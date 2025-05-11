@@ -121,6 +121,30 @@ export function requestProfileEdit(
   });
 }
 
+export function requestShareSpot(
+  latitude: number,
+  longitude: number,
+  seats: number,
+  noiseLevel: number,
+  comfortability: number,
+  popularity: number,
+  session: string
+) {
+  return requestHelper({
+    method: 'POST',
+    path: '/location/share',
+    payload: {
+      latitude,
+      longitude,
+      seats,
+      noiseLevel,
+      comfortability,
+      popularity,
+    },
+    session,
+  });
+}
+
 // export function requestMailSend(
 //   receivers: Receivers,
 //   title: Title,
