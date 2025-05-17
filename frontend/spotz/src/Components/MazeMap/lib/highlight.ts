@@ -1,4 +1,4 @@
-import { MazeMapProps, POI } from './constants/types';
+import { MazeMapProps, POI } from '../constants/types';
 import { getProp } from './utils';
 
 export const clearHighlighter = (highlighterRef: any) => {
