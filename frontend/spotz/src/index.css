@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mazemap-control-zlevel-bar {
+    position: absolute;
+    bottom: 230px;
+    left: 1462px;
+    z-index: 1000;
+  }
