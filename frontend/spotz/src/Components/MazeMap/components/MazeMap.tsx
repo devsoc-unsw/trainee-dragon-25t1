@@ -10,7 +10,6 @@ import {
 import { getCoordinates } from '../lib/utils';
 import { prepareMap } from '../lib/map';
 import { NavBar } from './NavBar';
-import { ThreeDButton } from './ThreeDButton';
 import { RandomSpotButton } from './RandomSpotButton';
 import { DefaultSearchBar } from './DefaultSearchBar';
 import { SearchBar } from './SearchBar';
