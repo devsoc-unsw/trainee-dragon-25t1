@@ -9,8 +9,8 @@ import {
 } from './constants/types';
 import { getCoordinates, getProp } from './utils';
 import './mazemap.css';
-import { defaultSearchBar, searchBar } from './Searchbar';
 import { generateFloorBar } from './floorBar';
+import { defaultSearchBar, searchBar } from './searchBar';
 
 export const prepareMap = (
   mapRef: any,
