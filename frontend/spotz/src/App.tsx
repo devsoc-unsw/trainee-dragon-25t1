@@ -1,6 +1,5 @@
 import './App.css';
-import { Marker } from '@lachlanshoesmith/mazemap-react';
-import { MazeMap } from './MazeMap/MazeMap';
+import { Marker, MazeMap } from './MazeMap/MazeMap';
 
 function App() {
   return (
