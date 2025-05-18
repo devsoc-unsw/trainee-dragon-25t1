@@ -10,6 +10,7 @@ import {
 import { getCoordinates } from '../lib/utils';
 import { prepareMap } from '../lib/map';
 import { NavBar } from './NavBar';
+import { RegisterAcc } from './CreateAccountButton';
 import { RandomSpotButton } from './RandomSpotButton';
 import { DefaultSearchBar } from './DefaultSearchBar';
 import { SearchBar } from './SearchBar';
@@ -102,6 +103,7 @@ const MazeMap = (props: MazeMapProps) => {
       {mapReady ? (
         <>
           <RandomSpotButton />
+          <RegisterAcc />
           <NavBar mapRef={mapRef}/>
           <DefaultSearchBar mapRef={mapRef} mazeProps={props} />
           <SearchBar
