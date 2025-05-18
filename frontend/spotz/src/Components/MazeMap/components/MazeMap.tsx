@@ -10,6 +10,7 @@ import {
 import { getCoordinates } from '../lib/utils';
 import { prepareMap } from '../lib/map';
 import { NavBar } from './NavBar';
+import { RegisterAcc } from './CreateAccountButton';
 import { RandomSpotButton } from './RandomSpotButton';
 import { DefaultSearchBar } from './DefaultSearchBar';
 import { SearchBar } from './SearchBar';
@@ -103,7 +104,10 @@ const MazeMap = (props: MazeMapProps) => {
         <>
           <RandomSpotButton />
           <NavBar mapRef={mapRef}/>
-          <DefaultSearchBar mapRef={mapRef} mazeProps={props} />
+          <div className='flex flex-row items-center justify-center gap-2 min-w-[1109px] mt-3 ml-6'>
+            <DefaultSearchBar mapRef={mapRef} mazeProps={props} />
+            <RegisterAcc />
+          </div>
           <SearchBar
             mapRef={mapRef}
             mazeProps={props}
