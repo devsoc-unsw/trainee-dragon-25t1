@@ -5,7 +5,7 @@ import {
   MarkerType,
   MazeMapProps,
   PoiLocation,
-} from './constants/types';
+} from '../constants/types';
 import { getCoordinates, getProp } from './utils';
 
 export const clearMarker = (markerRef: any) => {

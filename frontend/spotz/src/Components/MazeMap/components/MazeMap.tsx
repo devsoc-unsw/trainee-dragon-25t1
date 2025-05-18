@@ -1,15 +1,20 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   CoordinatesPair,
   MarkerType,
   MazeMapOptions,
   MazeMapProps,
   MazeMapUserOptions,
-} from './constants/types';
-import { getCoordinates } from './utils';
-import { prepareMap } from './map';
+} from '../constants/types';
+import { getCoordinates } from '../lib/utils';
+import { prepareMap } from '../lib/map';
+import { ThreeDButton } from './ThreeDButton';
+import { RandomSpotButton } from './RandomSpotButton';
+import { DefaultSearchBar } from './DefaultSearchBar';
+import { SearchBar } from './SearchBar';
 
 const MazeMap = (props: MazeMapProps) => {
+  const [mapReady, setMapReady] = useState(false);
   const markerRef = useRef<any>(null);
   const highlighterRef = useRef<any>(null);
   const mapRef = useRef<any>(null);
@@ -73,12 +78,14 @@ const MazeMap = (props: MazeMapProps) => {
 
     script.onload = () => {
       prepareMap(mapRef, mapOptions, props, markerRef, highlighterRef);
+      setMapReady(true);
     };
     script.onerror = (e) => {
       console.error('mazemap-react: mazemap script failed to load');
       console.error(e);
     };
   }, []);
+
   return (
     <>
       <link
@@ -91,6 +98,23 @@ const MazeMap = (props: MazeMapProps) => {
         tabIndex={1}
         style={{ width: props.width, height: props.height }}
       ></div>
+      {mapReady ? (
+        <>
+          <ThreeDButton mapRef={mapRef} />
+          <RandomSpotButton />
+          <DefaultSearchBar mapRef={mapRef} mazeProps={props} />
+          <SearchBar
+            mapRef={mapRef}
+            mazeProps={props}
+            markerRef={markerRef}
+            highlighterRef={highlighterRef}
+          />
+        </>
+      ) : (
+        <div className="w-screen h-screen flex justify-center items-center text-7xl">
+          Loading...
+        </div>
+      )}
       {props.hideWatermark && (
         <style>
           {`

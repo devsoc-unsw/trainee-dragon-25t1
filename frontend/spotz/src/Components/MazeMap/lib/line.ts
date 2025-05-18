@@ -1,4 +1,4 @@
-import { CoordinatesObject } from './constants/types';
+import { CoordinatesObject } from '../constants/types';
 
 export const addLine = (
   mapRef: any,

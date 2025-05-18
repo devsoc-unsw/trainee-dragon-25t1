@@ -1,16 +1,15 @@
-import { initialiseHighlighter } from './highlight';
-import { addLine } from './line';
-import { addMarker, showPoiOnLoadMarker } from './marker';
 import {
   CoordinatesObject,
   MapClick,
   MazeMapOptions,
   MazeMapProps,
-} from './constants/types';
-import { getCoordinates, getProp } from './utils';
-import './mazemap.css';
+} from '../constants/types';
 import { generateFloorBar } from './floorBar';
-import { defaultSearchBar, searchBar } from './searchBar';
+import { initialiseHighlighter } from './highlight';
+import { addLine } from './line';
+import { addMarker, showPoiOnLoadMarker } from './marker';
+import '../styles/mazemap.css';
+import { getCoordinates, getProp } from './utils';
 
 export const prepareMap = (
   mapRef: any,
@@ -23,9 +22,6 @@ export const prepareMap = (
     mapRef.current = new window.Mazemap.Map(mapOptions);
 
     mapRef.current.on('load', () => {
-      searchBar(mapRef, props, markerRef, highlighterRef);
-      defaultSearchBar(mapRef, props);
-
       if (!props.zLevelControl) {
         generateFloorBar(mapRef);
       }
