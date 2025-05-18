@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import '../../../index.css';
 import {
   CoordinatesPair,
   MarkerType,
@@ -8,7 +9,7 @@ import {
 } from '../constants/types';
 import { getCoordinates } from '../lib/utils';
 import { prepareMap } from '../lib/map';
-import { ThreeDButton } from './ThreeDButton';
+import { NavBar } from './NavBar';
 import { RandomSpotButton } from './RandomSpotButton';
 import { DefaultSearchBar } from './DefaultSearchBar';
 import { SearchBar } from './SearchBar';
@@ -100,8 +101,8 @@ const MazeMap = (props: MazeMapProps) => {
       ></div>
       {mapReady ? (
         <>
-          <ThreeDButton mapRef={mapRef} />
           <RandomSpotButton />
+          <NavBar mapRef={mapRef}/>
           <DefaultSearchBar mapRef={mapRef} mazeProps={props} />
           <SearchBar
             mapRef={mapRef}

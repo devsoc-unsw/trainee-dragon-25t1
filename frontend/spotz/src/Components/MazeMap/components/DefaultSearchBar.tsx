@@ -38,8 +38,10 @@ export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
 
   return (
     <>
-      <div id="controls" className="mapboxgl-ctrl-group">
+      <div id="controls">
         <button onClick={() => doSearch(mapRef, mySearch, 'food')}>Food</button>
+        <button onClick={() => doSearch(mapRef, mySearch, 'food')}>Spotz</button>
+        <button onClick={() => doSearch(mapRef, mySearch, 'food')}>Study</button>
       </div>
     </>
   );
