@@ -2,20 +2,22 @@ import { Request, Response } from 'express';
 import * as locationService from '../services/location.services';
 
 // shareSpot - post HTTP method
-async function shareSpot(req: Request, res: Response) {
+async function recommend(req: Request, res: Response) {
   try {
     const {
       latitude,
       longitude,
+      zLevel,
       seats,
       noiseLevel,
       comfortability,
       popularity,
     } = req.body;
 
-    const location = locationService.shareSpot(
+    const location = locationService.recommendSpot(
       latitude,
       longitude,
+      zLevel,
       seats,
       noiseLevel,
       comfortability,
@@ -27,4 +29,4 @@ async function shareSpot(req: Request, res: Response) {
   }
 }
 
-export { shareSpot };
+export { recommend };

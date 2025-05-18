@@ -32,6 +32,7 @@ export type Session = {
 export type Spot = {
   latitude: number;
   longitude: number;
+  zLevel: number;
   seats: number;
   noiseLevel: number;
   comfortability: number;

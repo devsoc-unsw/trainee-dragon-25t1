@@ -6,14 +6,16 @@ import { getData, setData } from '../dataStore';
  * Share location of a spot
  * @param latitude
  * @param longitude
+ * @param zLevel
  * @param numSeats 0 - inf
  * @param noiseLevel 1 - 5
  * @param comfortability 1 - 5
  * @param popularity 1 - 5
  */
-export function shareSpot(
+export function recommendSpot(
   latitude: number,
   longitude: number,
+  zLevel: number,
   seats: number,
   noiseLevel: number,
   comfortability: number,
@@ -47,6 +49,7 @@ export function shareSpot(
   const spot: Spot = {
     latitude,
     longitude,
+    zLevel,
     seats,
     noiseLevel,
     comfortability,
@@ -54,7 +57,6 @@ export function shareSpot(
   };
 
   database.spots.push(spot);
-  console.log(database);
 
   setData(database);
 
