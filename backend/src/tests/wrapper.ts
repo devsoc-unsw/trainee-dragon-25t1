@@ -121,9 +121,10 @@ export function requestProfileEdit(
   });
 }
 
-export function requestShareSpot(
+export function requestRecommendSpot(
   latitude: number,
   longitude: number,
+  zLevel: number,
   seats: number,
   noiseLevel: number,
   comfortability: number,
@@ -132,10 +133,11 @@ export function requestShareSpot(
 ) {
   return requestHelper({
     method: 'POST',
-    path: '/location/share',
+    path: '/location/recommend',
     payload: {
       latitude,
       longitude,
+      zLevel,
       seats,
       noiseLevel,
       comfortability,

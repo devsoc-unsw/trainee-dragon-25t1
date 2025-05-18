@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nodemon --exec tsx src/server.ts",
     "tsc": "tsc --project tsconfig.json",
-    "test": "jest location.test.ts"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",

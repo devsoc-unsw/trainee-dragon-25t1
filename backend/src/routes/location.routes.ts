@@ -4,7 +4,11 @@ import { sessionMiddleware } from '../middleware';
 
 const router = express.Router();
 
-// Shares a spot
-router.post('/location/share', sessionMiddleware, locationController.shareSpot);
+// Recommend a spot
+router.post(
+  '/location/recommend',
+  sessionMiddleware,
+  locationController.recommend
+);
 
 export default router;
