@@ -1,0 +1,32 @@
+import { Request, Response } from 'express';
+import * as locationService from '../services/location.services';
+
+// shareSpot - post HTTP method
+async function recommend(req: Request, res: Response) {
+  try {
+    const {
+      latitude,
+      longitude,
+      zLevel,
+      seats,
+      noiseLevel,
+      comfortability,
+      popularity,
+    } = req.body;
+
+    const location = locationService.recommendSpot(
+      latitude,
+      longitude,
+      zLevel,
+      seats,
+      noiseLevel,
+      comfortability,
+      popularity
+    );
+    res.json(location);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+}
+
+export { recommend };
