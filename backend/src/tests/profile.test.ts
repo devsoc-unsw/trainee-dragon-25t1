@@ -11,6 +11,7 @@ const USER = {
   password: expect.any(String),
   bookmarks: expect.any(Array),
   likes: expect.any(Array),
+  dislikes: expect.any(Array),
   userId: expect.any(Number),
 };
 

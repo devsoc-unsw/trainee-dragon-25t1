@@ -1,6 +1,6 @@
 import { ErrorMap } from '../constants/errors';
-import { Spot } from '../constants/types';
-import { getData, setData } from '../dataStore';
+import { SessionId, Spot, StudySpotPreference } from '../constants/types';
+import { getData, getSessions, setData } from '../dataStore';
 
 /**
  * Share location of a spot
@@ -61,4 +61,32 @@ export function recommendSpot(
   setData(database);
 
   return spot;
+}
+
+/**
+ * Add study spot preference of spots
+ * @param sessionId
+ * @param likes
+ * @param dislikes
+ */
+export function addStudySpotPreference(
+  session: SessionId,
+  likes: Array<StudySpotPreference>,
+  dislikes: Array<StudySpotPreference>
+) {
+  const sessions = getSessions();
+  const userId = sessions.find((s) => s.sessionId == session)?.userId as number;
+
+  const data = getData();
+  const user = data.users.find((u) => u.userId == userId);
+  if (!user || user === undefined) {
+    throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
+  }
+
+  likes.forEach((like) => user.likes.push(like));
+  dislikes.forEach((dislike) => user.dislikes.push(dislike));
+
+  setData(data);
+
+  return {};
 }

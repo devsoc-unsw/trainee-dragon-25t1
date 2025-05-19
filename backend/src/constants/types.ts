@@ -44,21 +44,21 @@ export type User = {
   name: Name;
   email: Email;
   password: Password;
-  bookmarks: Array<Spot>;
-  likes: Array<Spot>;
+  bookmarks: Array<StudySpotPreference>;
+  likes: Array<StudySpotPreference>;
+  dislikes: Array<StudySpotPreference>;
   userId: UserId;
 };
 
-export type Mail = {
-  // _id: ObjectId,
-  mailId: MailId;
-  sender: Sender;
-  receivers: Receivers;
-  title: Title;
-  timeSent: TimeSent;
-  message: Message;
-  readBy: Array<Email>;
+export type SpotLngLat = {
+  lng: number;
+  lat: number;
 };
+
+export interface StudySpotPreference {
+  lngLat: SpotLngLat;
+  zLevel: number;
+}
 
 // types for dataStore
 export type SessionStore = {
