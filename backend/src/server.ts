@@ -4,6 +4,7 @@ import cors from 'cors';
 import authRoutes from './routes/auth.routes';
 import profileRoutes from './routes/profile.routes';
 import otherRoutes from './routes/other.routes';
+import locationRoutes from './routes/location.routes';
 import { errorMiddleware } from './middleware';
 import { loadData, connectToDatabase } from './dataStore';
 
@@ -31,6 +32,7 @@ async function startServer() {
     app.use('', authRoutes);
     app.use('', profileRoutes);
     app.use('', otherRoutes);
+    app.use('', locationRoutes);
     app.use(errorMiddleware);
   } catch (error) {
     console.error('Error starting the server:', error);

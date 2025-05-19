@@ -1,10 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
 import { DataStore, Session, SessionStore } from './constants/types';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import * as dotenv from 'dotenv';
 
 let sessionStore: SessionStore = { sessions: [] };
-let database: DataStore = { users: [] } as any;
+let database: DataStore = {
+  _id: new ObjectId(),
+  users: [],
+  spots: [],
+};
 
 let sessionCollection: any;
 let dataCollection: any;

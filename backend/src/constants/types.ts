@@ -29,7 +29,15 @@ export type Session = {
   userId: UserId;
 };
 
-export type Spot = String;
+export type Spot = {
+  latitude: number;
+  longitude: number;
+  zLevel: number;
+  seats: number;
+  noiseLevel: number;
+  comfortability: number;
+  popularity: number;
+};
 
 export type User = {
   // _id: ObjectId,
@@ -60,4 +68,5 @@ export type SessionStore = {
 export type DataStore = {
   _id: ObjectId;
   users: User[];
+  spots: Spot[];
 };

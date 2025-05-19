@@ -38,8 +38,16 @@ export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
 
   return (
     <>
-      <div id="controls" className="mapboxgl-ctrl-group">
-        <button onClick={() => doSearch(mapRef, mySearch, 'food')}>Food</button>
+      <div className="flex flex-row justify-between items-center bg-gray-600 top-3 right-96 z-[999] w-[300px] h-[40px] rounded-2xl border cursor-pointer gap-2 px-2">
+        <button className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold" onClick={() => doSearch(mapRef, mySearch, 'food')} >
+          Food
+        </button>
+        <button className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold">
+          Spotz
+        </button>
+        <button className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold">
+          Study
+        </button>
       </div>
     </>
   );

@@ -121,6 +121,32 @@ export function requestProfileEdit(
   });
 }
 
+export function requestRecommendSpot(
+  latitude: number,
+  longitude: number,
+  zLevel: number,
+  seats: number,
+  noiseLevel: number,
+  comfortability: number,
+  popularity: number,
+  session: string
+) {
+  return requestHelper({
+    method: 'POST',
+    path: '/location/recommend',
+    payload: {
+      latitude,
+      longitude,
+      zLevel,
+      seats,
+      noiseLevel,
+      comfortability,
+      popularity,
+    },
+    session,
+  });
+}
+
 // export function requestMailSend(
 //   receivers: Receivers,
 //   title: Title,
