@@ -1,5 +1,6 @@
 import { Spot } from '../constants/types';
 import {
+  requestAddStudySpotPreferenceSpot,
   requestAuthRegister,
   requestClear,
   requestRecommendSpot,
@@ -136,5 +137,27 @@ describe('Test share spot', () => {
     );
     expect(spot2.body).toStrictEqual(ERROR);
     expect(spot2.status).toStrictEqual(400);
+  });
+});
+
+describe('Test adding study spot preferences', () => {
+  test('Successful adding study spo preferences without data', () => {
+    const spot = requestAddStudySpotPreferenceSpot(
+      session.body.sessionId,
+      [],
+      []
+    );
+    expect(spot.body).toStrictEqual({});
+    expect(spot.status).toStrictEqual(200);
+  });
+
+  test('Successful adding study spo preferences with data', () => {
+    const spot = requestAddStudySpotPreferenceSpot(
+      session.body.sessionId,
+      [{ lngLat: { lng: 1, lat: 1 }, zLevel: 1 }],
+      [{ lngLat: { lng: 2, lat: 2 }, zLevel: 1 }]
+    );
+    expect(spot.body).toStrictEqual({});
+    expect(spot.status).toStrictEqual(200);
   });
 });
