@@ -64,13 +64,13 @@ export function authRegister(
   setSessions(sessions);
 
   const database = getData();
-
   const user: User = {
     name: name,
     email: email,
     password: password,
     bookmarks: [],
     likes: [],
+    dislikes: [],
     userId: userId,
   };
   database.users.push(user);

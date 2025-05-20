@@ -1,6 +1,12 @@
 import request, { HttpVerb } from 'sync-request-curl';
 import { PORT } from '../../config.json';
-import { Email, Name, Password, Spot } from '../constants/types';
+import {
+  Email,
+  Name,
+  Password,
+  Spot,
+  StudySpotPreference,
+} from '../constants/types';
 
 interface RequestOptions {
   method: HttpVerb;
@@ -121,28 +127,47 @@ export function requestProfileEdit(
   });
 }
 
-// export function requestMailSend(
-//   receivers: Receivers,
-//   title: Title,
-//   message: Message,
-//   session: SessionId
-// ) {
-//   return requestHelper({
-//     method: 'POST',
-//     path: '/mail/send',
-//     payload: { receivers, title, message },
-//     session: session,
-//   });
-// }
+export function requestRecommendSpot(
+  latitude: number,
+  longitude: number,
+  zLevel: number,
+  seats: number,
+  noiseLevel: number,
+  comfortability: number,
+  popularity: number,
+  session: string
+) {
+  return requestHelper({
+    method: 'POST',
+    path: '/location/recommend',
+    payload: {
+      latitude,
+      longitude,
+      zLevel,
+      seats,
+      noiseLevel,
+      comfortability,
+      popularity,
+    },
+    session,
+  });
+}
 
-// export function requestMailDelete(mailIds: MailIds, session: SessionId) {
-//   return requestHelper({
-//     method: 'DELETE',
-//     path: '/mail/delete',
-//     payload: { mailIds: mailIds },
-//     session: session,
-//   });
-// }
+export function requestAddStudySpotPreferenceSpot(
+  session: string,
+  likes: StudySpotPreference[],
+  dislikes: StudySpotPreference[]
+) {
+  return requestHelper({
+    method: 'POST',
+    path: '/location/studyspot/preference',
+    payload: {
+      likes,
+      dislikes,
+    },
+    session,
+  });
+}
 
 export function requestClear() {
   console.log('Clearing now!');

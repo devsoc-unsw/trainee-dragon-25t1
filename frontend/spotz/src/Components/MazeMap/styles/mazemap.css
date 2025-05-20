@@ -40,7 +40,6 @@ body {
 }
 
 #controls {
-  position: absolute;
   box-sizing: border-box;
   padding: 7px 2px;
   top: 10px;
