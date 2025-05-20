@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useRef, useEffect } from 'react';
 import Menu from '../../icons/menu'
 import Share from '../../icons/share'
 import History from '../../icons/history'
@@ -9,6 +9,13 @@ import Setting from '../../icons/Settings'
 
 interface NavBar {
     mapRef: any;
+}
+
+interface SharePopupProps {
+  isOpen: boolean;
+  onClose: () => void;
+  mapId: string;
+  selectedRoomId?: string;
 }
 
 export const NavBar: React.FC<NavBar> = ({ mapRef }) => {
