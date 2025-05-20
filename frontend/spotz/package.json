@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.9.0",
     "framer-motion": "^12.12.1",
     "geojson": "^0.5.0",
     "mapbox-gl": "^3.12.0",
