@@ -1,6 +1,6 @@
-import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { CoordinateObject, GeoData } from './types';
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import { Dispatch, SetStateAction, useState } from "react";
+import { CoordinateObject, GeoData } from "./types";
 
 export type Card = {
   id: number;
@@ -36,7 +36,7 @@ export const Card: React.FC<CardProps> = ({
   setDislikes,
   cards,
 }) => {
-  const [likeStatus, setLikeStatus] = useState('normal');
+  const [likeStatus, setLikeStatus] = useState("normal");
 
   const x = useMotionValue(0);
 
@@ -46,9 +46,9 @@ export const Card: React.FC<CardProps> = ({
     x,
     [-100, 0, 100],
     [
-      'oklch(0.808 0.114 19.571)',
-      'oklch(0.945 0.129 101.54)',
-      'oklch(0.871 0.15 154.449)',
+      "oklch(0.808 0.114 19.571)",
+      "oklch(0.945 0.129 101.54)",
+      "oklch(0.871 0.15 154.449)",
     ]
   );
 
@@ -66,12 +66,12 @@ export const Card: React.FC<CardProps> = ({
   };
 
   const handleTransitionEnd = () => {
-    if (likeStatus != 'normal' && Math.abs(x.get()) >= 100) {
+    if (likeStatus != "normal" && Math.abs(x.get()) >= 100) {
       setCards((pv) => pv.filter((v) => v.id !== id));
-      if (likeStatus == 'dislike') {
+      if (likeStatus == "dislike") {
         setDislikes((prev) => [...prev, { lngLat, zLevel }]);
       }
-      if (likeStatus == 'like') {
+      if (likeStatus == "like") {
         setLikes((prev) => [...prev, { lngLat, zLevel }]);
       }
     }
@@ -79,7 +79,7 @@ export const Card: React.FC<CardProps> = ({
 
   return (
     <motion.div
-      className="h-3/4 w-1/3 p-[20px] origin-bottom rounded-lg bg-yellow-200 
+      className="h-3/4 w-1/3 origin-bottom rounded-2xl bg-yellow-200 relative
       hover:cursor-grab active:cursor-grabbing text-center text-5xl 
       shadow-inner bg-gradient-to-br from-white/10 via-transparent"
       variants={{
@@ -106,13 +106,13 @@ export const Card: React.FC<CardProps> = ({
         rotate,
         backgroundColor,
         zIndex: id,
-        transition: '0.125s transform',
+        transition: "0.125s transform",
         boxShadow: isFront
-          ? '0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5)'
+          ? "0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5)"
           : undefined,
       }}
       animate={likeStatus}
-      drag={'x'}
+      drag={"x"}
       dragConstraints={{
         left: 0,
         right: 0,
@@ -120,33 +120,35 @@ export const Card: React.FC<CardProps> = ({
       onDragEnd={handleDragEnd}
       onTransitionEnd={handleTransitionEnd}
     >
-      <img
-        alt="img"
-        src={url}
-        className="size-96 object-cover mx-auto my-5 pointer-events-none rounded-xl shadow-xl"
-      ></img>
+      <div className="bg-gray-100 m-[40px] py-[10px] rounded-2xl">
+        <img
+          alt="img"
+          src={url}
+          className="size-96 object-cover mx-auto my-10 pointer-events-none rounded-xl shadow-xl"
+        />
 
-      {roomName}
+        {roomName}
 
-      <div className="text-4xl my-5">
-        {info.map((i, index) => (
-          <>
-            <>{i}</>
-            <br key={index} />
-          </>
-        ))}
+        <div className="text-4xl my-7">
+          {info.map((i, index) => (
+            <>
+              <>{i}</>
+              <br key={index} />
+            </>
+          ))}
+        </div>
       </div>
 
-      <div className="flex justify-evenly rounded-2xl mx-auto nowrap gap-4">
+      <div className="flex justify-evenly rounded-2xl px-10 nowrap gap-4 absolute bottom-10 w-full left-0">
         <button
           className="w-1/2 bg-red-300 p-4 rounded-lg shadow-lg"
-          onClick={() => setLikeStatus('dislike')}
+          onClick={() => setLikeStatus("dislike")}
         >
           👎
         </button>
         <button
           className="w-1/2 bg-green-300 p-4 rounded-lg shadow-lg"
-          onClick={() => setLikeStatus('like')}
+          onClick={() => setLikeStatus("like")}
         >
           👍
         </button>
