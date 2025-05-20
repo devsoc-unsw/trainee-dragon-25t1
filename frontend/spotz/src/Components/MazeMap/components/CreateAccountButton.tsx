@@ -4,12 +4,13 @@ import { registerUser } from '../../../Fetchers/RegisterFetch';
 export const RegisterAcc = () => {
   const [popup, setPopup] = useState(false);
   const [closingPopup, setClosingPopup] = useState(false);
-
+  const [registerClose, setRegisterClose] = useState(false);
   const [profileData, setProfileData] = useState({
     name: "",
     email: "",
     password: ""
   })
+
   const handleProfile = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfileData({
       ...profileData,
@@ -24,6 +25,7 @@ export const RegisterAcc = () => {
       console.log(res);
       if (res) {
         setPopup(false);
+        setRegisterClose(true);
       }
     }
     catch (error) {
@@ -32,14 +34,15 @@ export const RegisterAcc = () => {
   }
   return (
     <>
-      <div 
+      { !registerClose && ( <div 
         className='flex justify-center items-center bg-white right-96 z-[999] w-[100px] h-[40px] rounded-full border cursor-pointer'
         onClick={() => setPopup(true)}
       > 
         <p className="text-black px-3 py-1 font-semibold text-center">
           Register
         </p>
-      </div>
+      </div>)
+      }
 
       {
         popup && (

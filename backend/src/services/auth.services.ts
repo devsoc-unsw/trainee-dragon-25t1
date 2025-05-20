@@ -67,9 +67,7 @@ export function authRegister(
 
   Cookies.set('sessionId', session.sessionId, {
     expires: 1,         // expires in 1 day
-    secure: true,       // only sent over HTTPS
-    sameSite: 'Strict', // prevents CSRF
-    path: '/',          // cookie is sent to all paths
+    secure: false,       // CHANGE LATER
   });
 
   const database = getData();
