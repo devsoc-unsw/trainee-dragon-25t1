@@ -1,6 +1,8 @@
 import { ErrorMap } from '../constants/errors';
-import { SessionId, Spot, StudySpotPreference } from '../constants/types';
+import { SessionId, Spot, GeoSpot } from '../constants/types';
 import { getData, getSessions, setData } from '../dataStore';
+
+
 
 /**
  * Share location of a spot
@@ -71,8 +73,8 @@ export function recommendSpot(
  */
 export function addStudySpotPreference(
   session: SessionId,
-  likes: Array<StudySpotPreference>,
-  dislikes: Array<StudySpotPreference>
+  likes: Array<GeoSpot>,
+  dislikes: Array<GeoSpot>
 ) {
   const sessions = getSessions();
   const userId = sessions.find((s) => s.sessionId == session)?.userId as number;
@@ -89,4 +91,34 @@ export function addStudySpotPreference(
   setData(data);
 
   return {};
+
+  /**
+   * Save study spot located
+   * @param sessionId
+   * @param locations
+   */
+  export function saveStudySpotHistory(
+    session: SessionId,
+    locations: Array<GeoSpot>
+  ) {
+    const sessions = getSessions();
+    const userId = sessions.find((s) => s.sessionId == session)?.userId as number;
+    
+    
+    const data = getData();
+    const user = data.users.find((u) => u.userId == userId);
+    const location = 
+    if (!user || user === undefined) {  //check if i need this
+      throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
+
+    }
+    
+    if (!location || location === undefined) {
+      throw new Error(ErrorMap['SPOT_DOES_NOT_EXIST']);
+    }
+    
+    locations.forEach((location) => .push(location)); //finish this
+    
+  }
+
 }

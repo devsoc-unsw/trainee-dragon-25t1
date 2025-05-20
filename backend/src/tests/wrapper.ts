@@ -5,7 +5,7 @@ import {
   Name,
   Password,
   Spot,
-  StudySpotPreference,
+  GeoSpot,
 } from '../constants/types';
 
 interface RequestOptions {
@@ -155,8 +155,8 @@ export function requestRecommendSpot(
 
 export function requestAddStudySpotPreferenceSpot(
   session: string,
-  likes: StudySpotPreference[],
-  dislikes: StudySpotPreference[]
+  likes: GeoSpot[],
+  dislikes: GeoSpot[]
 ) {
   return requestHelper({
     method: 'POST',

@@ -29,7 +29,7 @@ export type Session = {
   userId: UserId;
 };
 
-export type Spot = {
+export interface Spot {
   latitude: number;
   longitude: number;
   zLevel: number;
@@ -44,20 +44,26 @@ export type User = {
   name: Name;
   email: Email;
   password: Password;
-  bookmarks: Array<StudySpotPreference>;
-  likes: Array<StudySpotPreference>;
-  dislikes: Array<StudySpotPreference>;
+  bookmarks: Array<GeoSpot>;
+  likes: Array<GeoSpot>;
+  dislikes: Array<GeoSpot>;
   userId: UserId;
 };
+
 
 export type SpotLngLat = {
   lng: number;
   lat: number;
 };
 
-export interface StudySpotPreference {
+export interface GeoSpot extends SubHistory  {
   lngLat: SpotLngLat;
   zLevel: number;
+}
+
+export type SubHistory = {
+  currentTime: string;
+  userId: UserId;
 }
 
 // types for dataStore
@@ -69,4 +75,6 @@ export type DataStore = {
   _id: ObjectId;
   users: User[];
   spots: Spot[];
+  histories: GeoSpot[]; 
+  // histories: Map<UserId, GeoSpot>;
 };
