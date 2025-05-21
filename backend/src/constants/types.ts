@@ -37,7 +37,7 @@ export interface Spot {
   noiseLevel: number;
   comfortability: number;
   popularity: number;
-};
+}
 
 export type User = {
   // _id: ObjectId,
@@ -50,18 +50,17 @@ export type User = {
   userId: UserId;
 };
 
-
 export type SpotLngLat = {
   lng: number;
   lat: number;
 };
 
-export interface GeoSpot extends SubHistory  {
+export interface GeoSpot {
   lngLat: SpotLngLat;
   zLevel: number;
 }
 
-export type SubHistory = {
+export interface HistorySpot extends GeoSpot {
   currentTime: string;
   userId: UserId;
 }
@@ -75,6 +74,6 @@ export type DataStore = {
   _id: ObjectId;
   users: User[];
   spots: Spot[];
-  histories: GeoSpot[]; 
+  histories: GeoSpot[];
   // histories: Map<UserId, GeoSpot>;
 };

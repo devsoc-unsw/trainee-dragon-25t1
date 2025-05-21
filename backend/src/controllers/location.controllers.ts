@@ -49,18 +49,15 @@ async function addSpotPreference(req: Request, res: Response) {
 async function saveStudySpot(req: Request, res: Response) {
   try {
     const session = req.header('session');
-    const { latitude, longitude, zLevel } = req.body;
+    const { locations } = req.body;
 
     const location = locationService.saveStudySpotHistory(
       session as string,
-      latitude,
-      longitude,
-      zLevel
+      locations
     );
     res.json(location);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
-
   }
 }
 
