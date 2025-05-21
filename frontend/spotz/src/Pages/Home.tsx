@@ -1,39 +1,54 @@
 import { useEffect, useState } from 'react';
+import List from '../Components/List';
 import { Marker, MazeMap } from '../Components/MazeMap/components/MazeMap';
-import List from '../Components/List/List';
 import { getPlacesData } from '../api/travelAdvisory';
+import { Place } from '../Components/PlaceDetails/types';
+
 export const Home = () => {
   const [listView, setListView] = useState(false);
-  const [places, setPlaces] = useState(null);
-  const [type, setType] = useState('food');
-  const [rating, setRating] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [places, setPlaces] = useState<Place[]>([]);
 
   useEffect(() => {
-    getPlacesData(type === 'food' ? 'restaurants' : 'restaurants').then(
-      (data) => {
-        console.log(data);
-        setPlaces(data);
-      }
-    );
+    setIsLoading(true);
+    // TODO: uncomment when deploying
+    // getPlacesData().then((data) => {
+    //   setPlaces(data);
+    // });
+
+    const placesTest: Place = {
+      address: '123 unsw gang gang',
+      awards: [],
+      cuisine: [],
+      name: 'DevSoc DRAGON',
+      num_reviews: 0,
+      phone: '',
+      photo: false,
+      price_level: '',
+      ranking: '',
+      rating: 0,
+      website: 'https://www.google.com/',
+      web_url: 'https://www.google.com/',
+    };
+    places.push(placesTest);
+    places.push(placesTest);
+    places.push(placesTest);
+
+    const newPlaces = [...places];
+    setPlaces(newPlaces);
+
+    setIsLoading(false);
   }, []);
   return (
     <>
-      <div className="h-screen w-full flex ">
+      <div className="h-screen w-full flex">
         {listView && (
-          <div className="h-full w-1/3">
-            <List
-              places={places}
-              type={type}
-              setType={setType}
-              rating={rating}
-              setRating={setRating}
-              childClicked={undefined}
-              isLoading={undefined}
-            />
+          <div className="h-full w-1/4">
+            <List places={places} isLoading={isLoading} />
           </div>
         )}
         <div
-          className={`${listView ? 'fixed right-0 w-4/5' : 'w-full'} h-full`}
+          className={`${listView ? 'fixed right-0 w-3/4' : 'w-full'} h-full `}
         >
           <MazeMap
             campuses={111}

@@ -5,7 +5,7 @@ export const generateFloorBar = (mapRef: any) => {
     maxHeight: 300,
     activeColor: '#6a00cb',
   });
-  mapRef.current.addControl(floorBar, 'bottom-left');
+  mapRef.current.addControl(floorBar, 'bottom-right');
 
   function onResize() {
     const height = mapRef.current.getCanvas().clientHeight;
