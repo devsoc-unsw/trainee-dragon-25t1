@@ -61,28 +61,18 @@ export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
   );
 };
 
-function doSearch(
-  mapRef: any,
-  mySearch: any,
-  query: any,
-  setListView: Dispatch<SetStateAction<boolean>>
-) {
+function doSearch(mapRef: any, mySearch: any, query: any) {
   // Perform a search query using the Search object
   mySearch.search(query).then((response: any) => {
-    displayMapResults(mapRef, response.results, setListView);
+    displayMapResults(mapRef, response.results);
   });
 }
 
-function displayMapResults(
-  mapRef: any,
-  geojsonResults: any,
-  setListView: Dispatch<SetStateAction<boolean>>
-) {
+function displayMapResults(mapRef: any, geojsonResults: any) {
   if (mapRef.current.style) {
     mapRef.current.getSource('geojsonresults').setData(geojsonResults);
     var bbox = window.Mazemap.Util.Turf.bbox(geojsonResults);
     mapRef.current.fitBounds(bbox, { padding: 100 });
-    setListView((prev) => !prev);
   }
 }
 
