@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
-import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import type { Map } from 'mapbox-gl';
 import { Feature, Point } from 'geojson';
 import { MazeMapProps } from '../constants/types';
@@ -13,7 +12,6 @@ interface DefaultSearchBarProps {
 export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
   mapRef,
   mazeProps,
-  setListView,
   setListView,
 }) => {
   const mySearch = useMemo(
