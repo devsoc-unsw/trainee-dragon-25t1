@@ -103,9 +103,13 @@ const MazeMap = (props: MazeMapProps) => {
       {mapReady ? (
         <>
           <RandomSpotButton />
-          <NavBar mapRef={mapRef}/>
-          <div className='flex flex-row items-center justify-center gap-2 min-w-[1109px] mt-3 ml-6'>
-            <DefaultSearchBar mapRef={mapRef} mazeProps={props} />
+          <NavBar mapRef={mapRef} />
+          <div className="flex flex-row items-center justify-center gap-2 min-w-[1109px] mt-3 ml-6">
+            <DefaultSearchBar
+              mapRef={mapRef}
+              mazeProps={props}
+              setListView={props.setListView}
+            />
             <RegisterAcc />
           </div>
           <SearchBar
