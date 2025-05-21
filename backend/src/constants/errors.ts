@@ -5,6 +5,7 @@ const ErrorMap = {
   // Generic errors
   INVALID_SESSION: 'Invalid session. Please log in again.',
   USER_DOES_NOT_EXIST: 'User does not exist. Please log in again.',
+  SPOT_DOES_NOT_EXIST: 'Spot does not exist.',
 
   // Registration errors
   NAME_TOO_LONG: 'Your name must be less than 50 characters.',

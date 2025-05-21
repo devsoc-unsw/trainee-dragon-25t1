@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 declare global {
   interface Window {
     Mazemap: any;
@@ -40,6 +42,8 @@ export interface MazeMapProps extends MazeMapUserOptions {
   scrollZoom?: boolean;
   doubleClickZoom?: boolean;
   touchZoomRotate?: boolean;
+
+  setListView: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface MazeMapOptions extends MazeMapUserOptions {
