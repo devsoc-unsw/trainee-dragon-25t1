@@ -46,4 +46,22 @@ async function addSpotPreference(req: Request, res: Response) {
   }
 }
 
-export { recommend, addSpotPreference };
+async function saveStudySpot(req: Request, res: Response) {
+  try {
+    const session = req.header('session');
+    const { latitude, longitude, zLevel } = req.body;
+
+    const location = locationService.saveStudySpotHistory(
+      session as string,
+      latitude,
+      longitude,
+      zLevel
+    );
+    res.json(location);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+
+  }
+}
+
+export { recommend, addSpotPreference, saveStudySpot };

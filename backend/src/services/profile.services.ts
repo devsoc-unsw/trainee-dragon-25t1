@@ -5,7 +5,7 @@ import {
   Password,
   User,
   SessionId,
-  StudySpotPreference,
+  GeoSpot,
 } from '../constants/types';
 import { getData, getSessions, setData } from '../dataStore';
 import {
@@ -46,10 +46,10 @@ export function profileRetrieve(session: SessionId): User {
  */
 export function profileEdit(
   session: SessionId,
-  newBookmarks: Array<StudySpotPreference>,
-  removedBookmarks: Array<StudySpotPreference>,
-  likes: Array<StudySpotPreference>,
-  dislikes: Array<StudySpotPreference>,
+  newBookmarks: Array<GeoSpot>,
+  removedBookmarks: Array<GeoSpot>,
+  likes: Array<GeoSpot>,
+  dislikes: Array<GeoSpot>,
   name?: Name,
   email?: Email,
   password?: Password

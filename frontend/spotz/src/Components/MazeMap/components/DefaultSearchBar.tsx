@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import type { Map } from 'mapbox-gl';
 import { Feature, Point } from 'geojson';
 import { MazeMapProps } from '../constants/types';
@@ -12,6 +13,7 @@ interface DefaultSearchBarProps {
 export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
   mapRef,
   mazeProps,
+  setListView,
   setListView,
 }) => {
   const mySearch = useMemo(
@@ -61,18 +63,28 @@ export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
   );
 };
 
-function doSearch(mapRef: any, mySearch: any, query: any) {
+function doSearch(
+  mapRef: any,
+  mySearch: any,
+  query: any,
+  setListView: Dispatch<SetStateAction<boolean>>
+) {
   // Perform a search query using the Search object
   mySearch.search(query).then((response: any) => {
-    displayMapResults(mapRef, response.results);
+    displayMapResults(mapRef, response.results, setListView);
   });
 }
 
-function displayMapResults(mapRef: any, geojsonResults: any) {
+function displayMapResults(
+  mapRef: any,
+  geojsonResults: any,
+  setListView: Dispatch<SetStateAction<boolean>>
+) {
   if (mapRef.current.style) {
     mapRef.current.getSource('geojsonresults').setData(geojsonResults);
     var bbox = window.Mazemap.Util.Turf.bbox(geojsonResults);
     mapRef.current.fitBounds(bbox, { padding: 100 });
+    setListView((prev) => !prev);
   }
 }
 
