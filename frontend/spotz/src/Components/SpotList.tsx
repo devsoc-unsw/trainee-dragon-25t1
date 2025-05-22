@@ -46,7 +46,7 @@ const SpotList: React.FC<SpotListProps> = ({
         </div>
       ) : (
         <>
-          <Grid container spacing={3} className="h-[85vh] overflow-auto">
+          <Grid container spacing={3} className="h-[80vh] overflow-auto">
             {places?.map((place: any, i: number) => (
               <Grid key={i} size={{ xs: 14 }}>
                 <PlaceDetails place={place} />

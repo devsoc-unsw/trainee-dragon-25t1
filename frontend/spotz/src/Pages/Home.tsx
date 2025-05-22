@@ -5,6 +5,7 @@ import { Marker, MazeMap } from '../Components/MazeMap/components/MazeMap';
 import { Place } from '../Components/PlaceDetails/types';
 import { ListView } from '../Components/MazeMap/constants/types';
 import { RouteList } from '../Components/Route/RouteList';
+// import { foodSpots } from '../api/data';
 
 export const Home = () => {
   const [listView, setListView] = useState<ListView>({
@@ -12,10 +13,13 @@ export const Home = () => {
     type: 'food',
   });
   const [isLoading, setIsLoading] = useState(false);
+  // const [places, setPlaces] = useState<Place[]>(foodSpots as any);
   const [places, setPlaces] = useState<Place[]>([]);
   const mapRef = useRef<any>(null);
 
   useEffect(() => {
+    // TODO stored the data from the api in data.ts
+    // probably bad cuz its a huge chunk of data
     setIsLoading(true);
     // TODO: uncomment when deploying
     // getPlacesData().then((data) => {
@@ -44,6 +48,7 @@ export const Home = () => {
     setPlaces(newPlaces);
 
     setIsLoading(false);
+    console.log(places[0]);
   }, []);
 
   return (
