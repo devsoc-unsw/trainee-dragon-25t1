@@ -2,7 +2,7 @@ import {
   Coordinates,
   CoordinatesObject,
   MazeMapProps,
-} from './constants/types';
+} from '../constants/types';
 
 export const getProp = (
   props: MazeMapProps,

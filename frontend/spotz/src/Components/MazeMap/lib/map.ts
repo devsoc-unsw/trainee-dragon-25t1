@@ -19,6 +19,10 @@ export const prepareMap = (
   highlighterRef: any
 ) => {
   if (window.Mazemap) {
+    localStorage.removeItem('curLngLat');
+    localStorage.removeItem(`searchedPoint2`);
+    localStorage.removeItem(`searchedPoint3`);
+
     mapRef.current = new window.Mazemap.Map(mapOptions);
 
     mapRef.current.on('load', () => {
