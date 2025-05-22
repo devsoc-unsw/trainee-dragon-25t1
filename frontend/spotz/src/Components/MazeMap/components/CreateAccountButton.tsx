@@ -36,10 +36,10 @@ export const RegisterAcc = () => {
   return (
     <>
       { !registerClose && ( <div 
-        className='flex justify-center items-center bg-white right-96 z-[999] w-[100px] h-[40px] rounded-full border cursor-pointer'
+        className='flex justify-center items-center bg-white right-96 z-[999] w-[100px] h-[40px] rounded-2xl border cursor-pointer'
         onClick={() => setPopup(true)}
       > 
-        <p className="text-black px-3 py-1 font-semibold text-center">
+        <p className="text-black px-3 py-1 font-semibold text-center text-base">
           Register
         </p>
       </div>)
