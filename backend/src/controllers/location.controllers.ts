@@ -29,4 +29,36 @@ async function recommend(req: Request, res: Response) {
   }
 }
 
-export { recommend };
+// addSpotPreference - post HTTP method
+async function addSpotPreference(req: Request, res: Response) {
+  try {
+    const session = req.header('session');
+    const { likes, dislikes } = req.body;
+
+    const location = locationService.addStudySpotPreference(
+      session as string,
+      likes,
+      dislikes
+    );
+    res.json(location);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+}
+
+async function saveStudySpot(req: Request, res: Response) {
+  try {
+    const session = req.header('session');
+    const { locations } = req.body;
+
+    const location = locationService.saveStudySpotHistory(
+      session as string,
+      locations
+    );
+    res.json(location);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+}
+
+export { recommend, addSpotPreference, saveStudySpot };

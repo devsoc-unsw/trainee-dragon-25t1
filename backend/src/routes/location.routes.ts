@@ -11,4 +11,17 @@ router.post(
   locationController.recommend
 );
 
+// add study spot preferences
+router.post(
+  '/location/studyspot/preference',
+  sessionMiddleware,
+  locationController.addSpotPreference
+);
+
+router.get(
+  '/location/studyspot/visited',
+  sessionMiddleware,
+  locationController.saveStudySpot
+);
+
 export default router;

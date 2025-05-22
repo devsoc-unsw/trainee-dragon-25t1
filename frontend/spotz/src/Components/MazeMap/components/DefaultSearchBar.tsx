@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import type { Map } from 'mapbox-gl';
 import { Feature, Point } from 'geojson';
 import { MazeMapProps } from '../constants/types';
@@ -6,11 +6,13 @@ import { MazeMapProps } from '../constants/types';
 interface DefaultSearchBarProps {
   mapRef: React.RefObject<Map | null>;
   mazeProps: MazeMapProps;
+  setListView: Dispatch<SetStateAction<boolean>>;
 }
 
 export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
   mapRef,
   mazeProps,
+  setListView,
 }) => {
   const mySearch = useMemo(
     () =>
@@ -39,7 +41,13 @@ export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
   return (
     <>
       <div className="flex flex-row justify-between items-center bg-gray-600 top-3 right-96 z-[999] w-[300px] h-[40px] rounded-2xl border cursor-pointer gap-2 px-2">
-        <button className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold" onClick={() => doSearch(mapRef, mySearch, 'food')} >
+        <button
+          className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold"
+          onClick={() => {
+            doSearch(mapRef, mySearch, 'food');
+            setListView((prev) => !prev);
+          }}
+        >
           Food
         </button>
         <button className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold">
