@@ -52,7 +52,11 @@ export const Home = () => {
         {listView.isViewing && (
           <div className="relative h-full w-1/4">
             {listView.type == 'food' ? (
-              <SpotList places={places} isLoading={isLoading} />
+              <SpotList
+                places={places}
+                isLoading={isLoading}
+                setListView={setListView}
+              />
             ) : (
               <RouteList
                 mapRef={mapRef}

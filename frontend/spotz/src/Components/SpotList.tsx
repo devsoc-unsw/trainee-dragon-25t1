@@ -3,16 +3,36 @@ import Grid from '@mui/material/Grid';
 
 import { PlaceDetails } from './PlaceDetails/PlaceDetails';
 import { Place } from './PlaceDetails/types';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import { ListView } from './MazeMap/constants/types';
 
 interface SpotListProps {
   places: Place[];
   isLoading: any;
+  setListView: Dispatch<SetStateAction<ListView>>;
 }
 
-const SpotList: React.FC<SpotListProps> = ({ places, isLoading }) => {
+const SpotList: React.FC<SpotListProps> = ({
+  places,
+  isLoading,
+  setListView,
+}) => {
+  const handleCollapseList = () => {
+    setListView((prev: ListView) => {
+      const newPrev = { ...prev };
+      newPrev.isViewing = !prev.isViewing;
+      return newPrev;
+    });
+  };
   return (
     <div className="p-6">
+      <button onClick={handleCollapseList}>
+        <MenuRoundedIcon
+          className="absolute top-4 left-4"
+          sx={{ height: '3rem', width: '3rem' }}
+        />
+      </button>
       <Typography
         variant="h2"
         sx={{ marginBottom: '1rem', fontWeight: '400', textAlign: 'center' }}

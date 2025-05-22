@@ -56,8 +56,11 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
             doSearch(mapRef, mySearch, 'food');
             setListView((prev) => {
               const newPrev = { ...prev };
-              newPrev.isViewing = !prev.isViewing;
+              if (!prev.isViewing || prev.type !== 'direction') {
+                newPrev.isViewing = !prev.isViewing;
+              }
               newPrev.type = 'food';
+
               return newPrev;
             });
           }}
