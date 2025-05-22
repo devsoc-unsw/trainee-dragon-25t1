@@ -6,6 +6,7 @@ import Tab from '../../icons/tab';
 import Profile from '../../icons/prof';
 import Add from '../../icons/Add';
 import Setting from '../../icons/Settings';
+import { useNavigate } from 'react-router-dom';
 
 interface NavBar {
   mapRef: any;
@@ -13,6 +14,7 @@ interface NavBar {
 
 export const NavBar: React.FC<NavBar> = ({ mapRef }) => {
   const [threeD, useThreeD] = useState(false);
+  const navigate = useNavigate();
 
   // TODO
   // Add Routes/Popups for Settings Page/Popup and Account Page/Popup
@@ -66,7 +68,10 @@ export const NavBar: React.FC<NavBar> = ({ mapRef }) => {
           </div>
         </div>
         <div className="flex flex-col">
-          <div className="flex flex-col py-3 cursor-pointer">
+          <div
+            className="flex flex-col py-3 cursor-pointer"
+            onClick={() => navigate('/profile')}
+          >
             <Profile></Profile>
           </div>
         </div>
