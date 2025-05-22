@@ -11,7 +11,7 @@ async function register(req: Request, res: Response) {
     
     res.cookie('sessionId', session, {
       maxAge: 24 * 60 * 60 * 1000,
-      httpOnly: true, // CHANGE LATER
+      httpOnly: false, //CHANGE LATER
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
     });

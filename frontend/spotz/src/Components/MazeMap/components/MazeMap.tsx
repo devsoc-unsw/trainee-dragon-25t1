@@ -56,7 +56,7 @@ const MazeMap = (props: MazeMapProps) => {
       setSession(true);
     }
     else {
-      console.log("no Session");
+      console.log(Cookies.get('sessionId'));
     }
   }, [])
 
