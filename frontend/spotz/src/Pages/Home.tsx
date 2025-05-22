@@ -5,6 +5,8 @@ import { Marker, MazeMap } from '../Components/MazeMap/components/MazeMap';
 import { Place } from '../Components/PlaceDetails/types';
 import { ListView } from '../Components/MazeMap/constants/types';
 import { RouteList } from '../Components/Route/RouteList';
+// import { foodSpots } from '../api/data';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export const Home = () => {
   const [listView, setListView] = useState<ListView>({
@@ -12,10 +14,13 @@ export const Home = () => {
     type: 'food',
   });
   const [isLoading, setIsLoading] = useState(false);
+  // const [places, setPlaces] = useState<Place[]>(foodSpots as any);
   const [places, setPlaces] = useState<Place[]>([]);
   const mapRef = useRef<any>(null);
 
   useEffect(() => {
+    // TODO stored the data from the api in data.ts
+    // probably bad cuz its a huge chunk of data
     setIsLoading(true);
     // TODO: uncomment when deploying
     // getPlacesData().then((data) => {
@@ -44,28 +49,43 @@ export const Home = () => {
     setPlaces(newPlaces);
 
     setIsLoading(false);
+    console.log(places[0]);
   }, []);
+
+  const listVariants = {
+    hidden: { x: '-100%', opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
+    exit: { x: '-100%', opacity: 0, transition: { duration: 0.3 } },
+  };
 
   return (
     <>
       <div className="h-screen w-full flex">
-        {listView.isViewing && (
-          <div className="relative h-full w-1/4">
-            {listView.type == 'food' ? (
-              <SpotList
-                places={places}
-                isLoading={isLoading}
-                setListView={setListView}
-              />
-            ) : (
-              <RouteList
-                mapRef={mapRef}
-                listView={listView}
-                setListView={setListView}
-              />
-            )}
-          </div>
-        )}
+        <AnimatePresence>
+          {listView.isViewing && (
+            <motion.div
+              className="relative h-full w-1/4"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={listVariants}
+            >
+              {listView.type === 'food' ? (
+                <SpotList
+                  places={places}
+                  isLoading={isLoading}
+                  setListView={setListView}
+                />
+              ) : (
+                <RouteList
+                  mapRef={mapRef}
+                  listView={listView}
+                  setListView={setListView}
+                />
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div
           className={`${
             listView.isViewing ? 'fixed right-0 w-3/4' : 'w-full'
