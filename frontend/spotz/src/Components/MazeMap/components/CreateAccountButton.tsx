@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { registerUser } from '../../../Fetchers/RegisterFetch';
 
+
 export const RegisterAcc = () => {
   const [popup, setPopup] = useState(false);
   const [closingPopup, setClosingPopup] = useState(false);

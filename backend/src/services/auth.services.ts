@@ -1,6 +1,5 @@
 import { ObjectId } from 'mongodb';
 import { ErrorMap } from '../constants/errors';
-import Cookies from 'js-cookie'
 
 import {
   Name,
@@ -64,11 +63,6 @@ export function authRegister(
   };
   sessions.push(session);
   setSessions(sessions);
-
-  Cookies.set('sessionId', session.sessionId, {
-    expires: 1,         // expires in 1 day
-    secure: false,       // CHANGE LATER
-  });
 
   const database = getData();
   const user: User = {

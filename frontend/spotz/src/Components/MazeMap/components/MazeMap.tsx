@@ -15,8 +15,11 @@ import { RandomSpotButton } from './RandomSpotButton';
 import { DefaultSearchBar } from './DefaultSearchBar';
 import { SearchBar } from './SearchBar';
 
+import Cookies from 'js-cookie'
+
 const MazeMap = (props: MazeMapProps) => {
   const [mapReady, setMapReady] = useState(false);
+  const [session, setSession] = useState(false);
   const markerRef = useRef<any>(null);
   const highlighterRef = useRef<any>(null);
   const mapRef = useRef<any>(null);
@@ -48,6 +51,14 @@ const MazeMap = (props: MazeMapProps) => {
     container: 'map',
     ...userOptions,
   };
+  useEffect(() => {
+    if (Cookies.get('sessionId')) {
+      setSession(true);
+    }
+    else {
+      console.log("no Session");
+    }
+  }, [])
 
   useEffect(() => {
     if (!props.zoomTo) return;
@@ -106,8 +117,8 @@ const MazeMap = (props: MazeMapProps) => {
           <NavBar mapRef={mapRef}/>
           <div className='flex flex-row items-center justify-center gap-2 min-w-[1109px] mt-3 ml-6'>
             <DefaultSearchBar mapRef={mapRef} mazeProps={props} />
-            <RegisterAcc />
-          </div>
+            { session ? null : <RegisterAcc /> }
+            </div>
           <SearchBar
             mapRef={mapRef}
             mazeProps={props}

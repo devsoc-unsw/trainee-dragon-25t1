@@ -63,13 +63,33 @@ export const SearchBar: React.FC<Searchbar> = ({
 
       temp.lngLat = coords;
 
-      markerRef.current = await addMarker(
+      const marker = await addMarker(
         mapRef,
         mazeProps,
         temp,
         markerRef,
         highlighterRef
       );
+
+      // IGNORE
+      // marker.getElement().addEventListener('click', () => {
+      //   if (!navigator.geolocation) {
+      //     alert('Geolocation is not supported by your browser.');
+      //     return;
+      //   }
+      //   navigator.geolocation.getCurrentPosition(
+      //     (position) => {
+      //       const userCoords = {
+      //         lng: position.coords.longitude,
+      //         lat: position.coords.latitude,
+      //       };
+      //       console.log(userCoords);
+      //     });
+      //     console.log(lat);
+      //     console.log(lng);
+          
+      // });
+
       mapRef.current.getCanvas().addEventListener('focus', () => {
         if (mySearchInput) {
           mySearchInput.hideSuggestions();
