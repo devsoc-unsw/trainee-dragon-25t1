@@ -1,4 +1,4 @@
-import { useState,useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Menu from '../../icons/menu'
 import Share from '../../icons/share'
 import History from '../../icons/history'
@@ -66,7 +66,7 @@ export const NavBar: React.FC<NavBar> = ({ mapRef }) => {
 				</div>
 				<div className='flex flex-col py-3 cursor-pointer'>
 					<Share>
-						
+						{/* add onclick = {() => {}} */}
 					</Share>
 				</div>
 				</div>
