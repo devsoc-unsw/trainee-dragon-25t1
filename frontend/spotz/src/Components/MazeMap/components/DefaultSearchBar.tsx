@@ -1,19 +1,27 @@
 import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import type { Map } from 'mapbox-gl';
 import { Feature, Point } from 'geojson';
-import { MazeMapProps } from '../constants/types';
+import { ListView, MazeMapProps } from '../constants/types';
+import { useNavigate } from 'react-router-dom';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import { TopBarButton } from './TopBarButton';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import SchoolIcon from '@mui/icons-material/School';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 interface DefaultSearchBarProps {
   mapRef: React.RefObject<Map | null>;
   mazeProps: MazeMapProps;
-  setListView: Dispatch<SetStateAction<boolean>>;
+  setListView: Dispatch<SetStateAction<ListView>>;
 }
 
-export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
+export const TopBar: React.FC<DefaultSearchBarProps> = ({
   mapRef,
   mazeProps,
   setListView,
 }) => {
+  const navigate = useNavigate();
+
   const mySearch = useMemo(
     () =>
       new window.Mazemap.Search.SearchController({
@@ -40,22 +48,39 @@ export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
 
   return (
     <>
-      <div className="flex flex-row justify-between items-center bg-gray-600 top-3 right-96 z-[999] w-[300px] h-[40px] rounded-2xl border cursor-pointer gap-2 px-2">
-        <button
-          className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold"
+      <div className="absolute flex flex-row top-0.5 mt-1 z-[999] w-1/2 cursor-pointer gap-8 sm:text-lg text-sm">
+        <TopBarButton
+          label={'Food'}
+          classNames={''}
           onClick={() => {
             doSearch(mapRef, mySearch, 'food');
-            setListView((prev) => !prev);
+            setListView((prev) => {
+              const newPrev = { ...prev };
+              newPrev.isViewing = !prev.isViewing;
+              newPrev.type = 'food';
+              return newPrev;
+            });
           }}
         >
-          Food
-        </button>
-        <button className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold">
-          Spotz
-        </button>
-        <button className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold">
-          Study
-        </button>
+          <RestaurantIcon sx={{ marginBottom: '2px' }} />
+        </TopBarButton>
+        <TopBarButton
+          label={'My Liked Spots'}
+          classNames={''}
+          onClick={undefined}
+        >
+          <ThumbUpIcon />
+        </TopBarButton>
+        <TopBarButton label={'Study Spots'} classNames={''} onClick={undefined}>
+          <SchoolIcon />
+        </TopBarButton>
+        <TopBarButton
+          label={'Register'}
+          classNames={''}
+          onClick={() => navigate('/register')}
+        >
+          <AppRegistrationIcon />
+        </TopBarButton>
       </div>
     </>
   );

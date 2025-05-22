@@ -5,12 +5,12 @@ import { PlaceDetails } from './PlaceDetails/PlaceDetails';
 import { Place } from './PlaceDetails/types';
 import React from 'react';
 
-interface ListProps {
+interface SpotListProps {
   places: Place[];
   isLoading: any;
 }
 
-const List: React.FC<ListProps> = ({ places, isLoading }) => {
+const SpotList: React.FC<SpotListProps> = ({ places, isLoading }) => {
   return (
     <div className="p-6">
       <Typography
@@ -39,4 +39,4 @@ const List: React.FC<ListProps> = ({ places, isLoading }) => {
   );
 };
 
-export default List;
+export default SpotList;
