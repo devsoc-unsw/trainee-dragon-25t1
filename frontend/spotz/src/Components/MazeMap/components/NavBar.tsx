@@ -15,7 +15,7 @@ interface NavBar {
 }
 
 
-export const NavBar: React.FC<NavBar> = ({ mapRef }) => {
+export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId}) => {
 	const [threeD, useThreeD] = useState(false);
 	const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
 	const navigate = useNavigate();
