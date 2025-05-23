@@ -13,14 +13,10 @@ import { NavBar } from './NavBar';
 import { RandomSpotButton } from './RandomSpotButton';
 import { TopBar } from './DefaultSearchBar';
 import { SearchBar } from './SearchBar';
-import { RegisterAcc } from './CreateAccountButton';
 import { DirectionButton } from './DirectionButton';
-
-import Cookies from 'js-cookie'
 
 const MazeMap = (props: MazeMapProps) => {
   const [mapReady, setMapReady] = useState(false);
-  const [session, setSession] = useState(false);
   const [_, setIsDirecting] = useState(false);
 
   const markerRef = useRef<any>(null);
@@ -53,14 +49,6 @@ const MazeMap = (props: MazeMapProps) => {
     container: 'map',
     ...userOptions,
   };
-  useEffect(() => {
-    if (Cookies.get('sessionId')) {
-      setSession(true);
-    }
-    else {
-      console.log(Cookies.get('sessionId'));
-    }
-  }, [])
 
   // useEffect(() => {
   //   if (!props.zoomTo) return;
