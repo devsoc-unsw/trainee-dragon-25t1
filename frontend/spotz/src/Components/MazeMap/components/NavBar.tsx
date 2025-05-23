@@ -35,11 +35,12 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId}) => {
   return (
     <>
 			<div className='flex flex-col justify-between items-center py-6 absolute left-4 top-[130px] z-[999] h-[600px] w-[60px] bg-white rounded-3xl'>
-				<div className='flex flex-col'>
+				<div className='flex flex-col items-center gap-2'>
 
 				
 				<button
-						className="flex flex-col bg-white text-2xl text-black cursor-pointer font-medium"
+						className="flex flex-col bg-white text-2xl text-black cursor-pointer font-medium
+									hover:bg-gray-100 rounded-lg p-2"
 						onClick={() => {
 						useThreeD(!threeD);
 						if (!threeD) {
@@ -55,47 +56,51 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId}) => {
 				>
 						3D
 				</button>
-				<div className='flex flex-col py-3 cursor-pointer'>
+				<div className='flex flex-col py-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2'>
 					<Menu>
 
 					</Menu>
 				</div>
-				<div className='flex flex-col py-3 cursor-pointer'>
+				<div className='flex flex-col py-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2'>
 					<Tab>
 
 					</Tab>
 				</div>
-				<div className='flex flex-col py-3 cursor-pointer'>
+				<div className='flex flex-col py-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2'>
 					<History>
 						
 					</History>
 				</div>
-				<div className='flex flex-col py-3 cursor-pointer' onClick={handleShareClick}>
+				<div className='flex flex-col py-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2' 
+					onClick={handleShareClick}>
 					<Share></Share>
 				</div>
-				</div>
+			</div>
+		
 
-				<div className='flex flex-col'>
-					<div className='flex flex-col py-3 cursor-pointer'>
+			<div className="flex flex-col items-center gap-2">
+				<div className='flex flex-col py-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2'>
 						<Add>
 
 						</Add>
-					</div>
-					<div className='flex flex-col py-3 cursor-pointer'>
-						<Setting>
-
-						</Setting>
-					</div>
 				</div>
-				<div className='flex flex-col'>
+				<div className='flex flex-col py-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2'>
+					<Setting>
+
+					</Setting>
+				</div>
+				</div>
+				<div className='flex flex-col py-0.5 cursor-pointer hover:bg-gray-100 rounded-lg p-2'>
 					<div
-						className="flex flex-col py-3 cursor-pointer"
+						className="flex flex-col py-2 cursor-pointer"
 						onClick={() => navigate('/profile')}
 					>
 						<Profile></Profile>
 						</div>
 					</div>
 				</div>
+
+
 				<SharePopup
 					isOpen={isSharePopupOpen}
 					onClose={handleCloseSharePopup}
