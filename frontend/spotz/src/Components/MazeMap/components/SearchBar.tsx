@@ -100,7 +100,10 @@ export const SearchBar: React.FC<Searchbar> = ({
 
   return (
     <>
-      <div id="search-input-container" className="search-control-default">
+      <div
+        id="search-input-container"
+        className="search-control-default rounded-full"
+      >
         <input
           tabIndex={0}
           id="searchInput"

@@ -71,6 +71,7 @@ export function authRegister(
     password: password,
     bookmarks: [],
     likes: [],
+    dislikes: [],
     userId: userId,
   };
   database.users.push(user);

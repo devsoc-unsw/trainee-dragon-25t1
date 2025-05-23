@@ -1,18 +1,18 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { SwipeCards } from '../Components/RandomSpots/SwipeCards';
+import { Footer } from '../Components/RandomSpots/footer';
+import { GeoData } from '../Components/RandomSpots/types';
+import { BackButton } from '../Components/BackButton';
 
 export const RandomSpot = () => {
-  const navigate = useNavigate();
+  const [likes, setLikes] = useState<GeoData[]>([]);
+  const [dislikes, setDislikes] = useState<GeoData[]>([]);
+
   return (
     <>
-      <SwipeCards />
-      {/* <div className="text-7xl">TINDER SWIPING PAGE</div> */}
-      <button
-        className="absolute top-0 text-5xl bg-blue-500 rounded-3xl size-64"
-        onClick={() => navigate('/')}
-      >
-        GO BACK
-      </button>
+      <BackButton />
+      <SwipeCards setLikes={setLikes} setDislikes={setDislikes} />
+      <Footer likes={likes} dislikes={dislikes} />
     </>
   );
 };

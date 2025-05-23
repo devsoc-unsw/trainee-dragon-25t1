@@ -1,3 +1,6 @@
+import { Dispatch, SetStateAction } from 'react';
+import type { Map } from 'mapbox-gl';
+
 declare global {
   interface Window {
     Mazemap: any;
@@ -40,6 +43,9 @@ export interface MazeMapProps extends MazeMapUserOptions {
   scrollZoom?: boolean;
   doubleClickZoom?: boolean;
   touchZoomRotate?: boolean;
+
+  setListView: Dispatch<SetStateAction<ListView>>;
+  mapRef: React.RefObject<Map | null>;
 }
 
 export interface MazeMapOptions extends MazeMapUserOptions {
@@ -126,4 +132,16 @@ export interface ZoomToProp {
   center: Coordinates | CoordinatesObject;
   zoom: number;
   speed?: number;
+}
+
+export interface RouteData {
+  lngLat: CoordinatesObject;
+  zLevel: number;
+  setPath?: any;
+  clear?: any;
+}
+
+export interface ListView {
+  isViewing: boolean;
+  type: string;
 }

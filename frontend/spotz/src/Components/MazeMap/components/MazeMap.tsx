@@ -10,19 +10,21 @@ import {
 import { getCoordinates } from '../lib/utils';
 import { prepareMap } from '../lib/map';
 import { NavBar } from './NavBar';
-import { RegisterAcc } from './CreateAccountButton';
 import { RandomSpotButton } from './RandomSpotButton';
-import { DefaultSearchBar } from './DefaultSearchBar';
+import { TopBar } from './DefaultSearchBar';
 import { SearchBar } from './SearchBar';
+import { RegisterAcc } from './CreateAccountButton';
+import { DirectionButton } from './DirectionButton';
 
 import Cookies from 'js-cookie'
 
 const MazeMap = (props: MazeMapProps) => {
   const [mapReady, setMapReady] = useState(false);
   const [session, setSession] = useState(false);
+  const [_, setIsDirecting] = useState(false);
+
   const markerRef = useRef<any>(null);
   const highlighterRef = useRef<any>(null);
-  const mapRef = useRef<any>(null);
 
   let userOptions: MazeMapUserOptions = {
     campuses: props.campuses,
@@ -60,24 +62,24 @@ const MazeMap = (props: MazeMapProps) => {
     }
   }, [])
 
-  useEffect(() => {
-    if (!props.zoomTo) return;
-    const center = getCoordinates(props.zoomTo.center);
-    const zoomAmount = props.zoomTo.zoom;
-    if (!props.speed) {
-      mapRef.current.jumpTo({
-        center,
-        zoomAmount,
-      });
-    } else {
-      const speed = props.zoomTo.speed;
-      mapRef.current.flyTo({
-        center,
-        zoomAmount,
-        speed,
-      });
-    }
-  }, [props.zoomTo]);
+  // useEffect(() => {
+  //   if (!props.zoomTo) return;
+  //   const center = getCoordinates(props.zoomTo.center);
+  //   const zoomAmount: any = props.zoomTo.zoom;
+  //   if (!props.speed) {
+  //     mapRef.current?.jumpTo({
+  //       center,
+  //       zoomAmount,
+  //     });
+  //   } else {
+  //     const speed = props.zoomTo.speed;
+  //     mapRef.current?.flyTo({
+  //       center,
+  //       zoomAmount,
+  //       speed,
+  //     });
+  //   }
+  // }, [props.zoomTo]);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -90,7 +92,7 @@ const MazeMap = (props: MazeMapProps) => {
     }
 
     script.onload = () => {
-      prepareMap(mapRef, mapOptions, props, markerRef, highlighterRef);
+      prepareMap(props.mapRef, mapOptions, props, markerRef, highlighterRef);
       setMapReady(true);
     };
     script.onerror = (e) => {
@@ -114,16 +116,23 @@ const MazeMap = (props: MazeMapProps) => {
       {mapReady ? (
         <>
           <RandomSpotButton />
-          <NavBar mapRef={mapRef}/>
-          <div className='flex flex-row items-center justify-center gap-2 min-w-[1109px] mt-3 ml-6'>
-            <DefaultSearchBar mapRef={mapRef} mazeProps={props} />
-            { session ? null : <RegisterAcc /> }
-            </div>
+          <NavBar mapRef={props.mapRef}/>
+          <div className="relative flex flex-row items-center justify-center gap-2 min-w-[1109px] mt-3 ml-6">
+            <TopBar
+              mapRef={props.mapRef}
+              mazeProps={props}
+              setListView={props.setListView}
+            />
+          </div>
           <SearchBar
-            mapRef={mapRef}
+            mapRef={props.mapRef}
             mazeProps={props}
             markerRef={markerRef}
             highlighterRef={highlighterRef}
+          />
+          <DirectionButton
+            setIsDirecting={setIsDirecting}
+            setListView={props.setListView}
           />
         </>
       ) : (
