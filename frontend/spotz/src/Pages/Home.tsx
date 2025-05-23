@@ -49,7 +49,6 @@ export const Home = () => {
     setPlaces(newPlaces);
 
     setIsLoading(false);
-    console.log(places[0]);
   }, []);
 
   const listVariants = {
@@ -72,6 +71,7 @@ export const Home = () => {
             >
               {listView.type === 'food' ? (
                 <SpotList
+                  mapRef={mapRef}
                   places={places}
                   isLoading={isLoading}
                   setListView={setListView}

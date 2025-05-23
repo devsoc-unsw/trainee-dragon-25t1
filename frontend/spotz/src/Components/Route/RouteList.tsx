@@ -59,18 +59,26 @@ export const RouteList: React.FC<RouteListProps> = ({
   };
 
   const handleSwapDirection = () => {
-    // TODO implement this
-    // const searchTag = document.getElementById(
-    //   'searchInput2'
-    // ) as HTMLInputElement;
-    // const searchTag2 = document.getElementById(
-    //   'searchInput3'
-    // ) as HTMLInputElement;
-    // const parent = searchTag.parentNode as HTMLElement;
-    // const nextSibling =
-    //   searchTag.nextSibling === searchTag2 ? searchTag : searchTag.nextSibling;
-    // parent.insertBefore(searchTag2, searchTag);
-    // parent.insertBefore(searchTag, nextSibling);
+    const input1 = document.getElementById('searchInput2') as HTMLInputElement;
+    const input2 = document.getElementById('searchInput3') as HTMLInputElement;
+
+    if (input1 && input2) {
+      // Swap the visible input values
+      const tempValue = input1.value;
+      input1.value = input2.value;
+      input2.value = tempValue;
+    }
+
+    // Swap the points stored in localStorage
+    const point1 = localStorage.getItem('searchedPoint2');
+    const point2 = localStorage.getItem('searchedPoint3');
+    if (point1 !== null && point2 !== null) {
+      localStorage.setItem('searchedPoint2', point2);
+      localStorage.setItem('searchedPoint3', point1);
+    }
+
+    // Re-trigger the route generation
+    setTriggerRoute((prev) => prev + 1);
   };
 
   return (
