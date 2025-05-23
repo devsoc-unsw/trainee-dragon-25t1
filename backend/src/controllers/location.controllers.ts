@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import * as locationService from '../services/location.services';
+import { GeoSpot } from '../constants/types';
+
 
 // shareSpot - post HTTP method
 async function recommend(req: Request, res: Response) {
@@ -46,19 +48,39 @@ async function addSpotPreference(req: Request, res: Response) {
   }
 }
 
-async function saveStudySpot(req: Request, res: Response) {
+// gets the study spot history of a user
+async function getStudySpotHistory(req: Request, res: Response) {
   try {
-    const session = req.header('session');
-    const { locations } = req.body;
-
-    const location = locationService.saveStudySpotHistory(
-      session as string,
-      locations
-    );
-    res.json(location);
-  } catch (err: any) {
+    const session = req.header('session')!;
+    const history = locationService.getStudySpotHistory(session);
+    res.json(history);
+  }
+  
+  catch (err: any) {
     res.status(400).json({ error: err.message });
   }
 }
 
-export { recommend, addSpotPreference, saveStudySpot };
+
+// posts the study spot history of a user
+async function saveStudySpot(req: Request, res: Response) {
+  try {
+    const session = req.header('session')!;
+    const { latitude, longitude, zLevel } = req.body;
+
+    const spot: GeoSpot = {
+      lngLat: { lat: latitude, lng: longitude },
+      zLevel,
+    };
+
+    locationService.saveStudySpotHistory(session, spot);
+    res.json({ ok: true });
+  }
+  
+  catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+}
+
+
+export { recommend, addSpotPreference, saveStudySpot, getStudySpotHistory };
