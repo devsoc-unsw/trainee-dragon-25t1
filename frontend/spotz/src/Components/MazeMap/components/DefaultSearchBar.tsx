@@ -9,6 +9,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import { useState } from 'react';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import { RegisterAcc } from './CreateAccountButton';
+import Cookies from 'js-cookie';
 
 interface DefaultSearchBarProps {
   mapRef: React.RefObject<Map | null>;
@@ -78,6 +79,7 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
         <TopBarButton label={'Study Spots'} classNames={''} onClick={undefined}>
           <SchoolIcon />
         </TopBarButton>
+        { Cookies.get("sessionId") ? null :
         <TopBarButton
           label={'Register'}
           classNames={''}
@@ -85,6 +87,7 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
         >
           <AppRegistrationIcon />
         </TopBarButton>
+        }
       </div>
 
       {register && (

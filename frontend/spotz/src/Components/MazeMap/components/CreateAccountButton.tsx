@@ -8,7 +8,7 @@ const validatePassword = (password: string) =>
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/.test(password);
 
 export const RegisterAcc = ({ onClose }: { onClose?: () => void }) => {
-  const [popup, setPopup] = useState(true);
+  const [popup, setPopup] = useState(true); 
   const [closingPopup, setClosingPopup] = useState(false);
   const [nameError, setNameError] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -67,7 +67,7 @@ export const RegisterAcc = ({ onClose }: { onClose?: () => void }) => {
       setPopup(false);
       setClosingPopup(false);
       onClose?.();
-    }, 100); // match your animation time
+    }, 100);
   };
 
   if (!popup) return null;
