@@ -72,7 +72,7 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
         <TopBarButton
           label={'My Liked Spots'}
           classNames={''}
-          onClick={undefined}
+          onClick={() => Cookies.get("sessionId") ? undefined: setShowRegister(true)}
         >
           <ThumbUpIcon />
         </TopBarButton>

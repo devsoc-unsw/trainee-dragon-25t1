@@ -55,6 +55,7 @@ export const RegisterAcc = ({ onClose }: { onClose?: () => void }) => {
       if (res) {
         setPopup(false);
         onClose?.();
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error registering:", error);
@@ -101,7 +102,7 @@ export const RegisterAcc = ({ onClose }: { onClose?: () => void }) => {
             placeholder='Username'
             onChange={handleProfile}
             value={profileData.name}
-            className="mb-3 w-[500px] p-2 py-3 border rounded text-sm mt-3"
+            className="mb-3 w-[500px] p-2 py-3 border rounded text-sm mt-6"
           />
           {nameError && <p className="text-red-500 text-sm mb-2">{nameError}</p>}
 
@@ -124,12 +125,17 @@ export const RegisterAcc = ({ onClose }: { onClose?: () => void }) => {
           />
           {passwordError && <p className="text-red-500 text-sm mb-2">{passwordError}</p>}
 
-          <button
-            className='rounded-md w-[60px] h-[40px] bg-purple-600 px-3 mt-3 border-violet-500 text-white text-center font-semibold'
-            onClick={handleRegister}
-          >
-            Submit
-          </button>
+          <div className='flex flex-row justify-between items-end'>
+            <button
+              className='rounded-md w-[60px] h-[40px] bg-purple-600 px-3 mt-3 border-violet-500 text-white text-center font-semibold'
+              onClick={handleRegister}
+            >
+              Submit
+            </button>
+            <p className='cursor-pointer underline text-purple-600 font-medium'>
+              Or if you already have an account, login here
+            </p>
+          </div>
         </div>
       </div>
     </div>

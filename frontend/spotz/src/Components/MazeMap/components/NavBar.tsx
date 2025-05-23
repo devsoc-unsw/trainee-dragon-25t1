@@ -6,7 +6,9 @@ import Tab from '../../icons/tab';
 import Profile from '../../icons/prof';
 import Add from '../../icons/Add';
 import Setting from '../../icons/Settings';
+import { LogoutButton } from './LogoutButton';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import SharePopup from './SharePopup';
 
 interface NavBar {
@@ -90,22 +92,25 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId}) => {
 					</Setting>
 				</div>
 				</div>
-				<div className='flex flex-col py-0.5 cursor-pointer hover:bg-gray-100 rounded-lg p-2'>
+				<div className='flex flex-col py-0.5 cursor-pointer rounded-lg p-2 gap-2'>
 					<div
-						className="flex flex-col py-2 cursor-pointer"
+						className="flex flex-col py-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2 gap-2"
 						onClick={() => navigate('/profile')}
 					>
 						<Profile></Profile>
-						</div>
-					</div>
-				</div>
+          </div>
+          {
+          Cookies.get("sessionId") ?  <div className='hover:bg-gray-100 rounded-lg p-2 gap-2'> <LogoutButton></LogoutButton>  </div>: undefined
+          }
+        </div>
+      </div>
 
 
-				<SharePopup
-					isOpen={isSharePopupOpen}
-					onClose={handleCloseSharePopup}
-					selectedRoomId={selectedRoomId}
-				/>
+      <SharePopup
+        isOpen={isSharePopupOpen}
+        onClose={handleCloseSharePopup}
+        selectedRoomId={selectedRoomId}
+      />
     </>
   );
 };
