@@ -1,11 +1,21 @@
 import { Request, Response } from 'express';
 import * as authService from '../services/auth.services';
+import { getSessions } from '../dataStore';
 
 // register - post HTTP method
 async function register(req: Request, res: Response) {
   try {
     const { name, email, password } = req.body;
     const auth = authService.authRegister(name, email, password);
+    const session = getSessions();
+    
+    res.cookie('sessionId', session, {
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: false, //CHANGE LATER
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+
     res.json(auth);
   } catch (err: any) {
     res.status(400).json({ error: err.message });

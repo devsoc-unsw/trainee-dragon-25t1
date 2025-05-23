@@ -2,12 +2,14 @@ import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import type { Map } from 'mapbox-gl';
 import { Feature, Point } from 'geojson';
 import { ListView, MazeMapProps } from '../constants/types';
-import { useNavigate } from 'react-router-dom';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { TopBarButton } from './TopBarButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import SchoolIcon from '@mui/icons-material/School';
+import { useState } from 'react';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import { RegisterAcc } from './CreateAccountButton';
+import Cookies from 'js-cookie';
 
 interface DefaultSearchBarProps {
   mapRef: React.RefObject<Map | null>;
@@ -20,7 +22,6 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
   mazeProps,
   setListView,
 }) => {
-  const navigate = useNavigate();
 
   const mySearch = useMemo(
     () =>
@@ -46,6 +47,7 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
     }
   }, []);
 
+  const [register, setShowRegister] = useState(false);
   return (
     <>
       <div className="absolute flex flex-row top-0.5 mt-1 z-[999] w-1/2 cursor-pointer gap-8 sm:text-lg text-sm">
@@ -77,14 +79,20 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
         <TopBarButton label={'Study Spots'} classNames={''} onClick={undefined}>
           <SchoolIcon />
         </TopBarButton>
+        { Cookies.get("sessionId") ? null :
         <TopBarButton
           label={'Register'}
           classNames={''}
-          onClick={() => navigate('/register')}
+          onClick={() => setShowRegister(true)}
         >
           <AppRegistrationIcon />
         </TopBarButton>
+        }
       </div>
+
+      {register && (
+        <RegisterAcc onClose={() => setShowRegister(false)} />
+      )}
     </>
   );
 };
