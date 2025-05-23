@@ -1,9 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 interface SharePopupProps {
     isOpen: boolean;
     onClose: () => void;
-    selectedRoomId: string;
+    selectedRoomId?: string;
 }
 
 const SharePopup: React.FC<SharePopupProps> = ({ 
@@ -12,6 +12,8 @@ const SharePopup: React.FC<SharePopupProps> = ({
     selectedRoomId 
 }) => {
     const popupRef = useRef<HTMLDivElement>(null);
+    const [copied, setCopied] = useState(false);
+
   
     const generateShareLink = () => {
         const baseUrl = window.location.origin;
@@ -27,9 +29,9 @@ const SharePopup: React.FC<SharePopupProps> = ({
     const copyToClipboard = () => {
         const link = generateShareLink();
         navigator.clipboard.writeText(link)
+        setCopied(true);
     };
 
-  
     // Close popup when clicking outside the box
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -47,6 +49,13 @@ const SharePopup: React.FC<SharePopupProps> = ({
         };
 
     }, [isOpen, onClose]);
+
+    // Reset copied state when popup opens
+    useEffect(() => {
+        if (isOpen) {
+            setCopied(false);
+        }
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
@@ -83,10 +92,14 @@ const SharePopup: React.FC<SharePopupProps> = ({
               className="flex-grow p-2 border border-gray-300 rounded-l-md text-sm"
             />
             <button
-              onClick={copyToClipboard}
-              className="bg-blue-500 text-white px-4 rounded-r-md hover:bg-blue-600"
+                onClick={copyToClipboard}
+                className={`px-4 rounded-r-md transition-colors ${
+                    copied
+                        ? "bg-green-500 text-white" 
+                        : "bg-blue-500 text-white hover:bg-blue-600"
+                    }`}
             >
-              Copy
+                {copied ? "Copied!" : "Copy"}
             </button>
           </div>
         </div>

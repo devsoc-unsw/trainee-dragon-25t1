@@ -11,13 +11,9 @@ import SharePopup from './SharePopup';
 
 interface NavBar {
     mapRef: any;
+	selectedRoomId?: string;
 }
 
-interface SharePopupProps {
-  isOpen: boolean;
-  onClose: () => void;
-  selectedRoomId: string;
-}
 
 export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId }) => {
 	const [threeD, useThreeD ] = useState(false);

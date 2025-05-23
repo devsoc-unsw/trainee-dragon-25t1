@@ -20,6 +20,7 @@ const MazeMap = (props: MazeMapProps) => {
   const highlighterRef = useRef<any>(null);
   const mapRef = useRef<any>(null);
 
+
   let userOptions: MazeMapUserOptions = {
     campuses: props.campuses,
     ...(props.center && { center: getCoordinates(props.center) }),
@@ -102,7 +103,7 @@ const MazeMap = (props: MazeMapProps) => {
       {mapReady ? (
         <>
           <RandomSpotButton />
-          <NavBar mapRef={mapRef}/>
+          <NavBar mapRef={mapRef} />
           <DefaultSearchBar mapRef={mapRef} mazeProps={props} />
           <SearchBar
             mapRef={mapRef}
