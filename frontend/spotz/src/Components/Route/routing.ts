@@ -16,7 +16,6 @@ export const generateRoute = (
     routeLineColorSecondary: '#888888',
     showDirectionArrows: true, // Turn off if you don't want direction arrows
   });
-  // console.log(routeController);
   window.Mazemap.Data.getRouteJSON(start, dest).then((geojson: any) => {
     routeController?.setPath(geojson);
     // console.log('@ geojson', geojson);
