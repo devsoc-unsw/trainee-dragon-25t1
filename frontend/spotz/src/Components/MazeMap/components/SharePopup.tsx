@@ -3,21 +3,19 @@ import React, { useRef, useEffect } from 'react';
 interface SharePopupProps {
     isOpen: boolean;
     onClose: () => void;
-    mapId: string;
-    selectedRoomId?: string;
+    selectedRoomId: string;
 }
 
 const SharePopup: React.FC<SharePopupProps> = ({ 
     isOpen, 
     onClose, 
-    mapId, 
     selectedRoomId 
 }) => {
     const popupRef = useRef<HTMLDivElement>(null);
   
     const generateShareLink = () => {
         const baseUrl = window.location.origin;
-        let shareLink = `${baseUrl}/map/${mapId}`;
+        let shareLink = `${baseUrl}`;
     
         if (selectedRoomId) {
             shareLink += `/room/${selectedRoomId}`;
@@ -34,10 +32,10 @@ const SharePopup: React.FC<SharePopupProps> = ({
   
     // Close popup when clicking outside the box
     useEffect(() => {
-            const handleClickOutside = (event: MouseEvent) => {
-                if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
-                    onClose();
-                }
+        const handleClickOutside = (event: MouseEvent) => {
+            if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+                onClose();
+            }
         };
 
         if (isOpen) {
