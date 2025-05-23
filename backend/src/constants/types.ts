@@ -37,7 +37,7 @@ export interface Spot {
   noiseLevel: number;
   comfortability: number;
   popularity: number;
-};
+}
 
 export type User = {
   // _id: ObjectId,
@@ -50,7 +50,6 @@ export type User = {
   userId: UserId;
   histories: GeoSpot[];  //is this supposed to be in User or in DataStore?
 };
-
 
 export type SpotLngLat = {
   lng: number;

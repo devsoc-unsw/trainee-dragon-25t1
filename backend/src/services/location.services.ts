@@ -2,8 +2,6 @@ import { ErrorMap } from '../constants/errors';
 import { SessionId, Spot, GeoSpot } from '../constants/types';
 import { getData, getSessions, setData } from '../dataStore';
 
-
-
 /**
  * Share location of a spot
  * @param latitude

@@ -1,19 +1,28 @@
 import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import type { Map } from 'mapbox-gl';
 import { Feature, Point } from 'geojson';
-import { MazeMapProps } from '../constants/types';
+import { ListView, MazeMapProps } from '../constants/types';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import { TopBarButton } from './TopBarButton';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import SchoolIcon from '@mui/icons-material/School';
+import { useState } from 'react';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import { RegisterAcc } from './CreateAccountButton';
+import Cookies from 'js-cookie';
 
 interface DefaultSearchBarProps {
   mapRef: React.RefObject<Map | null>;
   mazeProps: MazeMapProps;
-  setListView: Dispatch<SetStateAction<boolean>>;
+  setListView: Dispatch<SetStateAction<ListView>>;
 }
 
-export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
+export const TopBar: React.FC<DefaultSearchBarProps> = ({
   mapRef,
   mazeProps,
   setListView,
 }) => {
+
   const mySearch = useMemo(
     () =>
       new window.Mazemap.Search.SearchController({
@@ -38,48 +47,68 @@ export const DefaultSearchBar: React.FC<DefaultSearchBarProps> = ({
     }
   }, []);
 
+  const [register, setShowRegister] = useState(false);
   return (
     <>
-      <div className="flex flex-row justify-between items-center bg-gray-600 top-3 right-96 z-[999] w-[300px] h-[40px] rounded-2xl border cursor-pointer gap-2 px-2">
-        <button
-          className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold"
-          onClick={() => doSearch(mapRef, mySearch, 'food', setListView)}
+      <div className="absolute flex flex-row top-0.5 mt-1 z-[999] w-1/2 cursor-pointer gap-8 sm:text-lg text-sm">
+        <TopBarButton
+          label={'Food'}
+          classNames={''}
+          onClick={() => {
+            doSearch(mapRef, mySearch, 'food');
+            setListView((prev) => {
+              const newPrev = { ...prev };
+              if (!prev.isViewing || prev.type !== 'direction') {
+                newPrev.isViewing = !prev.isViewing;
+              }
+              newPrev.type = 'food';
+
+              return newPrev;
+            });
+          }}
         >
-          Food
-        </button>
-        <button className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold">
-          Spotz
-        </button>
-        <button className="flex flex-grow items-center justify-center text-center bg-white rounded-2xl border font-semibold">
-          Study
-        </button>
+          <RestaurantIcon sx={{ marginBottom: '2px' }} />
+        </TopBarButton>
+        <TopBarButton
+          label={'My Liked Spots'}
+          classNames={''}
+          onClick={undefined}
+        >
+          <ThumbUpIcon />
+        </TopBarButton>
+        <TopBarButton label={'Study Spots'} classNames={''} onClick={undefined}>
+          <SchoolIcon />
+        </TopBarButton>
+        { Cookies.get("sessionId") ? null :
+        <TopBarButton
+          label={'Register'}
+          classNames={''}
+          onClick={() => setShowRegister(true)}
+        >
+          <AppRegistrationIcon />
+        </TopBarButton>
+        }
       </div>
+
+      {register && (
+        <RegisterAcc onClose={() => setShowRegister(false)} />
+      )}
     </>
   );
 };
 
-function doSearch(
-  mapRef: any,
-  mySearch: any,
-  query: any,
-  setListView: Dispatch<SetStateAction<boolean>>
-) {
+function doSearch(mapRef: any, mySearch: any, query: any) {
   // Perform a search query using the Search object
   mySearch.search(query).then((response: any) => {
-    displayMapResults(mapRef, response.results, setListView);
+    displayMapResults(mapRef, response.results);
   });
 }
 
-function displayMapResults(
-  mapRef: any,
-  geojsonResults: any,
-  setListView: Dispatch<SetStateAction<boolean>>
-) {
+function displayMapResults(mapRef: any, geojsonResults: any) {
   if (mapRef.current.style) {
     mapRef.current.getSource('geojsonresults').setData(geojsonResults);
     var bbox = window.Mazemap.Util.Turf.bbox(geojsonResults);
     mapRef.current.fitBounds(bbox, { padding: 100 });
-    setListView((prev) => !prev);
   }
 }
 

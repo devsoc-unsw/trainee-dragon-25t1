@@ -1,39 +1,95 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import SpotList from '../Components/SpotList';
 import { Marker, MazeMap } from '../Components/MazeMap/components/MazeMap';
-import List from '../Components/List/List';
-import { getPlacesData } from '../api/travelAdvisory';
+// import { getPlacesData } from '../api/travelAdvisory';
+import { Place } from '../Components/PlaceDetails/types';
+import { ListView } from '../Components/MazeMap/constants/types';
+import { RouteList } from '../Components/Route/RouteList';
+// import { foodSpots } from '../api/data';
+import { motion, AnimatePresence } from 'framer-motion';
+
 export const Home = () => {
-  const [listView, setListView] = useState(false);
-  const [places, setPlaces] = useState(null);
-  const [type, setType] = useState('food');
-  const [rating, setRating] = useState('');
+  const [listView, setListView] = useState<ListView>({
+    isViewing: false,
+    type: 'food',
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  // const [places, setPlaces] = useState<Place[]>(foodSpots as any);
+  const [places, setPlaces] = useState<Place[]>([]);
+  const mapRef = useRef<any>(null);
 
   useEffect(() => {
-    getPlacesData(type === 'food' ? 'restaurants' : 'restaurants').then(
-      (data) => {
-        console.log(data);
-        setPlaces(data);
-      }
-    );
+    // TODO stored the data from the api in data.ts
+    // probably bad cuz its a huge chunk of data
+    setIsLoading(true);
+    // TODO: uncomment when deploying
+    // getPlacesData().then((data) => {
+    //   setPlaces(data);
+    // });
+
+    const placesTest: Place = {
+      address: '123 unsw gang gang',
+      awards: [],
+      cuisine: [],
+      name: 'DevSoc DRAGON',
+      num_reviews: 0,
+      phone: '',
+      photo: false,
+      price_level: '',
+      ranking: '',
+      rating: 0,
+      website: 'https://www.google.com/',
+      web_url: 'https://www.google.com/',
+    };
+    places.push(placesTest);
+    places.push(placesTest);
+    places.push(placesTest);
+
+    const newPlaces = [...places];
+    setPlaces(newPlaces);
+
+    setIsLoading(false);
+    console.log(places[0]);
   }, []);
+
+  const listVariants = {
+    hidden: { x: '-100%', opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
+    exit: { x: '-100%', opacity: 0, transition: { duration: 0.3 } },
+  };
+
   return (
     <>
-      <div className="h-screen w-full flex ">
-        {listView && (
-          <div className="h-full w-1/3">
-            <List
-              places={places}
-              type={type}
-              setType={setType}
-              rating={rating}
-              setRating={setRating}
-              childClicked={undefined}
-              isLoading={undefined}
-            />
-          </div>
-        )}
+      <div className="h-screen w-full flex">
+        <AnimatePresence>
+          {listView.isViewing && (
+            <motion.div
+              className="relative h-full w-1/4"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={listVariants}
+            >
+              {listView.type === 'food' ? (
+                <SpotList
+                  places={places}
+                  isLoading={isLoading}
+                  setListView={setListView}
+                />
+              ) : (
+                <RouteList
+                  mapRef={mapRef}
+                  listView={listView}
+                  setListView={setListView}
+                />
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div
-          className={`${listView ? 'fixed right-0 w-4/5' : 'w-full'} h-full`}
+          className={`${
+            listView.isViewing ? 'fixed right-0 w-3/4' : 'w-full'
+          } h-full `}
         >
           <MazeMap
             campuses={111}
@@ -61,6 +117,7 @@ export const Home = () => {
             zLevelUpdater={true}
             zLevelControl={false}
             setListView={setListView}
+            mapRef={mapRef}
           />
         </div>
       </div>

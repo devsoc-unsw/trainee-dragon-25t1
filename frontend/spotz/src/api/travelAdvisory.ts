@@ -1,14 +1,29 @@
 import axios from 'axios';
-export const getPlacesData = async (type: string) => {
+export const getPlacesData = async () => {
   const UNSW_CENTER = { lng: 151.230996, lat: -33.917867 };
-  const ne = { lng: UNSW_CENTER.lng + 0.53, lat: UNSW_CENTER.lat + 0.53 };
-  const sw = { lng: UNSW_CENTER.lng - 0.43, lat: UNSW_CENTER.lat - 0.43 };
+  const KM_TO_LAT = 1 / 111; // ≈ 0.009
+  const KM_TO_LNG = 1 / (111 * Math.cos((UNSW_CENTER.lat * Math.PI) / 180)); // ≈ 0.0108 at UNSW
 
+  const latDeltaNE = 0.53 * KM_TO_LAT;
+  const lngDeltaNE = 0.53 * KM_TO_LNG;
+
+  const latDeltaSW = 0.43 * KM_TO_LAT;
+  const lngDeltaSW = 0.43 * KM_TO_LNG;
+
+  const ne = {
+    lat: UNSW_CENTER.lat + latDeltaNE,
+    lng: UNSW_CENTER.lng + lngDeltaNE,
+  };
+
+  const sw = {
+    lat: UNSW_CENTER.lat - latDeltaSW,
+    lng: UNSW_CENTER.lng - lngDeltaSW,
+  };
   try {
     const {
       data: { data },
     } = await axios.get(
-      `https://travel-advisor.p.rapidapi.com/${type}/list-in-boundary`,
+      `https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary`,
       {
         params: {
           bl_latitude: sw.lat,
@@ -17,9 +32,7 @@ export const getPlacesData = async (type: string) => {
           tr_latitude: ne.lat,
         },
         headers: {
-          // 'x-rapidapi-key': process.env.REACT_APP_RAPID_API_TRAVEL_API_KEY,
-          'x-rapidapi-key':
-            '1fa164eba3mshf33a868fd8e50d8p185a49jsn119904188b3d',
+          'x-rapidapi-key': import.meta.env.VITE_TRAVEL_ADVISORY_API_KEY,
           'x-rapidapi-host': 'travel-advisor.p.rapidapi.com',
         },
       }

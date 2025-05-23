@@ -6,6 +6,7 @@ export function clear() {
   setData({
     users: [],
     spots: [],
+    histories: [],
     _id: new ObjectId(),
   });
   return {};
