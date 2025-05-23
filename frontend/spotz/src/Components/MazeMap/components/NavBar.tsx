@@ -6,7 +6,9 @@ import Tab from '../../icons/tab';
 import Profile from '../../icons/prof';
 import Add from '../../icons/Add';
 import Setting from '../../icons/Settings';
+import { LogoutButton } from './LogoutButton';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 interface NavBar {
   mapRef: any;
@@ -67,13 +69,16 @@ export const NavBar: React.FC<NavBar> = ({ mapRef }) => {
             <Setting></Setting>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           <div
             className="flex flex-col py-3 cursor-pointer"
             onClick={() => navigate('/profile')}
           >
             <Profile></Profile>
           </div>
+          {
+            Cookies.get("sessionId") ? <div className='cursor-pointer'> <LogoutButton></LogoutButton> </div> : undefined
+          }
         </div>
       </div>
     </>
