@@ -123,7 +123,6 @@ export function authLogin(email: Email, password: Password) {
 export function authLogout(sessionId: SessionId) {
   const store = getSessions();
   const sessions = store.filter((session) => session.sessionId !== sessionId);
-
   setSessions(sessions);
 
   return {};

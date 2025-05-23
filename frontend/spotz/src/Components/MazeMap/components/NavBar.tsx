@@ -77,7 +77,7 @@ export const NavBar: React.FC<NavBar> = ({ mapRef }) => {
             <Profile></Profile>
           </div>
           {
-            Cookies.get("sessionId") ? <div className='cursor-pointer'> <LogoutButton></LogoutButton> </div> : undefined
+            Cookies.get("sessionId") ?  <LogoutButton></LogoutButton>  : undefined
           }
         </div>
       </div>
