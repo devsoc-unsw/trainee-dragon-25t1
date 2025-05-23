@@ -2,6 +2,7 @@ import Logout from '../../icons/logout';
 import { useState } from 'react';
 import { logoutUser } from '../../../Fetchers/LogoutFetch';
 import Cookies from 'js-cookie';
+
 export const LogoutButton = () => {
 	const [popup, setPopup] = useState(false); 
   const [closingPopup, setClosingPopup] = useState(false);
