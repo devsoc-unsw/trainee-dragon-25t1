@@ -18,10 +18,19 @@ router.post(
   locationController.addSpotPreference
 );
 
+// gets study spot history
 router.get(
+  '/location/studyspot/history',
+  sessionMiddleware,
+  locationController.getStudySpotHistory
+);
+
+// posts study spot history
+router.post(
   '/location/studyspot/visited',
   sessionMiddleware,
   locationController.saveStudySpot
 );
+
 
 export default router;

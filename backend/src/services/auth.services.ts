@@ -72,6 +72,7 @@ export function authRegister(
     likes: [],
     dislikes: [],
     userId: userId,
+    histories: []
   };
   database.users.push(user);
 

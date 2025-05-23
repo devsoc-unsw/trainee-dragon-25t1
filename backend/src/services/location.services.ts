@@ -91,34 +91,44 @@ export function addStudySpotPreference(
   setData(data);
 
   return {};
+}
 
+/**
+ * Get study spot history of a user
+ * @param sessionId
+ */
+export function getStudySpotHistory(session: SessionId): GeoSpot[] {
+  const sessions = getSessions();
+  const userId = sessions.find(s => s.sessionId === session)?.userId;
+  if (!userId) throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
+
+  const data = getData();
+  const user = data.users.find(u => u.userId === userId)!;
+  if (!user) throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
+
+  return user.histories;
+}
+  
   /**
    * Save study spot located
    * @param sessionId
-   * @param locations
+   * @param spot
    */
-  export function saveStudySpotHistory(
-    session: SessionId,
-    locations: Array<GeoSpot>
-  ) {
-    const sessions = getSessions();
-    const userId = sessions.find((s) => s.sessionId == session)?.userId as number;
-    
-    
-    const data = getData();
-    const user = data.users.find((u) => u.userId == userId);
-    const location = 
-    if (!user || user === undefined) {  //check if i need this
-      throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
+export function saveStudySpotHistory(
+  session: SessionId,
+  spot: GeoSpot
+) {
+  const sessions = getSessions();
+  const userId = sessions.find(s => s.sessionId === session)?.userId;
+  if (!userId) throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
 
-    }
-    
-    if (!location || location === undefined) {
-      throw new Error(ErrorMap['SPOT_DOES_NOT_EXIST']);
-    }
-    
-    locations.forEach((location) => .push(location)); //finish this
-    
-  }
+  const data = getData();
+  const user = data.users.find(u => u.userId === userId)!;
+  if (!user) throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
 
+  // push our one spot
+  user.histories.push(spot);
+  setData(data);
+
+  return {}; 
 }

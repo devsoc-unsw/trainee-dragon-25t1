@@ -48,6 +48,7 @@ export type User = {
   likes: Array<GeoSpot>;
   dislikes: Array<GeoSpot>;
   userId: UserId;
+  histories: GeoSpot[];  //is this supposed to be in User or in DataStore?
 };
 
 
@@ -56,13 +57,13 @@ export type SpotLngLat = {
   lat: number;
 };
 
-export interface GeoSpot extends SubHistory  {
+export interface GeoSpot  {
   lngLat: SpotLngLat;
   zLevel: number;
 }
 
 export type SubHistory = {
-  currentTime: string;
+  currentTime: string; //try and find better type for time
   userId: UserId;
 }
 
@@ -75,6 +76,6 @@ export type DataStore = {
   _id: ObjectId;
   users: User[];
   spots: Spot[];
-  histories: GeoSpot[]; 
+  //histories: GeoSpot[]; 
   // histories: Map<UserId, GeoSpot>;
 };

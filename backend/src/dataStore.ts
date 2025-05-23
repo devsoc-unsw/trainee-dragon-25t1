@@ -8,7 +8,6 @@ let database: DataStore = {
   _id: new ObjectId(),
   users: [],
   spots: [],
-  histories: []
 };
 
 let sessionCollection: any;
