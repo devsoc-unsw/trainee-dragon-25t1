@@ -4,8 +4,8 @@ import {
   Email,
   Password,
   User,
-  Spot,
   SessionId,
+  GeoSpot,
 } from '../constants/types';
 import { getData, getSessions, setData } from '../dataStore';
 import {
@@ -37,7 +37,7 @@ export function profileRetrieve(session: SessionId): User {
 
 /**
  * Edit user profile and returns nth
-//  * @param sessionId
+ * @param sessionId
  * @param name
  * @param email
  * @param password
@@ -46,10 +46,10 @@ export function profileRetrieve(session: SessionId): User {
  */
 export function profileEdit(
   session: SessionId,
-  newBookmarks: Array<Spot>,
-  removedBookmarks: Array<Spot>,
-  likes: Array<Spot>,
-  dislikes: Array<Spot>,
+  newBookmarks: Array<GeoSpot>,
+  removedBookmarks: Array<GeoSpot>,
+  likes: Array<GeoSpot>,
+  dislikes: Array<GeoSpot>,
   name?: Name,
   email?: Email,
   password?: Password

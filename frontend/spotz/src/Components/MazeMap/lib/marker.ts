@@ -50,7 +50,6 @@ export const addMarker = async (
   clearMarker(markerRef);
   clearHighlighter(highlighterRef);
   if (window.Mazemap) {
-    // const features = mapRef.current.queryRenderedFeatures(e.point);
     const zValue = localStorage.getItem('defaultSearchBarZlevel');
 
     if (zValue && zValue != zLevel) {
@@ -58,8 +57,9 @@ export const addMarker = async (
       mapRef.current.zLevel = zValue;
     }
     const poi = await window.Mazemap.Data.getPoiAt(e.lngLat, zLevel);
-
     if (!poi) {
+      const storedPoint = { lnglat: e.lngLat, zLevel };
+      localStorage.setItem('curLngLat', JSON.stringify(storedPoint));
       return await drawMarker(mapRef, props, e.lngLat, zLevel);
     }
 
@@ -71,10 +71,13 @@ export const addMarker = async (
       await highlightPoi(poi, highlighterRef);
       mapRef.current.flyTo({
         center: lnglat,
-        zoom: 20.8,
+        zoom: 20,
         speed: 0.5,
       });
     }
+
+    const storedPoint = { lnglat, zLevel: zLevel };
+    localStorage.setItem('curLngLat', JSON.stringify(storedPoint));
 
     return await drawMarker(
       mapRef,

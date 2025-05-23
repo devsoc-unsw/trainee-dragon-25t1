@@ -11,15 +11,16 @@ import { getCoordinates } from '../lib/utils';
 import { prepareMap } from '../lib/map';
 import { NavBar } from './NavBar';
 import { RandomSpotButton } from './RandomSpotButton';
-import { DefaultSearchBar } from './DefaultSearchBar';
+import { TopBar } from './DefaultSearchBar';
 import { SearchBar } from './SearchBar';
+import { DirectionButton } from './DirectionButton';
 
 const MazeMap = (props: MazeMapProps) => {
   const [mapReady, setMapReady] = useState(false);
+  const [_, setIsDirecting] = useState(false);
+
   const markerRef = useRef<any>(null);
   const highlighterRef = useRef<any>(null);
-  const mapRef = useRef<any>(null);
-
 
   let userOptions: MazeMapUserOptions = {
     campuses: props.campuses,
@@ -49,24 +50,24 @@ const MazeMap = (props: MazeMapProps) => {
     ...userOptions,
   };
 
-  useEffect(() => {
-    if (!props.zoomTo) return;
-    const center = getCoordinates(props.zoomTo.center);
-    const zoomAmount = props.zoomTo.zoom;
-    if (!props.speed) {
-      mapRef.current.jumpTo({
-        center,
-        zoomAmount,
-      });
-    } else {
-      const speed = props.zoomTo.speed;
-      mapRef.current.flyTo({
-        center,
-        zoomAmount,
-        speed,
-      });
-    }
-  }, [props.zoomTo]);
+  // useEffect(() => {
+  //   if (!props.zoomTo) return;
+  //   const center = getCoordinates(props.zoomTo.center);
+  //   const zoomAmount: any = props.zoomTo.zoom;
+  //   if (!props.speed) {
+  //     mapRef.current?.jumpTo({
+  //       center,
+  //       zoomAmount,
+  //     });
+  //   } else {
+  //     const speed = props.zoomTo.speed;
+  //     mapRef.current?.flyTo({
+  //       center,
+  //       zoomAmount,
+  //       speed,
+  //     });
+  //   }
+  // }, [props.zoomTo]);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -79,7 +80,7 @@ const MazeMap = (props: MazeMapProps) => {
     }
 
     script.onload = () => {
-      prepareMap(mapRef, mapOptions, props, markerRef, highlighterRef);
+      prepareMap(props.mapRef, mapOptions, props, markerRef, highlighterRef);
       setMapReady(true);
     };
     script.onerror = (e) => {
@@ -103,13 +104,23 @@ const MazeMap = (props: MazeMapProps) => {
       {mapReady ? (
         <>
           <RandomSpotButton />
-          <NavBar mapRef={mapRef} />
-          <DefaultSearchBar mapRef={mapRef} mazeProps={props} />
+          <NavBar mapRef={props.mapRef}/>
+          <div className="relative flex flex-row items-center justify-center gap-2 min-w-[889px] mt-3 ml-6">
+            <TopBar
+              mapRef={props.mapRef}
+              mazeProps={props}
+              setListView={props.setListView}
+            />
+          </div>
           <SearchBar
-            mapRef={mapRef}
+            mapRef={props.mapRef}
             mazeProps={props}
             markerRef={markerRef}
             highlighterRef={highlighterRef}
+          />
+          <DirectionButton
+            setIsDirecting={setIsDirecting}
+            setListView={props.setListView}
           />
         </>
       ) : (

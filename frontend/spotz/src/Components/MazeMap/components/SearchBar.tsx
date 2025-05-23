@@ -1,7 +1,8 @@
 import { addMarker } from '../lib/marker';
 import type { Map } from 'mapbox-gl';
+import { generateRoute } from '../../Route/routing';
 import { MapClick, MazeMapProps } from '../constants/types';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 declare module 'mapbox-gl' {
   interface Map {
@@ -22,6 +23,8 @@ export const SearchBar: React.FC<Searchbar> = ({
   markerRef,
   highlighterRef,
 }) => {
+  const routeControllerRef = useRef<any>(null);
+
   const mySearch = useMemo(
     () =>
       new window.Mazemap.Search.SearchController({
@@ -38,6 +41,7 @@ export const SearchBar: React.FC<Searchbar> = ({
 
   useEffect(() => {
     let mySearchInput: any;
+
     mySearchInput = new window.Mazemap.Search.SearchInput({
       container: document.getElementById('search-input-container'),
       input: document.getElementById('searchInput'),
@@ -48,28 +52,62 @@ export const SearchBar: React.FC<Searchbar> = ({
     mySearchInput.on('itemclick', async (e: any) => {
       if (!mapRef.current) return;
       const [lng, lat] = e.item.geometry.coordinates;
-      const coords = { lng, lat };
+      const markerCoords = { lng, lat };
 
       mapRef.current.zLevel = e.item.properties.zValue;
 
-      let temp: MapClick = {
+      const temp: MapClick = {
         _defaultPrevented: false,
         point: { x: 0, y: 0 },
-        lngLat: coords,
+        lngLat: markerCoords,
         originalEvent: e,
         target: undefined,
         type: '',
       };
 
-      temp.lngLat = coords;
-
-      markerRef.current = await addMarker(
+      const marker = await addMarker(
         mapRef,
         mazeProps,
         temp,
         markerRef,
         highlighterRef
       );
+
+      marker.getElement().addEventListener('click', () => {
+        if (!navigator.geolocation) {
+          alert('Geolocation is not supported by your browser.');
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userCoords = {
+              lng: position.coords.longitude,
+              lat: position.coords.latitude,
+            };
+
+            routeControllerRef.current?.clear?.();
+
+            generateRoute(
+              mapRef,
+              routeControllerRef,
+              {
+                lngLat: userCoords,
+                zLevel: 0 
+              },
+              {
+                lngLat: markerCoords,
+                zLevel: mapRef.current?.zLevel || 0
+              }
+            );
+            
+          },
+          (err) => {
+            console.error("Error getting location:", err);
+          }
+        );
+      });
+
       mapRef.current.getCanvas().addEventListener('focus', () => {
         if (mySearchInput) {
           mySearchInput.hideSuggestions();
@@ -80,7 +118,10 @@ export const SearchBar: React.FC<Searchbar> = ({
 
   return (
     <>
-      <div id="search-input-container" className="search-control-default">
+      <div
+        id="search-input-container"
+        className="search-control-default rounded-full"
+      >
         <input
           tabIndex={0}
           id="searchInput"
@@ -90,7 +131,6 @@ export const SearchBar: React.FC<Searchbar> = ({
           name="search"
           placeholder="Search"
         />
-
         <div id="suggestions" className="search-suggestions default"></div>
       </div>
     </>

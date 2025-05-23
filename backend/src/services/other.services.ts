@@ -5,6 +5,7 @@ export function clear() {
   setSessions([]);
   setData({
     users: [],
+    spots: [],
     _id: new ObjectId(),
   });
   return {};

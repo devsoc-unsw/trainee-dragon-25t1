@@ -29,28 +29,42 @@ export type Session = {
   userId: UserId;
 };
 
-export type Spot = String;
+export interface Spot {
+  latitude: number;
+  longitude: number;
+  zLevel: number;
+  seats: number;
+  noiseLevel: number;
+  comfortability: number;
+  popularity: number;
+}
 
 export type User = {
   // _id: ObjectId,
   name: Name;
   email: Email;
   password: Password;
-  bookmarks: Array<Spot>;
-  likes: Array<Spot>;
+  bookmarks: Array<GeoSpot>;
+  likes: Array<GeoSpot>;
+  dislikes: Array<GeoSpot>;
   userId: UserId;
+  histories: GeoSpot[];  //is this supposed to be in User or in DataStore?
 };
 
-export type Mail = {
-  // _id: ObjectId,
-  mailId: MailId;
-  sender: Sender;
-  receivers: Receivers;
-  title: Title;
-  timeSent: TimeSent;
-  message: Message;
-  readBy: Array<Email>;
+export type SpotLngLat = {
+  lng: number;
+  lat: number;
 };
+
+export interface GeoSpot  {
+  lngLat: SpotLngLat;
+  zLevel: number;
+}
+
+export type SubHistory = {
+  currentTime: string; //try and find better type for time
+  userId: UserId;
+}
 
 // types for dataStore
 export type SessionStore = {
@@ -60,4 +74,7 @@ export type SessionStore = {
 export type DataStore = {
   _id: ObjectId;
   users: User[];
+  spots: Spot[];
+  //histories: GeoSpot[]; 
+  // histories: Map<UserId, GeoSpot>;
 };

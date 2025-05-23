@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { ErrorMap } from '../constants/errors';
+
 import {
   Name,
   Email,
@@ -64,14 +65,15 @@ export function authRegister(
   setSessions(sessions);
 
   const database = getData();
-
   const user: User = {
     name: name,
     email: email,
     password: password,
     bookmarks: [],
     likes: [],
+    dislikes: [],
     userId: userId,
+    histories: []
   };
   database.users.push(user);
 
