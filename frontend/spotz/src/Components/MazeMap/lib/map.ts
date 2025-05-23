@@ -22,6 +22,7 @@ export const prepareMap = (
     localStorage.removeItem('curLngLat');
     localStorage.removeItem(`searchedPoint2`);
     localStorage.removeItem(`searchedPoint3`);
+    localStorage.removeItem('defaultSpots');
 
     mapRef.current = new window.Mazemap.Map(mapOptions);
 

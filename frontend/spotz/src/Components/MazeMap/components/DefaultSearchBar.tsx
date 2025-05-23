@@ -10,6 +10,7 @@ import { useState } from 'react';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import { RegisterAcc } from './CreateAccountButton';
 import Cookies from 'js-cookie';
+import { setSpotsVisibility } from '../lib/utils';
 
 interface DefaultSearchBarProps {
   mapRef: React.RefObject<Map | null>;
@@ -22,7 +23,6 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
   mazeProps,
   setListView,
 }) => {
-
   const mySearch = useMemo(
     () =>
       new window.Mazemap.Search.SearchController({
@@ -55,7 +55,8 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
           label={'Food'}
           classNames={''}
           onClick={() => {
-            doSearch(mapRef, mySearch, 'food');
+            localStorage.setItem('defaultSpots', JSON.stringify(mySearch));
+            setSpotsVisibility(mapRef, mySearch);
             setListView((prev) => {
               const newPrev = { ...prev };
               if (!prev.isViewing || prev.type !== 'direction') {
@@ -72,32 +73,32 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
         <TopBarButton
           label={'My Liked Spots'}
           classNames={''}
-          onClick={() => Cookies.get("sessionId") ? undefined: setShowRegister(true)}
+          onClick={() =>
+            Cookies.get('sessionId') ? undefined : setShowRegister(true)
+          }
         >
           <ThumbUpIcon />
         </TopBarButton>
         <TopBarButton label={'Study Spots'} classNames={''} onClick={undefined}>
           <SchoolIcon />
         </TopBarButton>
-        { Cookies.get("sessionId") ? null :
-        <TopBarButton
-          label={'Register'}
-          classNames={''}
-          onClick={() => setShowRegister(true)}
-        >
-          <AppRegistrationIcon />
-        </TopBarButton>
-        }
+        {Cookies.get('sessionId') ? null : (
+          <TopBarButton
+            label={'Register'}
+            classNames={''}
+            onClick={() => setShowRegister(true)}
+          >
+            <AppRegistrationIcon />
+          </TopBarButton>
+        )}
       </div>
 
-      {register && (
-        <RegisterAcc onClose={() => setShowRegister(false)} />
-      )}
+      {register && <RegisterAcc onClose={() => setShowRegister(false)} />}
     </>
   );
 };
 
-function doSearch(mapRef: any, mySearch: any, query: any) {
+export function doSearch(mapRef: any, mySearch: any, query: any) {
   // Perform a search query using the Search object
   mySearch.search(query).then((response: any) => {
     displayMapResults(mapRef, response.results);
