@@ -13,7 +13,10 @@ export const DirectionButton: React.FC<DirectionButtonProp> = ({
   const handleClick = () => {
     setListView((prev) => {
       const newPrev = { ...prev };
-      if (!prev.isViewing || prev.type !== 'food') {
+      if (
+        !prev.isViewing ||
+        !['food', 'studyspot', 'likedStudySpot'].includes(prev.type)
+      ) {
         newPrev.isViewing = !prev.isViewing;
       }
       newPrev.type = 'direction';
