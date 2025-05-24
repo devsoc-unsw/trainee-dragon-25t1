@@ -49,6 +49,7 @@ export const SwipeCards: React.FC<SwipeCardsProps> = ({
           />
         );
       })}
+      
     </div>
   );
 };

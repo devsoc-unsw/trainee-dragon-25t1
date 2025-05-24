@@ -11,18 +11,16 @@ export const RandomSpot = () => {
   return (
     <>
       <div className="relative w-full min-h-screen">
-  {/* Background image */}
-      <img
-        src={background}
-        className="fixed inset-0 w-full h-full object-cover -z-20 pointer-events-none"
-        alt="background"
-      />
+        <img
+          src={background}
+          className="fixed inset-0 w-full h-full object-cover -z-10"
+          alt="background"
+        />
 
-      {/* Translucent overlay */}
-      <div className="fixed inset-0 bg-black/30 -z-10 pointer-events-none" />
-      <BackButton />
-      <SwipeCards setLikes={setLikes} setDislikes={setDislikes} />
-      <Footer likes={likes} dislikes={dislikes} />
+        <div className="fixed inset-0 bg-black/30 -z-10" />
+        <BackButton />
+        <SwipeCards setLikes={setLikes} setDislikes={setDislikes} />
+        <Footer likes={likes} dislikes={dislikes} />
       </div>
     </>
   );

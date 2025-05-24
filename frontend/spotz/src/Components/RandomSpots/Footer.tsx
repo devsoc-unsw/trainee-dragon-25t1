@@ -18,7 +18,7 @@ export const Footer: React.FC<FooterProps> = ({ likes, dislikes }) => {
   return (
     <>
       <button
-        className="absolute flex flex-row items-center justify-center gap-3 bottom-0 right-0 p-5 m-5 z-[1000] bg-white font-medium rounded-xl w-[220px] h-[50px] border text-lg"
+        className="absolute flex flex-row items-center justify-center gap-3 bottom-0 right-0 p-5 m-5 z-[1000] bg-white font-medium rounded-xl w-[220px] h-[50px] text-lg hover:bg-black/10"
         onClick={handleSubmit}
       >
         Save Submissions

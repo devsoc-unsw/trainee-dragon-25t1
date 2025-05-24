@@ -7,9 +7,9 @@ export const BackButton = () => {
   return (
     <div
       onClick={() => navigate("/")}
-      className="cursor-pointer z-[1001] absolute top-0 left-0 bg-white p-3 m-5 rounded-xl"
+      className="cursor-pointer z-[1001] absolute top-0 left-0 bg-white p-3 m-5 rounded-xl hover:bg-black/15"
     >
-      <Back />
+      <Back width={20} height={20}/>
     </div>
   );
 };
