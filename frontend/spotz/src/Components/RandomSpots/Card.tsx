@@ -22,6 +22,7 @@ interface CardProps {
   setLikes: Dispatch<SetStateAction<GeoData[]>>;
   setDislikes: Dispatch<SetStateAction<GeoData[]>>;
   cards: Card[];
+  index: number;
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -35,6 +36,7 @@ export const Card: React.FC<CardProps> = ({
   setLikes,
   setDislikes,
   cards,
+  index,
 }) => {
   const [likeStatus, setLikeStatus] = useState("normal");
 
@@ -46,13 +48,13 @@ export const Card: React.FC<CardProps> = ({
     x,
     [-100, 0, 100],
     [
-      "oklch(0.808 0.114 19.571)",
-      "oklch(0.945 0.129 101.54)",
-      "oklch(0.871 0.15 154.449)",
+      "oklch(0.808 0.114 17.571)",
+      "oklch(1 0 0)", 
+      "oklch(0.871 0.15 144.449)",
     ]
   );
 
-  const isFront = id === cards[cards.length - 1].id;
+  const isFront = index === cards.length - 1;
 
   const rotate = useTransform(() => {
     const offset = isFront ? 0 : id % 2 ? 10 : -10;
@@ -78,10 +80,10 @@ export const Card: React.FC<CardProps> = ({
   };
 
   return (
+    <>
     <motion.div
-      className="h-3/4 w-1/3 origin-bottom rounded-2xl bg-yellow-200 relative
-      hover:cursor-grab active:cursor-grabbing text-center text-5xl 
-      shadow-inner bg-gradient-to-br from-white/10 via-transparent"
+      className="h-[650px] w-1/3 origin-bottom rounded-xl border-black shadow-2xl bg-white relative
+      hover:cursor-grab active:cursor-grabbing flex flex-col text-3xl"
       variants={{
         normal: {
           x: 0,
@@ -105,7 +107,7 @@ export const Card: React.FC<CardProps> = ({
         opacity,
         rotate,
         backgroundColor,
-        zIndex: id,
+        zIndex: index,
         transition: "0.125s transform",
         boxShadow: isFront
           ? "0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5)"
@@ -120,39 +122,40 @@ export const Card: React.FC<CardProps> = ({
       onDragEnd={handleDragEnd}
       onTransitionEnd={handleTransitionEnd}
     >
-      <div className="bg-gray-100 m-[40px] py-[10px] rounded-2xl">
+      <div className="flex flex-row justify-evenly gap-10 items-center mt-10 font-semibold">
+        <div>
+          {roomName}
+        </div>
+        <div className="text-xl">
+            {info.map((i, idx) => (
+              <p key={idx}>{i}</p>
+            ))}
+          </div>
+        
+      </div>
+      <div className="m-2">
         <img
           alt="img"
           src={url}
-          className="size-96 object-cover mx-auto my-10 pointer-events-none rounded-xl shadow-xl"
+          className="w-[370px] h-[500px] object-cover mx-auto my-8 pointer-events-none rounded-md"
         />
-
-        {roomName}
-
-        <div className="text-4xl my-7">
-          {info.map((i, index) => (
-            <>
-              <>{i}</>
-              <br key={index} />
-            </>
-          ))}
-        </div>
       </div>
-
-      <div className="flex justify-evenly rounded-2xl px-10 nowrap gap-4 absolute bottom-10 w-full left-0">
+      <div className="flex">
         <button
-          className="w-1/2 bg-red-300 p-4 rounded-lg shadow-lg"
-          onClick={() => setLikeStatus("dislike")}
-        >
-          👎
+            className="w-1/2 bg-red-300 shadow-xl p-4 rounded-lg"
+            onClick={() => setLikeStatus("dislike")}
+          >
+            👎
         </button>
         <button
-          className="w-1/2 bg-green-300 p-4 rounded-lg shadow-lg"
+          className="w-1/2 bg-green-300 p-4 rounded-lg shadow-xl"
           onClick={() => setLikeStatus("like")}
         >
           👍
         </button>
       </div>
     </motion.div>
+    </>
+    
   );
 };
