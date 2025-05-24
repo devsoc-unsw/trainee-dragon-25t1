@@ -7,7 +7,7 @@ import otherRoutes from './routes/other.routes';
 import locationRoutes from './routes/location.routes';
 import { errorMiddleware } from './middleware';
 import { loadData, connectToDatabase } from './dataStore';
-
+import cookieParser from 'cookie-parser';
 import { PORT } from '../config.json';
 
 const app = express();
@@ -32,6 +32,7 @@ async function startServer() {
       origin: 'http://localhost:5173', 
       credentials: true
     }));
+    app.use(cookieParser());
     app.use('', authRoutes);
     app.use('', profileRoutes);
     app.use('', otherRoutes);

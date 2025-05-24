@@ -25,6 +25,14 @@ async function login(req: Request, res: Response) {
   try {
     const { email, password } = req.body;
     const auth = authService.authLogin(email, password);
+    
+    res.cookie('sessionId', auth.sessionId, {
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: false, //CHANGE LATER
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+
     res.json(auth);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
@@ -34,8 +42,15 @@ async function login(req: Request, res: Response) {
 // logout - delete HTTP method
 async function logout(req: Request, res: Response) {
   try {
-    const session = req.header('session');
+    const session = req.cookies.sessionId;
     const auth = authService.authLogout(session as string);
+
+    res.clearCookie('sessionId', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+
     res.json(auth);
   } catch (err: any) {
     res.status(400).json({ error: err.message });

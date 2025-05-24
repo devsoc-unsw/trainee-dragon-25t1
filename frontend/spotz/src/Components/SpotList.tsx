@@ -6,24 +6,31 @@ import { Place } from './PlaceDetails/types';
 import React, { Dispatch, SetStateAction } from 'react';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { ListView } from './MazeMap/constants/types';
+import { setSpotsVisibility } from './MazeMap/lib/utils';
+import type { Map } from 'mapbox-gl';
 
 interface SpotListProps {
+  mapRef: React.RefObject<Map | null>;
   places: Place[];
   isLoading: any;
   setListView: Dispatch<SetStateAction<ListView>>;
 }
 
 const SpotList: React.FC<SpotListProps> = ({
+  mapRef,
   places,
   isLoading,
   setListView,
 }) => {
   const handleCollapseList = () => {
+    const mySearch = JSON.parse(localStorage.getItem('defaultSpots') as string);
+    setSpotsVisibility(mapRef, mySearch);
     setListView((prev: ListView) => {
       const newPrev = { ...prev };
       newPrev.isViewing = !prev.isViewing;
       return newPrev;
     });
+    localStorage.removeItem('defaultSpots');
   };
   return (
     <div className="p-6">
