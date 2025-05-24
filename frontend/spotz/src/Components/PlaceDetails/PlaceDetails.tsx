@@ -37,18 +37,22 @@ export const PlaceDetails: React.FC<PlaceDetailsProps> = ({ place }) => {
               {place.num_reviews} review{place.num_reviews > 1 && 's'}
             </Typography>
           </Box>
-          <Box display="flex" justifyContent="space-between">
-            <Typography component="legend">Price</Typography>
-            <Typography gutterBottom variant="subtitle1">
-              {place.price_level}
-            </Typography>
-          </Box>
-          <Box display="flex" justifyContent="space-between">
-            <Typography component="legend">Ranking</Typography>
-            <Typography gutterBottom variant="subtitle1">
-              {place.ranking}
-            </Typography>
-          </Box>
+          {place.price_level && (
+            <Box display="flex" justifyContent="space-between">
+              <Typography component="legend">Price</Typography>
+              <Typography gutterBottom variant="subtitle1">
+                {place.price_level}
+              </Typography>
+            </Box>
+          )}
+          {place.ranking && (
+            <Box display="flex" justifyContent="space-between">
+              <Typography component="legend">Ranking</Typography>
+              <Typography gutterBottom variant="subtitle1">
+                {place.ranking}
+              </Typography>
+            </Box>
+          )}
           {place?.awards?.map((award: any) => (
             <Box
               display="flex"

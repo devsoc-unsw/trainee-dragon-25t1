@@ -1,16 +1,16 @@
 export interface Place {
-  address: string;
-  awards: Award[];
-  cuisine: Cuisine[];
   name: string;
+  address?: string;
+  awards?: Award[];
+  cuisine?: Cuisine[];
   num_reviews: number;
-  phone: string;
-  photo: Photo | any;
-  price_level: number | string;
-  ranking: string;
-  rating: number;
-  website: any;
-  web_url: any;
+  phone?: string;
+  photo?: Photo | any;
+  price_level?: number | string;
+  ranking?: string;
+  rating?: number;
+  website?: any;
+  web_url?: any;
 }
 
 export interface Cuisine {
