@@ -14,6 +14,7 @@ import { RandomSpotButton } from './RandomSpotButton';
 import { TopBar } from './DefaultSearchBar';
 import { SearchBar } from './SearchBar';
 import { DirectionButton } from './DirectionButton';
+import Cookies from 'js-cookie';
 
 const MazeMap = (props: MazeMapProps) => {
   const [mapReady, setMapReady] = useState(false);

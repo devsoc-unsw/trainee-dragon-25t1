@@ -8,7 +8,10 @@ const validateEmail = (email: string) =>
 const validatePassword = (password: string) =>
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/.test(password);
 
-export const RegisterAcc = ({ onClose }: { onClose?: () => void }) => {
+export const RegisterAcc = ({ onClose, onSuccess }: {
+  onClose?: () => void,
+  onSuccess?: () => void
+}) => {
   const [popup, setPopup] = useState(true); 
   const [closingPopup, setClosingPopup] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
@@ -57,6 +60,7 @@ export const RegisterAcc = ({ onClose }: { onClose?: () => void }) => {
       if (res) {
         setPopup(false);
         onClose?.();
+        onSuccess?.();
         window.location.reload();
       }
     } catch (error) {
