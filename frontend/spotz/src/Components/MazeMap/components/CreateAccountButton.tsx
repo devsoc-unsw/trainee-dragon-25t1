@@ -151,9 +151,13 @@ export const RegisterAcc = ({ onClose, onSuccess }: {
         </div>
       </div>
       }
-      {
-        showLoginPopup ? <LoginPopup></LoginPopup> : null
-      }
+      <LoginPopup 
+        isOpen={showLoginPopup}
+        onClose={() => {
+          setShowLoginPopup(false);
+          onClose?.();
+        }}
+      />
     </>
   );
 };
