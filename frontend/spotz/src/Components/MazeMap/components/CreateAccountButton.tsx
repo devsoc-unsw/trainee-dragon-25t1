@@ -157,6 +157,7 @@ export const RegisterAcc = ({ onClose, onSuccess }: {
           setShowLoginPopup(false);
           onClose?.();
         }}
+        onBack={() => setShowLoginPopup(false)}
       />
     </>
   );
