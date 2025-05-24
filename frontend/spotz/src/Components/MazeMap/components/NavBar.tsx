@@ -108,7 +108,7 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId }) => {
                     </div>
                 </div>
 
-                <div className='flex flex-col'>
+                <div className='flex flex-col gap-2'>
                     <div 
                         className={`flex flex-col py-3 cursor-pointer rounded-lg p-2 ${
                             activeIcon === 'profile' ? 'bg-purple-600' : 'hover:bg-gray-100'
@@ -120,31 +120,23 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId }) => {
                     >
                         <Profile fill={activeIcon === 'profile' ? '#ffffff' : '#1f1f1f'} />
                     </div>
+
+                    {Cookies.get("sessionId") && (
+                        <div className='hover:bg-gray-100 rounded-lg p-2'>
+                            <LogoutButton />
+                        </div>
+                    )}
                 </div>
             </div>
-        
-					</Setting>
-				</div>
-				</div>
-				<div className='flex flex-col py-0.5 cursor-pointer rounded-lg p-2 gap-2'>
-					<div
-						className="flex flex-col py-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2 gap-2"
-						onClick={() => navigate('/profile')}
-					>
-						<Profile></Profile>
-          </div>
-          {
-          Cookies.get("sessionId") ?  <div className='hover:bg-gray-100 rounded-lg p-2 gap-2'> <LogoutButton></LogoutButton>  </div>: undefined
-          }
-        </div>
-      </div>
 
-
-      <SharePopup
-        isOpen={isSharePopupOpen}
-        onClose={handleCloseSharePopup}
-        selectedRoomId={selectedRoomId}
-      />
-    </>
-  );
+            <SharePopup
+                isOpen={isSharePopupOpen}
+                onClose={() => {
+                    setIsSharePopupOpen(false);
+                    setActiveIcon(null);
+                }}
+                selectedRoomId={selectedRoomId}
+            />
+        </>
+    );
 };
