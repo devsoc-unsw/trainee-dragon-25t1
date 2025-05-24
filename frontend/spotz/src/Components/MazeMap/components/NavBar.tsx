@@ -10,6 +10,7 @@ import { LogoutButton } from './LogoutButton';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import SharePopup from './SharePopup';
+import { RegisterAcc } from './CreateAccountButton';
 
 interface NavBar {
     mapRef: any;
@@ -20,6 +21,7 @@ interface NavBar {
 export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId}) => {
 	const [threeD, useThreeD] = useState(false);
 	const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
+	const [register, setShowRegister] = useState(false);
 	const navigate = useNavigate();
 
 	// TODO
@@ -95,13 +97,16 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId}) => {
 				<div className='flex flex-col py-0.5 cursor-pointer rounded-lg p-2 gap-2'>
 					<div
 						className="flex flex-col py-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2 gap-2"
-						onClick={() => navigate('/profile')}
+						onClick={() => {
+							Cookies.get("sessionId") ? navigate('/profile') : setShowRegister(true);
+						}}
 					>
 						<Profile></Profile>
           </div>
           {
           Cookies.get("sessionId") ?  <div className='hover:bg-gray-100 rounded-lg p-2 gap-2'> <LogoutButton></LogoutButton>  </div>: undefined
           }
+		  {register && <RegisterAcc onClose={() => setShowRegister(false)} />}
         </div>
       </div>
 
