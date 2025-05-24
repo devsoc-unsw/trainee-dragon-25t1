@@ -124,7 +124,6 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId }) => {
             <SharePopup
                 isOpen={isSharePopupOpen}
                 onClose={() => {
-                    setIsSharePopupOpen(false);
                     setActiveIcon(null);
                 }}
                 selectedRoomId={selectedRoomId}
