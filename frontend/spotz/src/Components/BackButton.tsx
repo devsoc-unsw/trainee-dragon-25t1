@@ -7,7 +7,7 @@ export const BackButton = () => {
   return (
     <div
       onClick={() => navigate("/")}
-      className="cursor-pointer absolute text-4xl bg-gray-200 p-5 m-5 rounded-2xl"
+      className="cursor-pointer z-[1001] absolute top-0 left-0 bg-white p-3 m-5 rounded-xl"
     >
       <Back />
     </div>

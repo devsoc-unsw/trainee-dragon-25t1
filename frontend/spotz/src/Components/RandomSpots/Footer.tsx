@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { GeoData } from './types';
+import Save from '../icons/Save';
 
 interface FooterProps {
   likes: GeoData[];
@@ -17,10 +18,11 @@ export const Footer: React.FC<FooterProps> = ({ likes, dislikes }) => {
   return (
     <>
       <button
-        className="absolute top-0 right-0 text-5xl bg-blue-500 rounded-3xl size-64"
+        className="absolute flex flex-row items-center justify-center gap-3 bottom-0 right-0 p-5 m-5 z-[1000] bg-white font-medium rounded-xl w-[220px] h-[50px] border text-lg"
         onClick={handleSubmit}
       >
-        SUBMIT
+        Save Submissions
+        <Save />
       </button>
     </>
   );
