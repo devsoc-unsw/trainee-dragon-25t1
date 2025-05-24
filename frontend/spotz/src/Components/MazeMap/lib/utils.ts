@@ -30,21 +30,50 @@ export const getCoordinates = (
 
 export const setSpotsVisibility = (
   mapRef: React.RefObject<Map | null>,
-  mySearch: any
+  sourceName: string,
+  callBackFn: () => void
 ) => {
   const map = mapRef.current;
   if (!map) return;
 
-  if (map.getLayer('geojsonresults')) {
-    const visibility = map.getLayoutProperty('geojsonresults', 'visibility');
-    if (visibility === undefined || visibility === 'none') {
-      map.setLayoutProperty('geojsonresults', 'visibility', 'visible');
-      doSearch(mapRef, mySearch, 'food'); // Refresh data if needed
-    } else {
-      map.setLayoutProperty('geojsonresults', 'visibility', 'none');
+  // Define which layers belong to which source
+  const sourceToLayers: Record<string, string[]> = {
+    geojsonresults: ['outer-circle1', 'inner-circle1'],
+    geojsonresults2: ['outer-circle2', 'inner-circle2'],
+  };
+
+  const targetLayers = sourceToLayers[sourceName];
+  const otherSourceName =
+    sourceName === 'geojsonresults' ? 'geojsonresults2' : 'geojsonresults';
+  const otherLayers = sourceToLayers[otherSourceName];
+
+  // Get current visibility of one layer to decide toggle
+  const currentVisibility = map.getLayoutProperty(
+    targetLayers[0],
+    'visibility'
+  );
+
+  if (currentVisibility === undefined || currentVisibility === 'none') {
+    // Make target layers visible
+    for (const layer of targetLayers) {
+      if (map.getLayer(layer)) {
+        map.setLayoutProperty(layer, 'visibility', 'visible');
+      }
     }
+    // Hide the other source's layers
+    for (const layer of otherLayers) {
+      if (map.getLayer(layer)) {
+        map.setLayoutProperty(layer, 'visibility', 'none');
+      }
+    }
+
+    callBackFn();
   } else {
-    // If the layer doesn't exist yet, create it
-    doSearch(mapRef, mySearch, 'food');
+    // Toggle off target layers
+    for (const layer of targetLayers) {
+      if (map.getLayer(layer)) {
+        map.setLayoutProperty(layer, 'visibility', 'none');
+      }
+    }
   }
 };

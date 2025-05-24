@@ -7,6 +7,7 @@ import { ListView } from '../Components/MazeMap/constants/types';
 import { RouteList } from '../Components/Route/RouteList';
 // import { foodSpots } from '../api/data';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cardData } from '../Components/RandomSpots/CardData';
 
 export const Home = () => {
   const [listView, setListView] = useState<ListView>({
@@ -26,30 +27,53 @@ export const Home = () => {
     // getPlacesData().then((data) => {
     //   setPlaces(data);
     // });
+    if (listView.type === 'food') {
+      const newPlaces: Place[] = [
+        {
+          address: '123 unsw gang gang',
+          awards: [],
+          cuisine: [],
+          name: 'DevSoc DRAGON',
+          num_reviews: 0,
+          phone: '',
+          photo: false,
+          price_level: '',
+          ranking: '',
+          rating: 0,
+          website: 'https://www.google.com/',
+          web_url: 'https://www.google.com/',
+        },
+      ];
 
-    const placesTest: Place = {
-      address: '123 unsw gang gang',
-      awards: [],
-      cuisine: [],
-      name: 'DevSoc DRAGON',
-      num_reviews: 0,
-      phone: '',
-      photo: false,
-      price_level: '',
-      ranking: '',
-      rating: 0,
-      website: 'https://www.google.com/',
-      web_url: 'https://www.google.com/',
-    };
-    places.push(placesTest);
-    places.push(placesTest);
-    places.push(placesTest);
+      newPlaces.push({ ...newPlaces[0] });
+      newPlaces.push({ ...newPlaces[0] });
+      newPlaces.push({ ...newPlaces[0] });
 
-    const newPlaces = [...places];
-    setPlaces(newPlaces);
+      setPlaces(newPlaces);
+    } else if (listView.type === 'studyspot') {
+      const places: Place[] = cardData.map((loc) => {
+        return {
+          name: loc.roomName,
+          photo: {
+            images: {
+              large: {
+                width: '550',
+                height: '700',
+                url: loc.url
+                  ? loc.url
+                  : 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg',
+              },
+            },
+          },
+          num_reviews: 0,
+          rating: Math.floor(Math.random() * 6),
+        };
+      });
+      setPlaces(places);
+    }
 
     setIsLoading(false);
-  }, []);
+  }, [listView.type]);
 
   const listVariants = {
     hidden: { x: '-100%', opacity: 0 },
@@ -69,12 +93,15 @@ export const Home = () => {
               exit="exit"
               variants={listVariants}
             >
-              {listView.type === 'food' ? (
+              {['food', 'studyspot', 'likedStudySpot'].includes(
+                listView.type
+              ) ? (
                 <SpotList
                   mapRef={mapRef}
                   places={places}
                   isLoading={isLoading}
                   setListView={setListView}
+                  type={listView.type}
                 />
               ) : (
                 <RouteList
