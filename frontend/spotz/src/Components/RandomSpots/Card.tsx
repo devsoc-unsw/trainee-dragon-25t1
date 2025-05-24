@@ -22,6 +22,7 @@ interface CardProps {
   setLikes: Dispatch<SetStateAction<GeoData[]>>;
   setDislikes: Dispatch<SetStateAction<GeoData[]>>;
   cards: Card[];
+  index: number;
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -35,6 +36,7 @@ export const Card: React.FC<CardProps> = ({
   setLikes,
   setDislikes,
   cards,
+  index,
 }) => {
   const [likeStatus, setLikeStatus] = useState("normal");
 
@@ -52,8 +54,8 @@ export const Card: React.FC<CardProps> = ({
     ]
   );
 
-  const isFront = id === cards[cards.length - 1].id;
-
+  const isFront = index === cards.length - 1;
+  
   const rotate = useTransform(() => {
     const offset = isFront ? 0 : id % 2 ? 10 : -10;
     return `${rotateRaw.get() + offset}deg`;
@@ -105,7 +107,7 @@ export const Card: React.FC<CardProps> = ({
         opacity,
         rotate,
         backgroundColor,
-        zIndex: id,
+        zIndex: index,
         transition: "0.125s transform",
         boxShadow: isFront
           ? "0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5)"
