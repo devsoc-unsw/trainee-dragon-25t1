@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SwipeCards } from '../Components/RandomSpots/SwipeCards';
-import { Footer } from '../Components/RandomSpots/footer';
+import { Footer } from '../Components/RandomSpots/Footer';
 import { GeoData } from '../Components/RandomSpots/types';
 import { BackButton } from '../Components/BackButton';
 
