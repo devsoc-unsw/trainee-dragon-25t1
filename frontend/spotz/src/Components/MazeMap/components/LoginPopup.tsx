@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { loginUser } from '../../../Fetchers/LoginFetch';
 
 interface LoginPopupProps {
   isOpen: boolean;
@@ -9,6 +10,8 @@ interface LoginPopupProps {
 export const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onBack }) => {
   const [closingPopup, setClosingPopup] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
+  const [showError, setShowError] = useState(false);
+
   const [profileData, setProfileData] = useState({
     email: "",
     password: ""
@@ -54,7 +57,18 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onBack 
   }, [isOpen]);
 
   const handleLogin = async () => {
-    console.log('Login attempt:', profileData);
+    try {
+      const res = await loginUser(profileData.email, profileData.password);
+      if (res) {
+        window.location.reload();
+      }
+      else {
+        setShowError(true);
+      }
+    } catch (error) {
+      setShowError(true);
+      console.error(error);
+    }
   };
 
   if (!isOpen) return null;
@@ -80,7 +94,7 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onBack 
           }}
         >
           <div className='flex flex-col w-full'>
-            <div className='flex justify-between items-center mb-4'>
+            <div className='flex justify-between items-center mb-7'>
               <p className='font-semibold text-2xl'>
                 Login to account
               </p>
@@ -111,7 +125,10 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onBack 
               className="mb-3 w-full p-2 py-3 border rounded text-sm"
             />
           </div>
-          
+          {
+            showError
+            && <p className="text-red-500 text-sm mb-2"> Username and or Password is incorrect, please try again </p>
+          }
           <div className='flex flex-row justify-between items-end w-full'>
             <button
               className='rounded-md w-[60px] h-[40px] bg-purple-600 px-3 mt-3 border-violet-500 text-white text-center font-semibold'

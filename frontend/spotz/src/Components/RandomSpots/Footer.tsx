@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { GeoData } from './types';
 import Save from '../icons/Save';
+import { preferenceUser } from '../../Fetchers/SpotsPreferencesFetch';
 
 interface FooterProps {
   likes: GeoData[];
@@ -10,10 +11,17 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ likes, dislikes }) => {
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // api call to add likes/dislikes
-    console.log(likes, dislikes);
-    navigate('/');
+    try {
+      console.log(likes, dislikes);
+      const res = await preferenceUser(likes, dislikes);
+      if (res) {
+        navigate('/');
+      }
+    } catch (error) {
+      console.error(error)
+    }
   };
   return (
     <>
