@@ -10,6 +10,7 @@ import { LogoutButton } from './LogoutButton';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import SharePopup from './SharePopup';
+import { HistoryPopup } from './HistoryPopup';
 
 interface NavBar {
     mapRef: any;
@@ -20,6 +21,7 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId }) => {
     const [threeD, useThreeD] = useState(false);
     const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
     const [activeIcon, setActiveIcon] = useState<string | null>(null);
+    const [isHistoryPopupOpen, setIsHistoryPopupOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleIconClick = (iconName: string, action?: () => void) => {
@@ -73,7 +75,10 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId }) => {
                         className={`flex flex-col py-3 cursor-pointer rounded-lg p-2 ${
                             activeIcon === 'history' ? 'bg-purple-600' : 'hover:bg-gray-100'
                         }`}
-                        onClick={() => handleIconClick('history')}
+                        onClick={() => {
+                            setIsHistoryPopupOpen(true);
+                            handleIconClick('history')
+                        }}
                     >
                         <History fill={activeIcon === 'history' ? '#ffffff' : '#1f1f1f'} />
                     </div>
@@ -137,6 +142,14 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId }) => {
                 }}
                 selectedRoomId={selectedRoomId}
             />
+
+            <HistoryPopup
+                isOpen={isHistoryPopupOpen}
+                onClose={() => {
+                    setIsHistoryPopupOpen(false);
+                    setActiveIcon(null);
+            }}
+        />
         </>
     );
 };
