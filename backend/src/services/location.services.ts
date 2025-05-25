@@ -76,8 +76,8 @@ export function addStudySpotPreference(
 ) {
   const sessions = getSessions();
   console.log(sessions);
-  console.log(likes)
-  console.log(dislikes)
+  console.log(likes);
+  console.log(dislikes);
   const userId = sessions.find((s) => s.sessionId == session)?.userId as number;
 
   const data = getData();
@@ -85,7 +85,7 @@ export function addStudySpotPreference(
   if (!user || user === undefined) {
     throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
   }
- 
+
   likes.forEach((like) => user.likes.push(like));
   dislikes.forEach((dislike) => user.dislikes.push(dislike));
 
@@ -99,36 +99,33 @@ export function addStudySpotPreference(
  */
 export function getStudySpotHistory(session: SessionId): GeoSpot[] {
   const sessions = getSessions();
-  const userId = sessions.find(s => s.sessionId === session)?.userId;
+  const userId = sessions.find((s) => s.sessionId === session)?.userId;
   if (!userId) throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
 
   const data = getData();
-  const user = data.users.find(u => u.userId === userId)!;
+  const user = data.users.find((u) => u.userId === userId)!;
   if (!user) throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
 
   return user.histories;
 }
-  
-  /**
-   * Save study spot located
-   * @param sessionId
-   * @param spot
-   */
-export function saveStudySpotHistory(
-  session: SessionId,
-  spot: GeoSpot
-) {
+
+/**
+ * Save study spot located
+ * @param sessionId
+ * @param spot
+ */
+export function saveStudySpotHistory(session: SessionId, spot: GeoSpot) {
   const sessions = getSessions();
-  const userId = sessions.find(s => s.sessionId === session)?.userId;
+  const userId = sessions.find((s) => s.sessionId === session)?.userId;
   if (!userId) throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
 
   const data = getData();
-  const user = data.users.find(u => u.userId === userId)!;
+  const user = data.users.find((u) => u.userId === userId)!;
   if (!user) throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
 
   // push our one spot
   user.histories.push(spot);
   setData(data);
 
-  return {}; 
+  return {};
 }
