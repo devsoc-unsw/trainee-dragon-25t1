@@ -45,7 +45,7 @@ async function edit(req: Request, res: Response) {
 
 async function getLikes(req: Request, res: Response) {
   try {
-    const session = req.header('session')!;
+    const session = req.cookies.sessionId;
     const likes = profileService.fetchLikes(session);
     res.json({ likes });
   }
@@ -57,7 +57,7 @@ async function getLikes(req: Request, res: Response) {
 
 async function getDislikes(req: Request, res: Response) {
   try {
-    const session = req.header('session')!;
+    const session = req.cookies.sessionId;
     const dislikes = profileService.fetchDislikes(session);
     res.json({ dislikes });
   }
