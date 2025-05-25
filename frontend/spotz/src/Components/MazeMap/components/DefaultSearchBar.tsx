@@ -11,6 +11,7 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import { RegisterAcc } from './CreateAccountButton';
 import Cookies from 'js-cookie';
 import { setSpotsVisibility } from '../lib/utils';
+import { cardData } from '../../RandomSpots/CardData';
 
 interface DefaultSearchBarProps {
   mapRef: React.RefObject<Map | null>;
@@ -27,6 +28,7 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
     () =>
       new window.Mazemap.Search.SearchController({
         campusid: mazeProps.campuses,
+        campuscollectiontag: 'unsw',
         rows: 100,
         withpois: true,
         withbuilding: false,
@@ -56,10 +58,16 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
           classNames={''}
           onClick={() => {
             localStorage.setItem('defaultSpots', JSON.stringify(mySearch));
-            setSpotsVisibility(mapRef, mySearch);
+            localStorage.setItem('curSourceSpotsName', 'geojsonresults');
+            setSpotsVisibility(mapRef, 'geojsonresults', () =>
+              doSearch(mapRef, mySearch, 'food')
+            );
             setListView((prev) => {
               const newPrev = { ...prev };
-              if (!prev.isViewing || prev.type !== 'direction') {
+              if (
+                !prev.isViewing ||
+                !['direction', 'studyspot'].includes(prev.type)
+              ) {
                 newPrev.isViewing = !prev.isViewing;
               }
               newPrev.type = 'food';
@@ -73,13 +81,41 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
         <TopBarButton
           label={'My Liked Spots'}
           classNames={''}
-          onClick={() =>
-            Cookies.get('sessionId') ? undefined : setShowRegister(true)
-          }
+          onClick={() => {
+            const cookie = Cookies.get('sessionId')
+              ? undefined
+              : setShowRegister(true);
+
+            return cookie;
+          }}
         >
           <ThumbUpIcon />
         </TopBarButton>
-        <TopBarButton label={'Study Spots'} classNames={''} onClick={undefined}>
+        <TopBarButton
+          label={'Study Spots'}
+          classNames={''}
+          onClick={() => {
+            const spotGeoJsonData = constructLayerData();
+            localStorage.setItem('curSourceSpotsName', 'geojsonresults2');
+
+            setSpotsVisibility(mapRef, 'geojsonresults2', () =>
+              displayMapResults(mapRef, 'geojsonresults2', spotGeoJsonData)
+            );
+
+            setListView((prev) => {
+              const newPrev = { ...prev };
+              if (
+                !prev.isViewing ||
+                !['direction', 'food'].includes(prev.type)
+              ) {
+                newPrev.isViewing = !prev.isViewing;
+              }
+              newPrev.type = 'studyspot';
+
+              return newPrev;
+            });
+          }}
+        >
           <SchoolIcon />
         </TopBarButton>
         {Cookies.get('sessionId') ? null : (
@@ -101,13 +137,14 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
 export function doSearch(mapRef: any, mySearch: any, query: any) {
   // Perform a search query using the Search object
   mySearch.search(query).then((response: any) => {
-    displayMapResults(mapRef, response.results);
+    displayMapResults(mapRef, 'geojsonresults', response.results);
   });
 }
 
-function displayMapResults(mapRef: any, geojsonResults: any) {
+function displayMapResults(mapRef: any, geojsonName: any, geojsonResults: any) {
   if (mapRef.current.style) {
-    mapRef.current.getSource('geojsonresults').setData(geojsonResults);
+    mapRef.current.getSource(geojsonName).setData(geojsonResults);
+    console.log(geojsonResults);
     var bbox = window.Mazemap.Util.Turf.bbox(geojsonResults);
     mapRef.current.fitBounds(bbox, { padding: 100 });
   }
@@ -115,30 +152,12 @@ function displayMapResults(mapRef: any, geojsonResults: any) {
 
 function initMapResultsLayer(map: Map) {
   // Add a source layer to use with the layer for rendering geojson features
-  if (map.style) {
-    map.addSource('geojsonresults', {
-      type: 'geojson',
-      data: { type: 'FeatureCollection', features: [] },
-    });
-  }
-  map.addLayer(
-    {
-      id: 'geojsonresults',
-      type: 'circle',
-      source: 'geojsonresults',
-      paint: {
-        'circle-color': '#fd7526',
-        'circle-radius': 7,
-        'circle-stroke-width': 1,
-        'circle-stroke-color': '#fff',
-      },
-    },
-    'mm-building-label'
-  ); // Add this layer UNDER the building label layers
-  initPopupEffect(map);
+  constructLayer(map, 'geojsonresults', '#fd7526', '#ffffff', 1);
+  constructLayer(map, 'geojsonresults2', '#16badb', '#ffffff', 2);
+  initPopupEffect(map, 1);
 }
 
-function initPopupEffect(map: Map) {
+function initPopupEffect(map: Map, id: number) {
   // Create a popup, but don't add it to the map yet.
   var popup = new window.Mazemap.mapboxgl.Popup({
     closeButton: false,
@@ -148,7 +167,7 @@ function initPopupEffect(map: Map) {
   // This is one way to achieve 'mouseover' effect on certain layers
   map.on('mousemove', async (e: any) => {
     const features = map.queryRenderedFeatures(e.point, {
-      layers: ['geojsonresults'],
+      layers: [`outer-circle${id}`, `inner-circle${id}`],
     });
     const feat = features[0] as Feature<Point>;
 
@@ -177,3 +196,70 @@ function initPopupEffect(map: Map) {
     }
   });
 }
+
+export const constructLayer = (
+  map: Map,
+  layerName: string,
+  colorOuter: string,
+  colorInner: string,
+  id: number
+) => {
+  if (map.style) {
+    map.addSource(layerName, {
+      type: 'geojson',
+      data: { type: 'FeatureCollection', features: [] },
+    });
+  }
+
+  // Outer circle layer
+  map.addLayer(
+    {
+      id: `outer-circle${id}`,
+      type: 'circle',
+      source: layerName,
+      paint: {
+        'circle-color': colorOuter,
+        'circle-radius': 10,
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#fff',
+      },
+    },
+    'mm-building-label'
+  );
+
+  // Inner circle layer (smaller, drawn on top)
+  map.addLayer(
+    {
+      id: `inner-circle${id}`,
+      type: 'circle',
+      source: layerName,
+      paint: {
+        'circle-color': colorInner, // Inner color
+        'circle-radius': 4,
+      },
+    },
+    'mm-building-label'
+  );
+};
+
+export const constructLayerData = () => {
+  const geojsonData = {
+    type: 'FeatureCollection',
+    features: cardData.map((loc) => ({
+      type: 'Feature',
+      properties: {
+        id: loc.id,
+        title: loc.roomName,
+        zValue: loc.zLevel,
+        // dispBldNames: loc.bldName: 'example111',
+        campusId: 111,
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [loc.lngLat.lng, loc.lngLat.lat],
+      },
+    })),
+  };
+
+  return geojsonData;
+};

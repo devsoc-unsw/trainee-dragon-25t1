@@ -14,6 +14,7 @@ interface SpotListProps {
   places: Place[];
   isLoading: any;
   setListView: Dispatch<SetStateAction<ListView>>;
+  type: string;
 }
 
 const SpotList: React.FC<SpotListProps> = ({
@@ -21,10 +22,12 @@ const SpotList: React.FC<SpotListProps> = ({
   places,
   isLoading,
   setListView,
+  type,
 }) => {
   const handleCollapseList = () => {
     const mySearch = JSON.parse(localStorage.getItem('defaultSpots') as string);
-    setSpotsVisibility(mapRef, mySearch);
+    const sourceName = localStorage.getItem('curSourceSpotsName') as string;
+    setSpotsVisibility(mapRef, sourceName, mySearch);
     setListView((prev: ListView) => {
       const newPrev = { ...prev };
       newPrev.isViewing = !prev.isViewing;
@@ -44,7 +47,7 @@ const SpotList: React.FC<SpotListProps> = ({
         variant="h2"
         sx={{ marginBottom: '1rem', fontWeight: '400', textAlign: 'center' }}
       >
-        Food
+        {type === 'food' ? 'Food' : 'Study'} Spots
       </Typography>
       <hr className="h-8" />
       {isLoading ? (
