@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { profileFetch } from "../../Fetchers/ProfileFetch";
-import { profileEdit } from "../../Fetchers/ProfileEditFetch";
+import { useEffect, useRef, useState } from 'react';
+import { profileFetch } from '../../Fetchers/ProfileFetch';
+import { profileEdit } from '../../Fetchers/ProfileEditFetch';
 
 interface LoginPopupProps {
   isOpen: boolean;
@@ -17,8 +17,8 @@ export const DetailsPopup: React.FC<LoginPopupProps> = ({
   const popupRef = useRef<HTMLDivElement>(null);
 
   const [profileData, setProfileData] = useState({
-    email: "",
-    name: "",
+    email: '',
+    name: '',
   });
 
   const closePopup = () => {
@@ -55,11 +55,11 @@ export const DetailsPopup: React.FC<LoginPopupProps> = ({
     };
 
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
 
@@ -68,12 +68,12 @@ export const DetailsPopup: React.FC<LoginPopupProps> = ({
       const res = await profileFetch();
       if (res) {
         await profileEdit(
-          profileData.name ? profileData.name : res.data.name,
           [],
           [],
           [],
           [],
-          profileData.email ? profileData.email : res.data.email,
+          profileData.name ? profileData.name : undefined,
+          profileData.email ? profileData.email : undefined,
           res.data.password
         );
         window.location.reload();
@@ -91,8 +91,8 @@ export const DetailsPopup: React.FC<LoginPopupProps> = ({
         className="fixed inset-0 flex items-center justify-center bg-black/30 z-[1000]"
         style={{
           animation: !closingPopup
-            ? "fadeIn 0.1s ease-out forwards"
-            : "fadeOut 0.1s ease-out forwards",
+            ? 'fadeIn 0.1s ease-out forwards'
+            : 'fadeOut 0.1s ease-out forwards',
         }}
       >
         <div
@@ -101,8 +101,8 @@ export const DetailsPopup: React.FC<LoginPopupProps> = ({
           onClick={(e) => e.stopPropagation()}
           style={{
             animation: !closingPopup
-              ? "fadeInScale 0.1s ease-out forwards"
-              : "fadeOutScale 0.1s ease-out forwards",
+              ? 'fadeInScale 0.1s ease-out forwards'
+              : 'fadeOutScale 0.1s ease-out forwards',
           }}
         >
           <div className="flex flex-col w-full">

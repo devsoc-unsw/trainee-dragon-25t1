@@ -1,24 +1,23 @@
-import { ActionCard } from "../Components/Profile/ActionCard";
-import { BackButton } from "../Components/BackButton";
-import { ProfileCard } from "../Components/Profile/ProfileCard";
-import History from "../Components/icons/history";
-import Tab from "../Components/icons/tab";
-import Profile from "../Components/icons/prof";
-import Lock from "../Components/icons/Lock";
-import Logout from "../Components/icons/logout";
-import Bin from "../Components/icons/bin";
-import { profileFetch } from "../Fetchers/ProfileFetch";
-import { useEffect, useState } from "react";
-import { logoutUser } from "../Fetchers/LogoutFetch";
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-import { profileEdit } from "../Fetchers/ProfileEditFetch";
-import { DetailsPopup } from "../Components/Profile/DetailsPopup";
-import { PasswordPopup } from "../Components/Profile/PasswordPopup";
+import { ActionCard } from '../Components/Profile/ActionCard';
+import { BackButton } from '../Components/BackButton';
+import { ProfileCard } from '../Components/Profile/ProfileCard';
+import History from '../Components/icons/history';
+import Tab from '../Components/icons/tab';
+import Profile from '../Components/icons/prof';
+import Lock from '../Components/icons/Lock';
+import Logout from '../Components/icons/logout';
+import { profileFetch } from '../Fetchers/ProfileFetch';
+import { useEffect, useState } from 'react';
+import { logoutUser } from '../Fetchers/LogoutFetch';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { profileEdit } from '../Fetchers/ProfileEditFetch';
+import { DetailsPopup } from '../Components/Profile/DetailsPopup';
+import { PasswordPopup } from '../Components/Profile/PasswordPopup';
 
 export const ProfilePage = () => {
-  const [name, nameSet] = useState("Name");
-  const [email, emailSet] = useState("Email");
+  const [name, nameSet] = useState('Name');
+  const [email, emailSet] = useState('Email');
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false);
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ export const ProfilePage = () => {
           emailSet(res.data.email);
         }
       } catch (error) {
-        console.error("Error fetching profile:", error);
+        console.error('Error fetching profile:', error);
       }
     }
 
@@ -57,19 +56,22 @@ export const ProfilePage = () => {
                 async function clearLiked() {
                   try {
                     const res = await profileFetch();
+                    console.log(res);
+                    console.log(res?.data.likes);
                     if (res) {
-                      await profileEdit(
+                      const test = await profileEdit(
+                        [],
+                        [],
+                        [],
+                        [],
                         res.data.name,
-                        [],
-                        [],
-                        [],
-                        res.data.likes,
                         res.data.email,
                         res.data.password
                       );
+                      console.log(test);
                     }
                   } catch (error) {
-                    console.error("Error fetching profile:", error);
+                    console.error('Error fetching profile:', error);
                   }
                 }
                 clearLiked();
@@ -84,17 +86,17 @@ export const ProfilePage = () => {
                     const res = await profileFetch();
                     if (res) {
                       await profileEdit(
-                        res.data.name,
                         [],
                         res.data.bookmarks,
                         [],
                         [],
+                        res.data.name,
                         res.data.email,
                         res.data.password
                       );
                     }
                   } catch (error) {
-                    console.error("Error fetching profile:", error);
+                    console.error('Error fetching profile:', error);
                   }
                 }
                 clearBookmarks();
@@ -107,8 +109,8 @@ export const ProfilePage = () => {
               name="Log Out"
               onClick={() => {
                 logoutUser();
-                Cookies.remove("sessionId");
-                navigate("/");
+                Cookies.remove('sessionId');
+                navigate('/');
               }}
             ></ActionCard>
             <ActionCard
@@ -156,9 +158,7 @@ export const ProfilePage = () => {
       <PasswordPopup
         isOpen={passwordOpen}
         onClose={() => setPasswordOpen(false)}
-      >
-
-      </PasswordPopup>
+      ></PasswordPopup>
     </>
   );
 };

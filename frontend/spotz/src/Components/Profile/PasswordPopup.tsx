@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { profileFetch } from "../../Fetchers/ProfileFetch";
-import { profileEdit } from "../../Fetchers/ProfileEditFetch";
+import { useEffect, useRef, useState } from 'react';
+import { profileFetch } from '../../Fetchers/ProfileFetch';
+import { profileEdit } from '../../Fetchers/ProfileEditFetch';
 
 interface LoginPopupProps {
   isOpen: boolean;
@@ -18,8 +18,8 @@ export const PasswordPopup: React.FC<LoginPopupProps> = ({
   const popupRef = useRef<HTMLDivElement>(null);
 
   const [passwordData, setPasswordData] = useState({
-    password1: "",
-    password2: "",
+    password1: '',
+    password2: '',
   });
 
   const closePopup = () => {
@@ -56,11 +56,11 @@ export const PasswordPopup: React.FC<LoginPopupProps> = ({
     };
 
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
 
@@ -72,14 +72,19 @@ export const PasswordPopup: React.FC<LoginPopupProps> = ({
     }
     try {
       const res = await profileFetch();
+      console.log(res);
+
+      console.log(
+        passwordData.password1 ? passwordData.password1 : res?.data.password
+      );
       if (res) {
         await profileEdit(
-          res.data.name,
           [],
           [],
           [],
           [],
-          res.data.email,
+          undefined,
+          undefined,
           passwordData.password1 ? passwordData.password1 : res.data.password
         );
         window.location.reload();
@@ -97,8 +102,8 @@ export const PasswordPopup: React.FC<LoginPopupProps> = ({
         className="fixed inset-0 flex items-center justify-center bg-black/30 z-[1000]"
         style={{
           animation: !closingPopup
-            ? "fadeIn 0.1s ease-out forwards"
-            : "fadeOut 0.1s ease-out forwards",
+            ? 'fadeIn 0.1s ease-out forwards'
+            : 'fadeOut 0.1s ease-out forwards',
         }}
       >
         <div
@@ -107,8 +112,8 @@ export const PasswordPopup: React.FC<LoginPopupProps> = ({
           onClick={(e) => e.stopPropagation()}
           style={{
             animation: !closingPopup
-              ? "fadeInScale 0.1s ease-out forwards"
-              : "fadeOutScale 0.1s ease-out forwards",
+              ? 'fadeInScale 0.1s ease-out forwards'
+              : 'fadeOutScale 0.1s ease-out forwards',
           }}
         >
           <div className="flex flex-col w-full">
@@ -154,7 +159,9 @@ export const PasswordPopup: React.FC<LoginPopupProps> = ({
             />
           </div>
 
-          {passwordsMatch ? null : <p className="text-red-400">Passwords don't match</p>}
+          {passwordsMatch ? null : (
+            <p className="text-red-400">Passwords don't match</p>
+          )}
 
           <div className="flex flex-row justify-between items-end w-full">
             <button
