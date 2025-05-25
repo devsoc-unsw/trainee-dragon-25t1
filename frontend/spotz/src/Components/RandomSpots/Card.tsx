@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { Dispatch, SetStateAction, useState } from "react";
 import { CoordinateObject, GeoData } from "./types";
+import { useEffect } from "react";
 
 export type Card = {
   id: number;
@@ -77,6 +78,17 @@ export const Card: React.FC<CardProps> = ({
       setDislikes((prev) => [...prev, { lngLat, zLevel }]);
     }
   };
+
+  // Check every render if its a like or dislike, setTimeout for x.get()
+  useEffect(() => {
+    if (likeStatus === "like" || likeStatus === "dislike") {
+      const timeout = setTimeout(() => {
+        processSwipe(likeStatus);
+      }, 100);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [likeStatus]);
 
   return (
     <>
