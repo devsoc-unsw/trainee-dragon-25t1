@@ -7,16 +7,39 @@ import Profile from "../Components/icons/prof";
 import Lock from "../Components/icons/Lock";
 import Logout from "../Components/icons/logout";
 import Bin from "../Components/icons/bin";
+import { profileFetch } from "../Fetchers/ProfileFetch";
+import { useEffect, useState } from "react";
 
 export const ProfilePage = () => {
+  const [name, nameSet] = useState("Name");
+  const [email, emailSet] = useState("Email");
+
+  useEffect(() => {
+    async function getProfile() {
+      try {
+        const res = await profileFetch();
+        if (res) {
+          nameSet(res.data.name);
+          emailSet(res.data.email);
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    }
+
+    getProfile();
+  }, []);
+
+  
+
   return (
     <>
       <BackButton />
       <div className="flex flex-row h-screen">
         <ProfileCard
           img="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-          name="Person Name"
-          email="personname@email.com"
+          name={name}
+          email={email}
         />
         <div className="bg-grey w-full h-full flex flex-row justify-center items-center py-10">
           <div className="bg-grey w-full h-full flex flex-col items-center m-20">

@@ -4,7 +4,8 @@ import * as profileService from '../services/profile.services';
 // retrieve - get HTTP method
 async function retrieve(req: Request, res: Response) {
   try {
-    const session = req.header('session');
+//     const session = req.header('session');
+    const session = req.cookies.sessionId;
     const profile = profileService.profileRetrieve(session as string);
     res.json(profile);
   } catch (err: any) {
@@ -15,7 +16,7 @@ async function retrieve(req: Request, res: Response) {
 // edit - put HTTP method
 async function edit(req: Request, res: Response) {
   try {
-    const session = req.header('session');
+    const session = req.cookies.sessionId;
 
     const {
       newBookmarks,
