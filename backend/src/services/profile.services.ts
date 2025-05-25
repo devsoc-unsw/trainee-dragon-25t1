@@ -127,3 +127,42 @@ export function profileEdit(
 
   return {};
 }
+/***
+ * Clear user history
+ * @param session
+ */
+export const clearHistory = (session: SessionId) => {
+  const sessions = getSessions();
+  const userId = sessions.find((s) => s.sessionId == session)?.userId as number;
+
+  const data = getData();
+  const user = data.users.find((u) => u.userId == userId);
+  if (!user || user === undefined) {
+    throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
+  }
+
+  user.histories = [];
+  setData(data);
+
+  return {};
+};
+
+/**
+ * Clear user bookmarks
+ * @param session
+ */
+export const clearBookmarks = (session: SessionId) => {
+  const sessions = getSessions();
+  const userId = sessions.find((s) => s.sessionId == session)?.userId as number;
+
+  const data = getData();
+  const user = data.users.find((u) => u.userId == userId);
+  if (!user || user === undefined) {
+    throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
+  }
+
+  user.bookmarks = [];
+  setData(data);
+
+  return {};
+};

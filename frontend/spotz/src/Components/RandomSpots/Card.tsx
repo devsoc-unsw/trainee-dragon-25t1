@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { Dispatch, SetStateAction, useState } from "react";
 import { CoordinateObject, GeoData } from "./types";
+import { useEffect } from "react";
 
 export type Card = {
   id: number;
@@ -38,7 +39,7 @@ export const Card: React.FC<CardProps> = ({
   cards,
   index,
 }) => {
-  const [likeStatus, setLikeStatus] = useState("normal");
+  const [likeStatus, setLikeStatus] = useState<"normal" | "like" | "dislike">("normal");
 
   const x = useMotionValue(0);
 
@@ -62,22 +63,32 @@ export const Card: React.FC<CardProps> = ({
   });
 
   const handleDragEnd = () => {
+    const swipe = x.get();
     if (Math.abs(x.get()) >= 100) {
-      setCards((pv) => pv.filter((v) => v.id !== id));
+      const direction = swipe > 0 ? "like" : "dislike";
+      processSwipe(direction);
     }
   };
 
-  const handleTransitionEnd = () => {
-    if (likeStatus != "normal" && Math.abs(x.get()) >= 100) {
-      setCards((pv) => pv.filter((v) => v.id !== id));
-      if (likeStatus == "dislike") {
-        setDislikes((prev) => [...prev, { lngLat, zLevel }]);
-      }
-      if (likeStatus == "like") {
-        setLikes((prev) => [...prev, { lngLat, zLevel }]);
-      }
+  const processSwipe = (direction: "like" | "dislike") => {
+    setCards((pv) => pv.filter((v) => v.id !== id));
+    if (direction === "like") {
+      setLikes((prev) => [...prev, { lngLat, zLevel }]);
+    } else {
+      setDislikes((prev) => [...prev, { lngLat, zLevel }]);
     }
   };
+
+  // Check every render if its a like or dislike, setTimeout for x.get()
+  useEffect(() => {
+    if (likeStatus === "like" || likeStatus === "dislike") {
+      const timeout = setTimeout(() => {
+        processSwipe(likeStatus);
+      }, 100);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [likeStatus]);
 
   return (
     <>
@@ -120,7 +131,6 @@ export const Card: React.FC<CardProps> = ({
         right: 0,
       }}
       onDragEnd={handleDragEnd}
-      onTransitionEnd={handleTransitionEnd}
     >
       <div className="flex flex-row justify-evenly gap-10 items-center mt-10 font-semibold">
         <div>
