@@ -100,17 +100,27 @@ export const RegisterAcc = ({ onClose, onSuccess }: {
               : "fadeOutScale 0.1s ease-out forwards",
           }}
         >
-          <div className='flex flex-col'>
-            <p className='font-semibold text-2xl'>
-              Create an account
-            </p>
+          <div className='flex flex-col w-full'>
+            <div className='flex justify-between items-center mb-4'>
+              <p className='font-semibold text-2xl'>
+                Create an account
+              </p>
+              <button 
+                onClick={closePopup}
+                className="text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
 
             <input
               name="name"
               placeholder='Username'
               onChange={handleProfile}
               value={profileData.name}
-              className="mb-3 w-[500px] p-2 py-3 border rounded text-sm mt-6"
+              className="mb-3 w-full p-2 py-3 border rounded text-sm"
             />
             {nameError && <p className="text-red-500 text-sm mb-2">{nameError}</p>}
 
@@ -142,7 +152,12 @@ export const RegisterAcc = ({ onClose, onSuccess }: {
               </button>
               <p 
                 className='cursor-pointer underline text-purple-600 font-medium'
-                onClick={() => setShowLoginPopup(true)}
+                onClick={() => {
+                  setShowLoginPopup(true);
+                  setNameError('');
+                  setEmailError('');
+                  setPasswordError('');
+                }}
               >
                 Or if you already have an account, login here
               </p>
@@ -151,9 +166,14 @@ export const RegisterAcc = ({ onClose, onSuccess }: {
         </div>
       </div>
       }
-      {
-        showLoginPopup ? <LoginPopup></LoginPopup> : null
-      }
+      <LoginPopup 
+        isOpen={showLoginPopup}
+        onClose={() => {
+          setShowLoginPopup(false);
+          onClose?.();
+        }}
+        onBack={() => setShowLoginPopup(false)}
+      />
     </>
   );
 };
