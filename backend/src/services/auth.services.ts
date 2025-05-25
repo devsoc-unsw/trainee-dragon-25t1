@@ -64,6 +64,7 @@ export function authRegister(
   sessions.push(session);
   setSessions(sessions);
 
+  
   const database = getData();
   const user: User = {
     name: name,
