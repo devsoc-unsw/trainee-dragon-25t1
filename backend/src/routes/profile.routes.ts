@@ -10,4 +10,18 @@ router.get('/profile', sessionMiddleware, profileController.retrieve);
 // Edit user profile and returns nth
 router.put('/profile/edit', sessionMiddleware, profileController.edit);
 
+// Clear user history
+router.delete(
+  '/profile/history',
+  sessionMiddleware,
+  profileController.clearHistory
+);
+
+// Clear user bookmarks
+router.delete(
+  '/profile/bookmarks',
+  sessionMiddleware,
+  profileController.clearBookmarks
+);
+
 export default router;

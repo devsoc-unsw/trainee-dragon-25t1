@@ -4,7 +4,6 @@ import * as profileService from '../services/profile.services';
 // retrieve - get HTTP method
 async function retrieve(req: Request, res: Response) {
   try {
-//     const session = req.header('session');
     const session = req.cookies.sessionId;
     const profile = profileService.profileRetrieve(session as string);
     res.json(profile);
@@ -44,4 +43,24 @@ async function edit(req: Request, res: Response) {
   }
 }
 
-export { retrieve, edit };
+async function clearHistory(req: Request, res: Response) {
+  try {
+    const session = req.cookies.sessionId;
+    const profile = profileService.clearHistory(session as string);
+    res.json(profile);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+}
+
+async function clearBookmarks(req: Request, res: Response) {
+  try {
+    const session = req.cookies.sessionId;
+    const profile = profileService.clearBookmarks(session as string);
+    res.json(profile);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+}
+
+export { retrieve, edit, clearHistory, clearBookmarks };
