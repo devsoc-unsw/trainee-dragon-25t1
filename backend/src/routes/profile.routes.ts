@@ -32,4 +32,18 @@ router.get(
     profileController.getDislikes
 );
 
+// Clear user history
+router.delete(
+  '/profile/history',
+  sessionMiddleware,
+  profileController.clearHistory
+);
+
+// Clear user bookmarks
+router.delete(
+  '/profile/bookmarks',
+  sessionMiddleware,
+  profileController.clearBookmarks
+);
+
 export default router;

@@ -4,7 +4,7 @@ import * as profileService from '../services/profile.services';
 // retrieve - get HTTP method
 async function retrieve(req: Request, res: Response) {
   try {
-    const session = req.header('session');
+    const session = req.cookies.sessionId;
     const profile = profileService.profileRetrieve(session as string);
     res.json(profile);
   } catch (err: any) {
@@ -15,7 +15,7 @@ async function retrieve(req: Request, res: Response) {
 // edit - put HTTP method
 async function edit(req: Request, res: Response) {
   try {
-    const session = req.header('session');
+    const session = req.cookies.sessionId;
 
     const {
       newBookmarks,
@@ -43,6 +43,7 @@ async function edit(req: Request, res: Response) {
   }
 }
 
+<<<<<<< HEAD
 async function getLikes(req: Request, res: Response) {
   try {
     const session = req.header('session')!;
@@ -51,10 +52,19 @@ async function getLikes(req: Request, res: Response) {
   }
   
   catch (err: any) {
+=======
+async function clearHistory(req: Request, res: Response) {
+  try {
+    const session = req.cookies.sessionId;
+    const profile = profileService.clearHistory(session as string);
+    res.json(profile);
+  } catch (err: any) {
+>>>>>>> 5fa8f3f167d3ddd9d9a28a28c69bc65c003cfb2d
     res.status(400).json({ error: err.message });
   }
 }
 
+<<<<<<< HEAD
 async function getDislikes(req: Request, res: Response) {
   try {
     const session = req.header('session')!;
@@ -63,8 +73,20 @@ async function getDislikes(req: Request, res: Response) {
   }
   
   catch (err: any) {
+=======
+async function clearBookmarks(req: Request, res: Response) {
+  try {
+    const session = req.cookies.sessionId;
+    const profile = profileService.clearBookmarks(session as string);
+    res.json(profile);
+  } catch (err: any) {
+>>>>>>> 5fa8f3f167d3ddd9d9a28a28c69bc65c003cfb2d
     res.status(400).json({ error: err.message });
   }
 }
 
+<<<<<<< HEAD
 export { retrieve, edit, getLikes, getDislikes };
+=======
+export { retrieve, edit, clearHistory, clearBookmarks };
+>>>>>>> 5fa8f3f167d3ddd9d9a28a28c69bc65c003cfb2d
