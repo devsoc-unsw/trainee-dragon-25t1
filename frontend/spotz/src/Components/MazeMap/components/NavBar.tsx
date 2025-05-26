@@ -88,8 +88,13 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId }) => {
 								activeIcon === 'history' ? 'bg-purple-600' : 'hover:bg-gray-100'
 							} ${expand ? 'justify-between w-full' : 'justify-center'}`}
 							onClick={() => {
+								
 								handleIconClick('history');
-							    setIsHistoryPopupOpen(true);
+								{
+									Cookies.get("sessionId")
+									? setIsHistoryPopupOpen(true)
+									: setShowRegister(true);
+								}
 							}}
 						>
 							<History fill={activeIcon === 'history' ? '#ffffff' : '#1f1f1f'} />
