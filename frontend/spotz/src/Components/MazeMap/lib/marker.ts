@@ -8,6 +8,38 @@ import {
 } from '../constants/types';
 import { getCoordinates, getProp } from './utils';
 
+
+const saveRoomToHistory = async (poi: any, lngLat: any, zLevel: number) => {
+  try {
+    const sessionCookie = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('sessionId='));
+    
+    if (!sessionCookie) {
+      console.log('User not logged in, skipping history save');
+      return;
+    }
+
+    await fetch('http://localhost:3000/location/studyspot/visited', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'session': sessionCookie.split('=')[1],
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        latitude: lngLat.lat,
+        longitude: lngLat.lng,
+        zLevel: zLevel
+      })
+    });
+    
+    console.log('Room saved to history:', poi);
+  } catch (error) {
+    console.error('Failed to save room to history:', error);
+  }
+};
+
 export const clearMarker = (markerRef: any) => {
   if (markerRef.current) {
     markerRef.current.remove();
@@ -38,6 +70,7 @@ const drawMarker = async (
   }
 };
 
+
 export const addMarker = async (
   mapRef: any,
   props: MazeMapProps,
@@ -62,6 +95,8 @@ export const addMarker = async (
       localStorage.setItem('curLngLat', JSON.stringify(storedPoint));
       return await drawMarker(mapRef, props, e.lngLat, zLevel);
     }
+
+    await saveRoomToHistory(poi, e.lngLat, zLevel);
 
     const lnglat = window.Mazemap.Util.getPoiLngLat(poi);
     if (

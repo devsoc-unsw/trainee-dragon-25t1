@@ -50,20 +50,15 @@ export const HistoryPopup: React.FC<HistoryPopupProps> = ({ isOpen, onClose }) =
         return;
       }
 
-      const response = await fetch('/location/studyspot/history', {
+      const response = await fetch('http://localhost:3000/location/studyspot/history', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'session': sessionCookie.split('=')[1], // Extract session value
+          'session': sessionCookie.split('=')[1],
         },
         credentials: 'include',
       });
 
-      // Check if response is actually JSON
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new Error('Server returned non-JSON response');
-      }
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -101,17 +96,15 @@ export const HistoryPopup: React.FC<HistoryPopupProps> = ({ isOpen, onClose }) =
     };
   }, [isOpen]);
 
-  // Generate room name from coordinates if not provided
+  // Generate room name from coordinates if not provided - FOR FUTURE IMPLEMENT THE ROOMNAME FROM MAZE API
   const getRoomName = (spot: GeoSpot) => {
     if (spot.roomName) return spot.roomName;
     return `Room at ${spot.lngLat.lat.toFixed(4)}, ${spot.lngLat.lng.toFixed(4)}`;
   };
 
-  // Handle room click (optional - navigate to room)
+  // Handle room click
   const handleRoomClick = (spot: GeoSpot) => {
     console.log('Navigate to room:', spot);
-    // Add navigation logic here if needed
-    // For example: navigate to the room on the map
   };
 
   if (!isOpen) return null;
@@ -136,7 +129,6 @@ export const HistoryPopup: React.FC<HistoryPopupProps> = ({ isOpen, onClose }) =
               : "fadeOutScale 0.1s ease-out forwards",
           }}
         >
-          {/* Header */}
           <div className='flex justify-between items-center mb-6'>
             <h2 className='font-semibold text-2xl text-gray-800'>
               Your Study Spot History
@@ -151,7 +143,6 @@ export const HistoryPopup: React.FC<HistoryPopupProps> = ({ isOpen, onClose }) =
             </button>
           </div>
 
-          {/* Content */}
           <div className="flex-1 overflow-y-auto">
             {isLoading ? (
               <div className="flex items-center justify-center h-40">
@@ -164,7 +155,7 @@ export const HistoryPopup: React.FC<HistoryPopupProps> = ({ isOpen, onClose }) =
             ) : history.length === 0 ? (
               <div className="flex items-center justify-center h-40 text-center">
                 <div className="text-gray-500 max-w-md">
-                  <div className="text-lg mb-2">📍</div>
+                  <div className="text-lg mb-2">nothing to see here... yet</div>
                   <p>No spotz currently in your history. Feel free to explore different study spotz for them to be added to history!</p>
                 </div>
               </div>
@@ -176,7 +167,6 @@ export const HistoryPopup: React.FC<HistoryPopupProps> = ({ isOpen, onClose }) =
                     className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors cursor-pointer border border-gray-200"
                     onClick={() => handleRoomClick(spot)}
                   >
-                    {/* Room Image */}
                     <div className="w-full h-32 bg-gray-200 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
                       {spot.imageUrl ? (
                         <img 
@@ -194,7 +184,6 @@ export const HistoryPopup: React.FC<HistoryPopupProps> = ({ isOpen, onClose }) =
                       )}
                     </div>
 
-                    {/* Room Info */}
                     <div>
                       <h3 className="font-medium text-gray-800 truncate mb-1">
                         {getRoomName(spot)}
@@ -212,7 +201,6 @@ export const HistoryPopup: React.FC<HistoryPopupProps> = ({ isOpen, onClose }) =
             )}
           </div>
 
-          {/* Footer (optional) */}
           {history.length > 0 && (
             <div className="mt-4 pt-4 border-t border-gray-200">
               <p className="text-sm text-gray-500 text-center">
