@@ -1,5 +1,4 @@
 import type { Map } from 'mapbox-gl';
-import { doSearch } from '../components/DefaultSearchBar';
 import {
   Coordinates,
   CoordinatesObject,
@@ -35,13 +34,12 @@ export const setSpotsVisibility = (
 ) => {
   const map = mapRef.current;
   if (!map) return;
-
   // Define which layers belong to which source
   const sourceToLayers: Record<string, string[]> = {
     geojsonresults: ['outer-circle1', 'inner-circle1'],
     geojsonresults2: ['outer-circle2', 'inner-circle2'],
+    geojsonresults3: ['outer-circle3', 'inner-circle3'],
   };
-
   const targetLayers = sourceToLayers[sourceName];
   const otherSourceName =
     sourceName === 'geojsonresults' ? 'geojsonresults2' : 'geojsonresults';

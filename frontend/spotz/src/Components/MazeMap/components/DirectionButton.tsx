@@ -15,7 +15,7 @@ export const DirectionButton: React.FC<DirectionButtonProp> = ({
       const newPrev = { ...prev };
       if (
         !prev.isViewing ||
-        !['food', 'studyspot', 'likedStudySpot'].includes(prev.type)
+        !['food', 'studyspot', 'likedspot'].includes(prev.type)
       ) {
         newPrev.isViewing = !prev.isViewing;
       }
