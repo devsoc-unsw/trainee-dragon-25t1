@@ -36,6 +36,24 @@ export function profileRetrieve(session: SessionId): User {
 }
 
 /**
+ * Fetch the likes array from the user profile
+ * @param session
+ */
+export function fetchLikes(session: SessionId): GeoSpot[] {
+  const user = profileRetrieve(session);
+  return user.likes ?? [];
+}
+
+/**
+ * Fetch the dislikes array from the user profile
+ * @param session
+ */
+export function fetchDislikes(session: SessionId): GeoSpot[] {
+  const user = profileRetrieve(session);
+  return user.dislikes ?? [];
+}
+
+/**
  * Edit user profile and returns nth
  * @param sessionId
  * @param name
@@ -43,6 +61,7 @@ export function profileRetrieve(session: SessionId): User {
  * @param password
  * @param bookmarks
  * @param likes
+ * @param dislikes
  */
 export function profileEdit(
   session: SessionId,
@@ -108,3 +127,42 @@ export function profileEdit(
 
   return {};
 }
+/***
+ * Clear user history
+ * @param session
+ */
+export const clearHistory = (session: SessionId) => {
+  const sessions = getSessions();
+  const userId = sessions.find((s) => s.sessionId == session)?.userId as number;
+
+  const data = getData();
+  const user = data.users.find((u) => u.userId == userId);
+  if (!user || user === undefined) {
+    throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
+  }
+
+  user.histories = [];
+  setData(data);
+
+  return {};
+};
+
+/**
+ * Clear user bookmarks
+ * @param session
+ */
+export const clearBookmarks = (session: SessionId) => {
+  const sessions = getSessions();
+  const userId = sessions.find((s) => s.sessionId == session)?.userId as number;
+
+  const data = getData();
+  const user = data.users.find((u) => u.userId == userId);
+  if (!user || user === undefined) {
+    throw new Error(ErrorMap['USER_DOES_NOT_EXIST']);
+  }
+
+  user.bookmarks = [];
+  setData(data);
+
+  return {};
+};
