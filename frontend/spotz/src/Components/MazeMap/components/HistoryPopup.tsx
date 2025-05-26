@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { fetchStudySpotHistory } from '../../../Fetchers/HistoryFetch';
+
 
 interface GeoSpot {
   lngLat: { lat: number; lng: number };
@@ -39,41 +41,10 @@ export const HistoryPopup: React.FC<HistoryPopupProps> = ({ isOpen, onClose }) =
     setError('');
 
     try {
-      // Check if user is logged in first
-      const sessionCookie = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('sessionId='));
-      
-      if (!sessionCookie) {
-        setError('Please log in to view your history');
-        setIsLoading(false);
-        return;
-      }
-
-      const response = await fetch('http://localhost:3000/location/studyspot/history', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'session': sessionCookie.split('=')[1],
-        },
-        credentials: 'include',
-      });
-
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `HTTP ${response.status}`);
-      }
-
-      const data = await response.json();
-      setHistory(data);
+      const response = await fetchStudySpotHistory();
+      setHistory(response.data);
     } catch (err: any) {
-      console.error('Full error:', err);
-      if (err.message.includes('<!DOCTYPE')) {
-        setError('Server error - please try again later');
-      } else {
-        setError(err.message || 'Failed to load history');
-      }
+      setError(err.message || 'Failed to load history');
     } finally {
       setIsLoading(false);
     }
