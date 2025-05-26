@@ -34,7 +34,7 @@ async function recommend(req: Request, res: Response) {
 // addSpotPreference - post HTTP method
 async function addSpotPreference(req: Request, res: Response) {
   try {
-    const session = req.cookies.sessionId;
+    const session = req.header('session') || req.cookies.sessionId;
     console.log(session);
     const { likes, dislikes } = req.body;
 
@@ -53,7 +53,7 @@ async function addSpotPreference(req: Request, res: Response) {
 // gets the study spot history of a user
 async function getStudySpotHistory(req: Request, res: Response) {
   try {
-    const session = req.cookies.sessionId;
+    const session = req.header('session') || req.cookies.sessionId;
     const history = locationService.getStudySpotHistory(session);
     res.json(history);
   }
@@ -67,7 +67,7 @@ async function getStudySpotHistory(req: Request, res: Response) {
 // posts the study spot history of a user
 async function saveStudySpot(req: Request, res: Response) {
   try {
-    const session = req.cookies.sessionId;
+    const session = req.header('session') || req.cookies.sessionId;
     const { latitude, longitude, zLevel } = req.body;
 
     const spot: GeoSpot = {
