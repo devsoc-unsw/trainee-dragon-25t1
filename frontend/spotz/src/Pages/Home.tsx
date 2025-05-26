@@ -8,6 +8,7 @@ import { RouteList } from '../Components/Route/RouteList';
 // import { foodSpots } from '../api/data';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cardData } from '../Components/RandomSpots/CardData';
+import { getLikedSpots } from '../Fetchers/likedSpotsFetch';
 
 export const Home = () => {
   const [listView, setListView] = useState<ListView>({
@@ -70,6 +71,42 @@ export const Home = () => {
         };
       });
       setPlaces(places);
+    } else if (listView.type === 'likedspot') {
+      const getMappedLikedSpots = async () => {
+        const likedSpotData = await getLikedSpots();
+        const likedSpots = likedSpotData.features
+          .map((spot: any) => {
+            const placeMatch = cardData.find(
+              (loc) =>
+                loc.lngLat.lng === spot.geometry.coordinates[0] &&
+                loc.lngLat.lat === spot.geometry.coordinates[1]
+            );
+
+            if (placeMatch)
+              return {
+                name: placeMatch.roomName,
+                photo: {
+                  images: {
+                    large: {
+                      width: '550',
+                      height: '700',
+                      url: placeMatch.url
+                        ? placeMatch.url
+                        : 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg',
+                    },
+                  },
+                },
+                num_reviews: 0,
+                rating: Math.floor(Math.random() * 6),
+              };
+            return null; // Ensure undefined entries don't get included
+          })
+          .filter(Boolean); // Remove null values
+
+        setPlaces(likedSpots);
+      };
+
+      getMappedLikedSpots();
     }
 
     setIsLoading(false);
@@ -93,9 +130,7 @@ export const Home = () => {
               exit="exit"
               variants={listVariants}
             >
-              {['food', 'studyspot', 'likedStudySpot'].includes(
-                listView.type
-              ) ? (
+              {['food', 'studyspot', 'likedspot'].includes(listView.type) ? (
                 <SpotList
                   mapRef={mapRef}
                   places={places}

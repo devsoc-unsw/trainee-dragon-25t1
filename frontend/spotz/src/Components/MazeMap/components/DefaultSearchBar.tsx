@@ -12,6 +12,7 @@ import { RegisterAcc } from './CreateAccountButton';
 import Cookies from 'js-cookie';
 import { setSpotsVisibility } from '../lib/utils';
 import { cardData } from '../../RandomSpots/CardData';
+import { getLikedSpots } from '../../../Fetchers/likedSpotsFetch';
 
 interface DefaultSearchBarProps {
   mapRef: React.RefObject<Map | null>;
@@ -66,7 +67,7 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
               const newPrev = { ...prev };
               if (
                 !prev.isViewing ||
-                !['direction', 'studyspot'].includes(prev.type)
+                !['direction', 'studyspot', 'likedspot'].includes(prev.type)
               ) {
                 newPrev.isViewing = !prev.isViewing;
               }
@@ -81,12 +82,36 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
         <TopBarButton
           label={'My Liked Spots'}
           classNames={''}
-          onClick={() => {
-            const cookie = Cookies.get('sessionId')
-              ? undefined
-              : setShowRegister(true);
+          onClick={async () => {
+            Cookies.get('sessionId') ? undefined : setShowRegister(true);
+            if (!mapRef.current) return;
+            if (mapRef.current) {
+              constructLayer(
+                mapRef.current,
+                'geojsonresults3',
+                '#f542aa',
+                '#ffffff',
+                3
+              );
+            }
+            const spotGeoJsonData = await getLikedSpots();
+            localStorage.setItem('curSourceSpotsName', 'geojsonresults3');
+            setSpotsVisibility(mapRef, 'geojsonresults3', () =>
+              displayMapResults(mapRef, 'geojsonresults3', spotGeoJsonData)
+            );
 
-            return cookie;
+            setListView((prev) => {
+              const newPrev = { ...prev };
+              if (
+                !prev.isViewing ||
+                !['direction', 'food', 'studyspot'].includes(prev.type)
+              ) {
+                newPrev.isViewing = !prev.isViewing;
+              }
+              newPrev.type = 'likedspot';
+
+              return newPrev;
+            });
           }}
         >
           <ThumbUpIcon />
@@ -106,7 +131,7 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
               const newPrev = { ...prev };
               if (
                 !prev.isViewing ||
-                !['direction', 'food'].includes(prev.type)
+                !['direction', 'food', 'likedspot'].includes(prev.type)
               ) {
                 newPrev.isViewing = !prev.isViewing;
               }
@@ -144,7 +169,6 @@ export function doSearch(mapRef: any, mySearch: any, query: any) {
 function displayMapResults(mapRef: any, geojsonName: any, geojsonResults: any) {
   if (mapRef.current.style) {
     mapRef.current.getSource(geojsonName).setData(geojsonResults);
-    console.log(geojsonResults);
     var bbox = window.Mazemap.Util.Turf.bbox(geojsonResults);
     mapRef.current.fitBounds(bbox, { padding: 100 });
   }
