@@ -28,7 +28,7 @@ export const DirectionButton: React.FC<DirectionButtonProp> = ({
   return (
     <>
       <button
-        className="absolute flex flex-row items-center justify-evenly bottom-11 left-[40%] h-20 w-1/5 sm:w-[13%] 
+        className="absolute flex flex-row items-center justify-evenly bottom-11 left-[44%] h-20 w-1/5 sm:w-[16%] 
         bg-white text-2xl rounded-full hover:bg-black/15 duration-500 font-medium border border-gray-200"
         onClick={handleClick}
       >
