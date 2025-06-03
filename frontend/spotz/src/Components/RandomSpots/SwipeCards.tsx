@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { cardData } from './CardData';
 import { Card } from './Card';
 import { GeoData } from './types';
-import { useNavigate } from 'react-router-dom';
 
 interface SwipeCardsProps {
   setLikes: Dispatch<SetStateAction<GeoData[]>>;
