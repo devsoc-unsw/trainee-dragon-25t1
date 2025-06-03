@@ -9,7 +9,9 @@ import { RouteList } from '../Components/Route/RouteList';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cardData } from '../Components/RandomSpots/CardData';
 import { getLikedSpots } from '../Fetchers/likedSpotsFetch';
-import { foodSpots } from '../api/data';
+
+import { foodSpots } from '../api/foodData';
+
 export const Home = () => {
   const [listView, setListView] = useState<ListView>({
     isViewing: false,
