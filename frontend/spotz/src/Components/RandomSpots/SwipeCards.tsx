@@ -13,7 +13,6 @@ export const SwipeCards: React.FC<SwipeCardsProps> = ({
   setLikes,
   setDislikes,
 }) => {
-  const navigate = useNavigate();
   const [cards, setCards] = useState<Card[]>(() =>
     [...cardData]
       .map(value => ({ value, sort: Math.random() }))
