@@ -11,7 +11,7 @@ export const getLikedSpots = async () => {
 
     return {
       type: 'FeatureCollection',
-      features: liked.map((spot: any, index: number) => ({
+      features: liked.map((spot: any) => ({
         type: 'Feature',
         properties: {
           zValue: spot.zLevel,

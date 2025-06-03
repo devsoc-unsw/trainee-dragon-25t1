@@ -22,10 +22,10 @@ export const SwipeCards: React.FC<SwipeCardsProps> = ({
   );  //change the [...cardData] as it can cause duplicated data.
   console.log(cards);
 
-  const handleSubmit = () => {
-    // api call to add likes/dislikes
-    navigate('/');
-  };
+  // const handleSubmit = () => {
+  //   // api call to add likes/dislikes
+  //   navigate('/');
+  // };
 
   return (
     <div
