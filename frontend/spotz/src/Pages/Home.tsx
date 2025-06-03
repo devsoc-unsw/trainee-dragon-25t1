@@ -9,7 +9,7 @@ import { RouteList } from '../Components/Route/RouteList';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cardData } from '../Components/RandomSpots/CardData';
 import { getLikedSpots } from '../Fetchers/likedSpotsFetch';
-
+import { foodSpots } from '../api/data';
 export const Home = () => {
   const [listView, setListView] = useState<ListView>({
     isViewing: false,
@@ -29,28 +29,44 @@ export const Home = () => {
     //   setPlaces(data);
     // });
     if (listView.type === 'food') {
-      const newPlaces: Place[] = [
-        {
-          address: '123 unsw gang gang',
-          awards: [],
-          cuisine: [],
-          name: 'DevSoc DRAGON',
-          num_reviews: 0,
-          phone: '',
-          photo: false,
-          price_level: '',
-          ranking: '',
-          rating: 0,
-          website: 'https://www.google.com/',
-          web_url: 'https://www.google.com/',
-        },
-      ];
+      const food: Place[] = (foodSpots as any).map((loc: any) => {
+        return {
+          name: loc.name,
+          awards: loc.awards,
+          cuisine: loc.cuisine,
+          address: loc.address,
+          num_reviews: loc.num_reviews,
+          timezone: loc.timezone,
+          location_string: loc.location_string,
+          photo: loc.photo,
+          price_level: loc.price_level,
+          ranking: loc.ranking,
+          rating: loc.rating,
+          website: loc.website,
+          web_url: loc.web_url
+        }
+      });
+      // const newPlaces: Place[] = [
+      //   {
+      //     address: '123 unsw gang gang',
+      //     awards: [],
+      //     cuisine: [],
+      //     name: 'DevSoc DRAGON',
+      //     num_reviews: 0,
+      //     phone: '',
+      //     photo: false,
+      //     price_level: '',
+      //     ranking: '',
+      //     rating: 0,
+      //     website: 'https://www.google.com/',
+      //     web_url: 'https://www.google.com/',
+      //   },
+      // ];
 
-      newPlaces.push({ ...newPlaces[0] });
-      newPlaces.push({ ...newPlaces[0] });
-      newPlaces.push({ ...newPlaces[0] });
-
-      setPlaces(newPlaces);
+      // newPlaces.push({ ...newPlaces[0] });
+      // newPlaces.push({ ...newPlaces[0] });
+      // newPlaces.push({ ...newPlaces[0] });
+      setPlaces(food);
     } else if (listView.type === 'studyspot') {
       const places: Place[] = cardData.map((loc) => {
         return {
