@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { cardData } from './CardData';
 import { Card } from './Card';
 import { GeoData } from './types';
-import { useNavigate } from 'react-router-dom';
 
 interface SwipeCardsProps {
   setLikes: Dispatch<SetStateAction<GeoData[]>>;
@@ -13,7 +12,6 @@ export const SwipeCards: React.FC<SwipeCardsProps> = ({
   setLikes,
   setDislikes,
 }) => {
-  const navigate = useNavigate();
   const [cards, setCards] = useState<Card[]>(() =>
     [...cardData]
       .map(value => ({ value, sort: Math.random() }))
@@ -22,10 +20,10 @@ export const SwipeCards: React.FC<SwipeCardsProps> = ({
   );  //change the [...cardData] as it can cause duplicated data.
   console.log(cards);
 
-  const handleSubmit = () => {
-    // api call to add likes/dislikes
-    navigate('/');
-  };
+  // const handleSubmit = () => {
+  //   // api call to add likes/dislikes
+  //   navigate('/');
+  // };
 
   return (
     <div
