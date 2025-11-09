@@ -34,7 +34,7 @@ export const NavBar: React.FC<NavBar> = ({ mapRef, selectedRoomId }) => {
 			<>
 				<div
 					className={`flex flex-col justify-between py-6 absolute left-4 top-[130px] z-[999] h-[600px] 
-						bg-white rounded-3xl duration-300 ease-in-out 
+						bg-white rounded-3xl duration-300 ease-in-out hidden sm:inline
 						${expand ? 'w-[300px] items-start justify-start p-7' : 'w-[60px] items-center'}`}
 				>	
 					{
