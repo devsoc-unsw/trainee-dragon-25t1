@@ -120,7 +120,7 @@ export const SearchBar: React.FC<Searchbar> = ({
     <>
       <div
         id="search-input-container"
-        className="search-control-default rounded-full"
+        className="search-control-default rounded-full hidden sm:inline"
       >
         <input
           tabIndex={0}

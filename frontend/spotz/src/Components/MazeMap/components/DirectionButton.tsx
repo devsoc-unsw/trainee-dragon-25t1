@@ -28,12 +28,11 @@ export const DirectionButton: React.FC<DirectionButtonProp> = ({
   return (
     <>
       <button
-        className="absolute flex flex-row items-center justify-evenly bottom-11 left-[44%] h-20 w-1/5 sm:w-[16%] 
-        bg-white text-2xl rounded-full hover:bg-black/15 duration-500 font-medium border border-gray-200"
-        onClick={handleClick}
+        className="absolute flex flex-row items-center justify-center gap-2 bottom-11 left-2 h-20 w-[100px] sm:w-[220px]
+        bg-white text-2xl rounded-full hover:bg-black/15 duration-500 font-medium border border-gray-200 sm:left-[44%]"
       >
-        <Directions></Directions>
-        Get Directions
+        <Directions />
+        <span className="truncate text-sm sm:text-lg">Get Directions</span>
       </button>
     </>
   );

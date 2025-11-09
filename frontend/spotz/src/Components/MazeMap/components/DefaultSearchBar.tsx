@@ -53,9 +53,9 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
   const [register, setShowRegister] = useState(false);
   return (
     <>
-      <div className="absolute flex flex-row top-0.5 mt-1 z-[999] w-1/2 cursor-pointer gap-8 sm:text-lg text-sm">
+      <div className="absolute flex flex-row top-0.5 mt-1 z-[999] w-1/2 cursor-pointer gap-8 text-sm">
         <TopBarButton
-          label={'Food'}
+          label={<span className="hidden sm:inline">Food</span>}
           classNames={''}
           onClick={() => {
             localStorage.setItem('defaultSpots', JSON.stringify(mySearch));
@@ -80,7 +80,7 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
           <RestaurantIcon sx={{ marginBottom: '2px' }} />
         </TopBarButton>
         <TopBarButton
-          label={'My Liked Spots'}
+          label={<span className="hidden sm:inline">My Liked Spots</span>}
           classNames={''}
           onClick={async () => {
             Cookies.get('sessionId') ? undefined : setShowRegister(true);
@@ -117,8 +117,8 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
           <ThumbUpIcon />
         </TopBarButton>
         <TopBarButton
-          label={'Study Spots'}
-          classNames={''}
+          label={<span className="hidden sm:inline">Study Spots</span>}
+          classNames={'hidden sm:inline'}
           onClick={() => {
             const spotGeoJsonData = constructLayerData();
             localStorage.setItem('curSourceSpotsName', 'geojsonresults2');
@@ -145,8 +145,8 @@ export const TopBar: React.FC<DefaultSearchBarProps> = ({
         </TopBarButton>
         {Cookies.get('sessionId') ? null : (
           <TopBarButton
-            label={'Register'}
-            classNames={''}
+            label={<span className="hidden sm:inline"> Register </span>}
+            classNames={'hidden sm:inline'}
             onClick={() => setShowRegister(true)}
           >
             <AppRegistrationIcon />

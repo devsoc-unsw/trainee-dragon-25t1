@@ -105,7 +105,7 @@ const MazeMap = (props: MazeMapProps) => {
         <>
           <RandomSpotButton />
           <NavBar mapRef={props.mapRef}/>
-          <div className="relative flex flex-row items-center justify-center gap-2 min-w-[889px] mt-3 ml-6">
+          <div className="relative flex flex-row sm:justify-center items-center justify-start gap-2 min-w-[500px] mt-3 ml-6">
             <TopBar
               mapRef={props.mapRef}
               mazeProps={props}
